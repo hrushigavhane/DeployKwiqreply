@@ -53,7 +53,7 @@ current_user={'username':'', 'password':'', 'first_name':'', 'last_name':'', 'co
 url_main = "https://3.137.182.68:9090"
 pass_for_api = "Khairnar@1234!"
 base_64 = "YWRtaW46S2hhaXJuYXJAMTIzNCE="
-
+email_of_off = "noreply@kwiqreply.io"
 
 def home(request):
     print(request)
@@ -388,7 +388,7 @@ def register(request):
         send_mail(
         mail_subject,
         message,
-        'jackphoneix1234@gmail.com',
+        email_of_off,
         [to_email],
         fail_silently=False)
         #email = EmailMessage(mail_subject, message, to=[to_email])
@@ -502,7 +502,7 @@ def resend_link(request):
                     send_mail(
                     mail_subject,
                     message,
-                    'jackphoneix1234@gmail.com',
+                    email_of_off,
                     [to_email],
                     fail_silently=False)
                     #email = EmailMessage(mail_subject, message, to=[to_email])
@@ -553,7 +553,7 @@ def forgot_password(request):
                 send_mail(
                 mail_subject,
                 message,
-                'jackphoneix1234@gmail.com',
+                email_of_off,
                 [to_email],
                 fail_silently=False)
                 #email = EmailMessage(mail_subject, message, to=[to_email])
@@ -1331,7 +1331,7 @@ def submit_ticket(request):
         send_mail(
         mail_subject,
         message,
-        'jackphoneix1234@gmail.com',
+        email_of_off,
         ['kkarnik22@gmail.com'],
         fail_silently=False)
 
@@ -1455,8 +1455,8 @@ def sales(request):
         send_mail(
         mail_subject,
         message,
-        'jackphoneix1234@gmail.com',
-        ['kkarnik22@gmail.com'],
+        email_of_off,
+        ['jsmith.sg6@gmail.com'],
         fail_silently=False)
 
         messages.info(request, 'Your form has been successfully submitted')
