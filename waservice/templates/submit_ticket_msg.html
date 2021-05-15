@@ -1,0 +1,10 @@
+{% load static %}
+{% autoescape on %}
+New ticket has been submitted. The details are as follows:
+
+Subject: {{ subject }}
+Comment: {{ comment }}
+Product: {{ product }}
+Business Impact: {{ business_impact }}
+
+{% endautoescape %}

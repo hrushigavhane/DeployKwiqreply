@@ -1,0 +1,7 @@
+ {% load static %}
+
+    <hr>
+    {% for k in obj2 %}
+        <a style="margin-bottom:0px;" id="p_{{k.number}}" onclick="get_chat('{{k.number}}','{{k.name}}');"> <i class="fa fa-whatsapp" aria-hidden="true" style="color:green" ></i>{{k.number}}<b>({{k.no_of_messages}})</b></a>
+    <hr>
+     {% endfor %}

@@ -1,0 +1,13 @@
+{% load static %}
+{% autoescape on %}
+Your request to add a new business profile has been sent. The details for the profile are as follows:
+
+Company name: {{ comp_name }}
+Number: {{ number }}
+Display Name: {{ display_name }}
+Facebook Business Manager ID: {{ facebook_id }}
+Company Address: {{ comp_addr }}
+Company Email: {{ comp_email }}
+Website: {{ website }}
+
+{% endautoescape %}

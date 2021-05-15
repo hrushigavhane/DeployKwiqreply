@@ -1,0 +1,398 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>GENERAL SETTINGS</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{% static 'css/icheck-bootstrap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'css/adminlte.min.css' %}">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <!-- jQuery -->
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <!-- Bootstrap 4 -->
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <!-- AdminLTE App -->
+  <script src="{% static 'js/adminlte.min.js' %}"></script>
+  <!-- DEMO -->
+  <script src="{% static 'js/demo.js' %}"></script>
+
+</head>
+
+<body class="hold-transition sidebar-mini">
+
+  <div class="wrapper ">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+      <!-- Left navbar links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link sidebar-mini sidebar-collapse" data-toggle="collapse" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="dashboard" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="support" class="nav-link">Contact</a>
+        </li>
+      </ul>
+
+
+      <!-- SEARCH FORM -->
+      <form class="form-inline ml-3">
+        <div class="input-group input-group-sm">
+          <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-navbar" type="submit">
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <ul class="navbar-nav ml-auto">
+            <!-- Messages Dropdown Menu -->
+            <li class="nav-item dropdown">
+                {% for i in obj %}
+                    <a href="profile" class="nav-link"><i class="fa fa-user-o" aria-hidden="true" style="color:black"></i> {{ i.first_name }} {{ i.last_name }}</a>
+                {% endfor %}
+            </li>
+          </ul>
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <!-- Brand Logo -->
+
+      <a href="dashboard" class="brand-link" style="text-align: center;">
+        <span class="brand-text">
+        <img src="{% static 'img/icon/ktpllogo.png' %}" class="brand-image center" style=" width:70%; height:70%;"><br>
+        </span>
+      </a>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Sidebar user (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div class="image">
+            <img src="{% static 'img/icon/whatsapp .png' %}" alt="User Image" >
+          </div>
+          <div class="info">
+            <h5 class="d-block" style="color:white">WhatsApp Beta</h5>
+          </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+<!--        <li class="nav-item has-treeview" >-->
+<!--        <a href="dashboard" class="nav-link " >-->
+<!--            <i class="nav-icon fa fa-dashcube" ></i>-->
+<!--              <b><p>Dashboard</p></b>-->
+<!--          </a>-->
+<!--        </li>-->
+
+           <li class="nav-item has-treeview" >
+              <a href="step1" class="nav-link" >
+                <i class="nav-icon fa fa-graduation-cap" ></i>
+                <p>Learn</p>
+              </a>
+            </li>
+
+            <li class="nav-item has-treeview">
+              <a href="businessprofile" class="nav-link">
+                <i class="nav-icon fa fa-try"></i>
+                  <p>Apply</p>
+              </a>
+            </li>
+
+            <li class="nav-item has-treeview" >
+              <a href="sandbox" class="nav-link" >
+                <i class="nav-icon fa fa-shield" ></i>
+                  <p>Sandbox</p>
+              </a>
+            </li>
+
+            <li class="nav-item has-treeview">
+              <a href="senders" class="nav-link ">
+                <i class="nav-icon fa fa-users"></i>
+                  <p>Whatsapp Numbers</p>
+              </a>
+            </li>
+
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-commenting "></i>
+                <p>
+                  Chat Window
+                  <i class="fa fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="chat_statistics" class="nav-link">
+                    <i class="fa fa-circle nav-icon"></i>
+                    <p>Chat Dashboard</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="audience" class="nav-link">
+                    <i class="fa fa-circle nav-icon"></i>
+                    <p>Audience</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="converse" class="nav-link">
+                    <i class="fa fa-circle nav-icon"></i>
+                    <p>Converse</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="announce" class="nav-link">
+                    <i class="fa fa-circle nav-icon"></i>
+                    <p>Announce</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item has-treeview">
+              <a href="logs" class="nav-link">
+                <i class="nav-icon fa fa-history"></i>
+                  <p>Logs</p>
+              </a>
+            </li>
+
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-edit"></i>
+                <p>
+                  Insights
+                  <i class="fa fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="insight1" class="nav-link">
+                    <i class="fa fa-circle nav-icon"></i>
+                    <p>Message Queue</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="insight2" class="nav-link">
+                    <i class="fa fa-circle nav-icon"></i>
+                    <p>Message Feedback</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item has-treeview">
+              <a href="usage" class="nav-link">
+                <i class="nav-icon fa fa-hourglass-start"></i>
+                  <p>Usage</p>
+              </a>
+            </li>
+
+            <li class="nav-item has-treeview">
+              <a href="profile" class="nav-link">
+                <i class="nav-icon fa fa-user"></i>
+                  <p>Profile</p>
+              </a>
+            </li>
+
+
+
+            <li class="nav-item has-treeview">
+              <a href="general_settings" class="nav-link active">
+                <i class="nav-icon fa fa-cogs"></i>
+                <p>
+                  Settings
+                </p>
+              </a>
+            </li>
+
+
+            <li class="nav-item has-treeview">
+              <a href="logout" class="nav-link">
+                <i class="nav-icon fa fa-sign-out"></i>
+                  <p>Logout</p>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+      </div>
+      <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+
+
+      <!-- Main content -->
+      <section class="content ">
+        <div class="container" style="padding-top:30px;">
+
+          <div class="card card-primary card-outline" >
+            <div class="card-body ">
+
+            <h2 class="mt-4" style="padding-bottom:10px;">General SMS Settings</h2>
+              <div class="row ">
+                <div class="col-lg-12 col-sm-9" style="text-align:justify;">
+                  <div class="tab-content" id="vert-tabs-right-tabContent">
+                    <div class="tab-pane fade show active" id="vert-tabs-right-home" role="tabpanel" aria-labelledby="vert-tabs-right-home-tab">
+                    <h5>Alphanumeric Sender ID</h5>
+                    <p>One-way Messages can be sent with a branded
+                    <a href="#" style="text-decoration:underline;">Alphanumeric Sender ID <i class="fa fa-external-link" aria-hidden="true"></i></a>
+                     Here is   <a href="#" style="text-decoration:underline;">a list of countries where this feature is supported <i class="fa fa-external-link" aria-hidden="true"></i></a>
+                    <br>Please note the Alpha Numeric Sender Ids will be auto-enabled once you upgrade the account.</p>
+
+                    <p><b>STATUS:</b> ENABLED</p>
+
+                  </div>
+                  </div>
+                </div>
+                <div class="col-lg-11 col-sm-9" style="text-align:justify;">
+                  <h5 class="mt-4">MMS Converter</h5>
+                </div>
+                <div class="col-lg-11 col-sm-9" style="text-align:justify;">
+                  <p>Messages sent with a MediaUrl to a recipient whose carrier does not support MMS can be sent as an SMS with a shortened URL linking to your media.
+                    The shortened URL link (*URL* followed by 6 unique characters) will be appended to the end of the SMS message body.</p>
+                </div>
+                </div>
+
+                <div class="row ">
+                  <div class="col-lg-2 col-sm-9" style="text-align:justify;">
+                      <div class="form-check">
+                              <input class="form-check-input" type="radio" name="radio2" checked="">
+                              <label class="form-check-label">ENABLED</label>
+                      </div>
+                  </div>
+
+                  <div class="col-lg-10 col-sm-9" style="text-align:justify;">
+                    <p>Messages to a recipient whose carrier cannot be reached via MMS will be sent as an SMS with a shortened URL
+                      linking to your media.</p>
+                  </div>
+
+                  <div class="col-lg-2 col-sm-9" style="text-align:justify;">
+                      <div class="form-check">
+                          <input class="form-check-input" type="radio" name="radio2">
+                          <label class="form-check-label">DISABLED</label>
+                      </div>
+                  </div>
+
+                  <div class="col-lg-10 col-sm-9" style="text-align:justify;">
+                    <p>Messages to a recipient whose carrier cannot be reached via MMS will not be sent. Your application will
+                      receive an HTTP 400 response and your message will not be queued for delivery</p>
+                  </div>
+              </div>
+
+              <div class="row ">
+                <div class="col-lg-11 col-sm-9" style="text-align:justify; ">
+                  <h5 class="mt-4">Enforce HTTP Auth on Media URLs</h5>
+                </div>
+                <div class="col-lg-11 col-sm-9" style="text-align:justify;">
+                  <p>Enforces HTTP basic auth when requesting media such as recordings and images for both Voice and Messaging.</p>
+                </div>
+                <div class="col-lg-2 col-sm-9" style="text-align:justify;">
+                    <div class="form-check">
+                            <input class="form-check-input" type="radio" name="radio1" checked="">
+                            <label class="form-check-label">ENABLED</label>
+                      </div>
+                </div>
+
+                <div class="col-lg-10 col-sm-9" style="text-align:justify;">
+                  <p>Messages to a recipient whose carrier cannot be reached via MMS will be sent as an SMS with a shortened URL
+                    linking to your media.</p>
+                </div>
+
+                <div class="col-lg-2 col-sm-9" style="text-align:justify;">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radio1">
+                        <label class="form-check-label">DISABLED</label>
+                    </div>
+                </div>
+
+                <div class="col-lg-10 col-sm-9" style="text-align:justify;">
+                  <p>Messages to a recipient whose carrier cannot be reached via MMS will not be sent. Your application will
+                    receive an HTTP 400 response and your message will not be queued for delivery</p>
+                </div>
+            </div>
+
+            <div class="row ">
+              <div class="col-lg-12 col-sm-9" style="text-align:justify;">
+                <div class="tab-content" id="vert-tabs-right-tabContent">
+                  <div class="tab-pane fade show active" id="vert-tabs-right-home" role="tabpanel" aria-labelledby="vert-tabs-right-home-tab">
+                  <h5>Phone number redaction</h5>
+                  <p>Phone Number Redaction helps protect data by redacting the last 4 digits of non-Khairnar Technologies phone numbers
+                    before they’re stored.
+                    Request access: Phone Number Redaction allows you to decrease the presence of your data and improve security for your traffic.
+                    Fill out this
+                    <a href="#" style="text-decoration:underline;">form <i class="fa fa-external-link" aria-hidden="true"></i></a>
+                   to request more details and pricing information.</p>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row ">
+                <div class="col-lg-12 col-sm-9" style="text-align:justify;">
+                  <div class="tab-content" id="vert-tabs-right-tabContent">
+                    <div class="tab-pane fade show active" id="vert-tabs-right-home" role="tabpanel" aria-labelledby="vert-tabs-right-home-tab">
+                    <h5>Message Body Redaction</h5>
+                    <p>Message Body Redaction helps protect data by removing message bodies before they're stored.
+                      Request access: Message Body Redaction allows you to decrease the presence of your data and improve security for your traffic.
+                      Fill out this
+                      <a href="#" style="text-decoration:underline;">form <i class="fa fa-external-link" aria-hidden="true"></i></a>
+                     to request more details and pricing information.</p>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            <!-- /.card -->
+
+          </div>
+          <!-- /.card -->
+
+        </div>
+        <!-- /.container-fluid -->
+      </div>
+      
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <div class="main-footer">
+      <strong>Copyright &copy; 2021 <a href="#">Khairnar Technologies Private Limited</a>.</strong>
+      All rights reserved.
+    </div>
+
+
+    <!-- /.control-sidebar -->
+  </div>
+  <!-- ./wrapper -->
+
+
+
+  </body>
+</html>

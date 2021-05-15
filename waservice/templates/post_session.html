@@ -1,0 +1,642 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>POST SESSION MANAGE</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{% static 'css/icheck-bootstrap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'css/adminlte.min.css' %}">
+
+  <link rel="stylesheet" href="{% static 'css/daterangepicker.css' %}">
+
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <!-- jQuery -->
+  <script src="{% static 'js/jquery.bootstrap-duallistbox.min.js' %}"></script>
+  <script src="{% static 'js/jquery.inputmask.bundle.min.js' %}"></script>
+  <!-- Bootstrap 4 -->
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <!-- AdminLTE App -->
+  <script src="{% static 'js/adminlte.min.js' %}"></script>
+  <!-- DEMO -->
+  <script src="{% static 'js/demo.js' %}"></script>
+  <script src="{% static 'js/moment.min.js' %}"></script>
+  <script src="{% static 'js/daterangepicker.js' %}"></script>
+  <script src="{% static 'js/select2.full.min.js' %}"></script>
+  <script src="{% static 'js/select2.full.min.js' %}"></script>
+  <script src="{% static 'js/bs-custom-file-input.min.js' %}"></script>
+
+  <script>
+  $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+
+    //Datemask dd/mm/yyyy
+    $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+    //Datemask2 mm/dd/yyyy
+    $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
+    //Money Euro
+    $('[data-mask]').inputmask()
+
+    //Date range picker
+    $('#reservation').daterangepicker()
+    //Date range picker with time picker
+    $('#reservationtime').daterangepicker({
+      timePicker: true,
+      timePickerIncrement: 30,
+      locale: {
+        format: 'MM/DD/YYYY hh:mm A'
+      }
+    })
+  })
+  </script>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      bsCustomFileInput.init();
+    });
+  </script>
+
+
+</head>
+
+<body class="hold-transition sidebar-mini">
+
+  <div class="wrapper ">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+      <!-- Left navbar links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link sidebar-mini sidebar-collapse" data-toggle="collapse" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="dashboard" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="support" class="nav-link">Contact</a>
+        </li>
+      </ul>
+
+
+      <!-- SEARCH FORM -->
+      <form class="form-inline ml-3">
+        <div class="input-group input-group-sm">
+          <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-navbar" type="submit">
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <ul class="navbar-nav ml-auto">
+          <!-- Messages Dropdown Menu -->
+          <li class="nav-item dropdown">
+              {% for i in obj %}
+                  <a href="profile" class="nav-link"><i class="fa fa-user-o" aria-hidden="true" style="color:black"></i> {{ i.first_name }} {{ i.last_name }}</a>
+              {% endfor %}
+          </li>
+        </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+
+    <a href="dashboard" class="brand-link" style="text-align: center;">
+      <span class="brand-text">
+      <img src="{% static 'img/icon/ktpllogo.png' %}" class="brand-image center" style=" width:70%; height:70%;"><br>
+      </span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="{% static 'img/icon/whatsapp .png' %}" alt="User Image" >
+        </div>
+        <div class="info">
+          <h5 class="d-block" style="color:white">WhatsApp Beta</h5>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+          <!--        <li class="nav-item has-treeview" >-->
+<!--        <a href="dashboard" class="nav-link " >-->
+<!--            <i class="nav-icon fa fa-dashcube" ></i>-->
+<!--              <b><p>Dashboard</p></b>-->
+<!--          </a>-->
+<!--        </li>-->
+
+         <li class="nav-item has-treeview" >
+              <a href="step1" class="nav-link active active" >
+                <i class="nav-icon fa fa-graduation-cap" ></i>
+                <p>Learn</p>
+              </a>
+            </li>
+
+            <li class="nav-item has-treeview">
+              <a href="businessprofile" class="nav-link">
+                <i class="nav-icon fa fa-try"></i>
+                  <p>Apply</p>
+              </a>
+            </li>
+
+            <li class="nav-item has-treeview" >
+              <a href="sandbox" class="nav-link" >
+                <i class="nav-icon fa fa-shield" ></i>
+                  <p>Sandbox</p>
+              </a>
+            </li>
+
+            <li class="nav-item has-treeview">
+              <a href="senders" class="nav-link ">
+                <i class="nav-icon fa fa-users"></i>
+                  <p>Whatsapp Numbers</p>
+              </a>
+            </li>
+
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-commenting "></i>
+                <p>
+                  Chat Window
+                  <i class="fa fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="chat_statistics" class="nav-link">
+                    <i class="fa fa-circle nav-icon"></i>
+                    <p>Chat Dashboard</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="audience" class="nav-link">
+                    <i class="fa fa-circle nav-icon"></i>
+                    <p>Audience</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="converse" class="nav-link">
+                    <i class="fa fa-circle nav-icon"></i>
+                    <p>Converse</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="announce" class="nav-link">
+                    <i class="fa fa-circle nav-icon"></i>
+                    <p>Announce</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item has-treeview">
+              <a href="logs" class="nav-link">
+                <i class="nav-icon fa fa-history"></i>
+                  <p>Logs</p>
+              </a>
+            </li>
+
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-edit"></i>
+                <p>
+                  Insights
+                  <i class="fa fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="insight1" class="nav-link">
+                    <i class="fa fa-circle nav-icon"></i>
+                    <p>Message Queue</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="insight2" class="nav-link">
+                    <i class="fa fa-circle nav-icon"></i>
+                    <p>Message Feedback</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item has-treeview">
+              <a href="usage" class="nav-link">
+                <i class="nav-icon fa fa-hourglass-start"></i>
+                  <p>Usage</p>
+              </a>
+            </li>
+
+            <li class="nav-item has-treeview">
+              <a href="profile" class="nav-link">
+                <i class="nav-icon fa fa-user"></i>
+                  <p>Profile</p>
+              </a>
+            </li>
+
+
+
+            <li class="nav-item has-treeview">
+              <a href="general_settings" class="nav-link">
+                <i class="nav-icon fa fa-cogs"></i>
+                <p>
+                  Settings
+                </p>
+              </a>
+            </li>
+
+
+            <li class="nav-item has-treeview">
+              <a href="logout" class="nav-link">
+                <i class="nav-icon fa fa-sign-out"></i>
+                  <p>Logout</p>
+              </a>
+            </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <!-- Main content -->
+      <section class="content">
+
+        <div class="container" style="padding-top:30px;">
+
+          <div class="card card-primary card-outline" >
+            <div class="card-body ">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="input-group mb-2" data-toggle="tooltip"  title="Share any promotional/ non-promotional message with your users Read More">
+                    <div class="input-group-prepend"  >
+                      <button type="button" class="btn btn-success" style="padding-bottom:18px; font-size:30px;"><i class="fa fa-whatsapp" aria-hidden="true"></i></button>
+                    </div>
+                      <h2 style="height:70px;" class="form-control"><b>Post Session Message</b> <br> Message within 24 hours of the last user message</h2>
+                  </div>
+                </div>
+                <div class="col-lg-2">
+                  <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="Non-promotional message after 24 hours as long as it fits into categories predefined by Facebook Read More" style="opacity:0.4"></i>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" placeholder="Name of your announcement">
+             </div>
+            </div>
+          </div>
+
+          <div class="card card-primary card-outline" >
+            <div class="card-body ">
+              <h2 class="mt-4">Target Audience</h2>
+              <p>Select the users who should receive this announcement</p>
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Account</label>
+                     <select class="form-control select2-hidden-accessible" style="width: 100%;" data-select2-id="17" tabindex="-1" aria-hidden="true">
+                      <option value="" selected="true" disabled="disabled"> Select...</option>
+                      <option>WhatsApp Sandbox</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Segment <i class="fa fa-question-circle" data-toggle="tooltip" title="You can manage and create new segments in Audience Read More" aria-hidden="true"></i></label>
+                    <select class="form-control select2-hidden-accessible" style="width: 100%;" data-select2-id="17" tabindex="-1" aria-hidden="true">
+                      <option value="" selected="true" disabled="disabled"> Select...</option>
+                      <option>XXXXXXX</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-8" style="padding-left:50px; opacity:0.6;">
+                  <div class="card-body" style="border: 1px solid black;height: 100%;	opacity: 0.8;">
+                    <p class="card-text text-center">
+                      Please select a page and segment to see the estimate no. of users who will receive this announcement.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card-primary card-outline" >
+            <div class="card-body ">
+              <h2 class="mt-4">Select A Template</h2>
+
+                 <div class="form-group">
+                  <label>Templates</label>
+                  <select class="form-control  select2-hidden-accessible col-lg-5" style="width: 100%;" data-select2-id="17" tabindex="-1" aria-hidden="true">
+                    <option value="" selected="true" > Select...</option>
+                    <option value="account_update">account_update</option>
+                    <option value="payment_update">payment_update</option>
+                    <option value="shipping_update">shipping_update</option>
+                    <option value="reservation_update">reservation_update</option>
+                    <option value="appointment_update">appointment_update</option>
+                    <option value="transportation_update">transportation_update</option>
+                    <option value="ticket_update">ticket_update</option>
+                    <option value="issue_resolution">issue_resolution</option>
+                    <option value="personal_finance_update">personal_finance_update</option>
+                    <option value="alert_update">alert_update</option>
+                  </select>
+                </div>
+
+
+                <div class="select_template_box account_update ">
+                   <div class="logs_edit " style="padding:10px; text-align:left">
+                    <div class="card col-lg-4" style="padding-left:10px;">
+                      <div class="card-body">
+                        <p class="card-text">
+                          *Data Exported Successfully* 😀 <br>
+                          First Name, your data export request has been processed successfully. You can download the CSV file_ using the link below. Alternatively, an email, containing the link, has also been sent to you. <br>
+                          Download Link: Link <br>
+                          _PS: If you have any query then just reply. To stop receiving messages like this, please reply with 'stop'.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="select_template_box payment_update ">
+                   <div class="logs_edit " style="padding:10px; text-align:left">
+                    <div class="card col-lg-4" style="padding-left:10px;">
+                      <div class="card-body">
+                        <p class="card-text">
+                          *Data Exported Successfully* 😀 <br>
+                          First Name, your data export request has been processed successfully. You can download the CSV file_ using the link below. Alternatively, an email, containing the link, has also been sent to you. <br>
+                          Download Link: Link <br>
+                          _PS: If you have any query then just reply. To stop receiving messages like this, please reply with 'stop'.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="select_template_box shipping_update ">
+                   <div class="logs_edit " style="padding:10px; text-align:left">
+                    <div class="card col-lg-4" style="padding-left:10px;">
+                      <div class="card-body">
+                        <p class="card-text">
+                          *Data Exported Successfully* 😀 <br>
+                          First Name, your data export request has been processed successfully. You can download the CSV file_ using the link below. Alternatively, an email, containing the link, has also been sent to you. <br>
+                          Download Link: Link <br>
+                          _PS: If you have any query then just reply. To stop receiving messages like this, please reply with 'stop'.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="select_template_box reservation_update ">
+                   <div class="logs_edit " style="padding:10px; text-align:left">
+                    <div class="card col-lg-4" style="padding-left:10px;">
+                      <div class="card-body">
+                        <p class="card-text">
+                          *Data Exported Successfully* 😀 <br>
+                          First Name, your data export request has been processed successfully. You can download the CSV file_ using the link below. Alternatively, an email, containing the link, has also been sent to you. <br>
+                          Download Link: Link <br>
+                          _PS: If you have any query then just reply. To stop receiving messages like this, please reply with 'stop'.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="select_template_box appointment_update ">
+                   <div class="logs_edit " style="padding:10px; text-align:left">
+                    <div class="card col-lg-4" style="padding-left:10px;">
+                      <div class="card-body">
+                        <p class="card-text">
+                          *Data Exported Successfully* 😀 <br>
+                          First Name, your data export request has been processed successfully. You can download the CSV file_ using the link below. Alternatively, an email, containing the link, has also been sent to you. <br>
+                          Download Link: Link <br>
+                          _PS: If you have any query then just reply. To stop receiving messages like this, please reply with 'stop'.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="select_template_box transportation_update ">
+                   <div class="logs_edit " style="padding:10px; text-align:left">
+                    <div class="card col-lg-4" style="padding-left:10px;">
+                      <div class="card-body">
+                        <p class="card-text">
+                          *Data Exported Successfully* 😀 <br>
+                          First Name, your data export request has been processed successfully. You can download the CSV file_ using the link below. Alternatively, an email, containing the link, has also been sent to you. <br>
+                          Download Link: Link <br>
+                          _PS: If you have any query then just reply. To stop receiving messages like this, please reply with 'stop'.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="select_template_box ticket_update ">
+                   <div class="logs_edit " style="padding:10px; text-align:left">
+                    <div class="card col-lg-4" style="padding-left:10px;">
+                      <div class="card-body">
+                        <p class="card-text">
+                          *Data Exported Successfully* 😀 <br>
+                          First Name, your data export request has been processed successfully. You can download the CSV file_ using the link below. Alternatively, an email, containing the link, has also been sent to you. <br>
+                          Download Link: Link <br>
+                          _PS: If you have any query then just reply. To stop receiving messages like this, please reply with 'stop'.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="select_template_box issue_resolution ">
+                   <div class="logs_edit " style="padding:10px; text-align:left">
+                    <div class="card col-lg-4" style="padding-left:10px;">
+                      <div class="card-body">
+                        <p class="card-text">
+                          *Data Exported Successfully* 😀 <br>
+                          First Name, your data export request has been processed successfully. You can download the CSV file_ using the link below. Alternatively, an email, containing the link, has also been sent to you. <br>
+                          Download Link: Link <br>
+                          _PS: If you have any query then just reply. To stop receiving messages like this, please reply with 'stop'.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="select_template_box personal_finance_update ">
+                   <div class="logs_edit " style="padding:10px; text-align:left">
+                    <div class="card col-lg-4" style="padding-left:10px;">
+                      <div class="card-body">
+                        <p class="card-text">
+                          *Data Exported Successfully* 😀 <br>
+                          First Name, your data export request has been processed successfully. You can download the CSV file_ using the link below. Alternatively, an email, containing the link, has also been sent to you. <br>
+                          Download Link: Link <br>
+                          _PS: If you have any query then just reply. To stop receiving messages like this, please reply with 'stop'.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="select_template_box alert_update ">
+                   <div class="logs_edit " style="padding:10px; text-align:left">
+                    <div class="card col-lg-4" style="padding-left:10px;">
+                      <div class="card-body">
+                        <p class="card-text">
+                          *Data Exported Successfully* 😀 <br>
+                          First Name, your data export request has been processed successfully. You can download the CSV file_ using the link below. Alternatively, an email, containing the link, has also been sent to you. <br>
+                          Download Link: Link <br>
+                          _PS: If you have any query then just reply. To stop receiving messages like this, please reply with 'stop'.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          <div class="card card-primary card-outline" >
+            <div class="card-body ">
+              <h2 class="mt-4">Send Announce</h2>
+                <div class="row">
+                  <div class="form-group col-lg-6 ">
+                      <label>When do you want to send the messages?</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fa fa-calendar-alt"></i>
+                      </span>
+                    </div>
+                    <input type="text" class="form-control float-right" id="reservation">
+                  </div>
+                </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label>Timezone</label>
+                      <select class="form-control  select2-hidden-accessible" style="width: 100%;" data-select2-id="17" tabindex="-1" aria-hidden="true">
+                        <option value="" selected="true" disabled="disabled"> Select...</option>
+                        <option value="-12:00">(GMT -12:00) Eniwetok, Kwajalein</option>
+                            <option value="-11:00">(GMT -11:00) Midway Island, Samoa</option>
+                            <option value="-10:00">(GMT -10:00) Hawaii</option>
+                            <option value="-09:50">(GMT -9:30) Taiohae</option>
+                            <option value="-09:00">(GMT -9:00) Alaska</option>
+                            <option value="-08:00">(GMT -8:00) Pacific Time (US &amp; Canada)</option>
+                            <option value="-07:00">(GMT -7:00) Mountain Time (US &amp; Canada)</option>
+                            <option value="-06:00">(GMT -6:00) Central Time (US &amp; Canada), Mexico City</option>
+                            <option value="-05:00">(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima</option>
+                            <option value="-04:50">(GMT -4:30) Caracas</option>
+                            <option value="-04:00">(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz</option>
+                            <option value="-03:50">(GMT -3:30) Newfoundland</option>
+                            <option value="-03:00">(GMT -3:00) Brazil, Buenos Aires, Georgetown</option>
+                            <option value="-02:00">(GMT -2:00) Mid-Atlantic</option>
+                            <option value="-01:00">(GMT -1:00) Azores, Cape Verde Islands</option>
+                            <option value="+00:00">(GMT  0:00) Western Europe Time, London, Lisbon, Casablanca</option>
+                            <option value="+01:00">(GMT +1:00) Brussels, Copenhagen, Madrid, Paris</option>
+                            <option value="+02:00">(GMT +2:00) Kaliningrad, South Africa</option>
+                            <option value="+03:00">(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg</option>
+                            <option value="+03:50">(GMT +3:30) Tehran</option>
+                            <option value="+04:00">(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi</option>
+                            <option value="+04:50">(GMT +4:30) Kabul</option>
+                            <option value="+05:00">(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent</option>
+                            <option value="+05:50">(GMT +5:30) Bombay, Calcutta, Madras, New Delhi</option>
+                            <option value="+05:75">(GMT +5:45) Kathmandu, Pokhara</option>
+                            <option value="+06:00">(GMT +6:00) Almaty, Dhaka, Colombo</option>
+                            <option value="+06:50">(GMT +6:30) Yangon, Mandalay</option>
+                            <option value="+07:00">(GMT +7:00) Bangkok, Hanoi, Jakarta</option>
+                            <option value="+08:00">(GMT +8:00) Beijing, Perth, Singapore, Hong Kong</option>
+                            <option value="+08:75">(GMT +8:45) Eucla</option>
+                            <option value="+09:00">(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk</option>
+                            <option value="+09:50">(GMT +9:30) Adelaide, Darwin</option>
+                            <option value="+10:00">(GMT +10:00) Eastern Australia, Guam, Vladivostok</option>
+                            <option value="+10:50">(GMT +10:30) Lord Howe Island</option>
+                            <option value="+11:00">(GMT +11:00) Magadan, Solomon Islands, New Caledonia</option>
+                            <option value="+11:50">(GMT +11:30) Norfolk Island</option>
+                            <option value="+12:00">(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka</option>
+                            <option value="+12:75">(GMT +12:45) Chatham Islands</option>
+                            <option value="+13:00">(GMT +13:00) Apia, Nukualofa</option>
+                            <option value="+14:00">(GMT +14:00) Line Islands, Tokelau</option>
+                      </select>
+                    </div>
+                </div>
+              </div>
+              <div class="row" style="padding-top:30px;">
+                <div class="form-group col-lg-6 ">
+
+                  <p >You can see the analytics once this announce is sent.</p>
+               </div>
+                <div class="col-lg-6">
+                  <div class="row">
+                    <button type="button" class="btn btn-primary col-lg-3" style="margin-right:20px;">Scheduled</button>
+                    <button type="button" class="btn btn-outline-primary col-lg-3"  style="margin-right:20px;">Save</button>
+                    <button type="button" class="btn btn-outline-primary col-lg-3">Draft</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+        <!-- /.container-fluid -->
+    </section>
+      <!-- /.content -->
+    <!-- /.content-wrapper -->
+
+    <!-- /.control-sidebar -->
+  </div>
+  <div class="main-footer">
+    <strong>Copyright &copy; 2021 <a href="#">Khairnar Technologies Private Limited</a>.</strong>
+    All rights reserved.
+  </div>
+  <!-- ./wrapper -->
+</div>
+
+<script>
+$(document).ready(function(){
+    $("select").change(function(){
+        $(this).find("option:selected").each(function(){
+            var optionValue = $(this).attr("value");
+            if(optionValue){
+                $(".select_template_box").not("." + optionValue).hide();
+                $("." + optionValue).show();
+            } else{
+                $(".select_template_box").hide();
+            }
+        });
+    }).change();
+});
+</script>
+
+</body>
+</html>
