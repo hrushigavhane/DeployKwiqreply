@@ -1100,9 +1100,9 @@ def businessprofile(request):
                return render(request, 'businessprofile.html', {'num_error': 'Number already exists.'})
 
 
-        len_select_number = len(user1.business_number)
-        if len_select_number != 12:
-            return render(request, 'businessprofile.html', {'num_len_error': 'Number should be 12 digit with a \'+\' sign.'})
+        # len_select_number = len(user1.business_number)
+        # if len_select_number != 12:
+        #     return render(request, 'businessprofile.html', {'num_len_error': 'Number should be 10 digit with your country code'})
 
 
         #user1.user_id = request.session['id']

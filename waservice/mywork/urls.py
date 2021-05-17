@@ -5,7 +5,7 @@ from django.urls import path
 from mywork import views
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', views.login, name='login'),
     path('login', views.login, name='login'),
     path('login_success', views.login_success, name='login_success'),
     path('login_verify', views.login_verify, name='login_verify'),

@@ -39,7 +39,7 @@ class Business_Profile(models.Model):
     about_business = models.CharField(max_length=200, blank=False, default="About")
     business_address = models.CharField(max_length=200, blank=False, default="Company address")
     business_email = models.EmailField()
-    business_number = models.CharField(max_length=14, blank=False, default=91123456879)
+    business_number = models.CharField(max_length=15, blank=False, default=91123456879)
     radio = models.CharField(max_length=3, blank=False, default="yes")
     website = models.CharField(max_length=200, blank=False, default="website")
     user = models.ForeignKey('User_Details', on_delete=models.CASCADE)

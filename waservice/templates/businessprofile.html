@@ -365,7 +365,7 @@
         <p>Business Number (also include the COUNTRY CODE)<b style="color:red"> * </b><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip"
        title="Phone number you want to register for WhatsApp Business Solution. It will be the number that your customers use to contact your business.Do note that once a number has been registered for this solution, this number can NO LONGER be de-registered or re-used for other WhatsApp purposes in the future"></i></p>
        <div class="input-group mb-3">
-         <input id="business_number" name="business_number" type="tel" class="form-control filter" min="12" maxlength="14" onkeypress="return /[0-9]/i.test(event.key)"  required/><br>
+         <input id="business_number" name="business_number" type="tel" class="form-control filter" min="12" maxlength="14" onkeypress="return /[0-9+]/i.test(event.key)"  required/><br>
        </div>
       </div>
 
@@ -384,7 +384,7 @@
           <p>Website<b style="color:red"> * </b><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip"
             title="This is your business website that will be displayed on your WhatsApp Business Profile."></i></p>
        <div class="input-group mb-3">
-         <input id="webiste" name="website" type="tel" class="form-control filter" required/><br>
+         <input id="webiste" name="website" type="text" class="form-control filter" required/><br>
        </div>
       </div>
 
