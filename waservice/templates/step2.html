@@ -60,7 +60,7 @@
 
 
       <!-- SEARCH FORM -->
-      <form class="form-inline ml-3">
+      <!-- <form class="form-inline ml-3">
         <div class="input-group input-group-sm">
           <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
           <div class="input-group-append">
@@ -69,7 +69,7 @@
             </button>
           </div>
         </div>
-      </form>
+      </form> -->
       <ul class="navbar-nav ml-auto">
             <!-- Messages Dropdown Menu -->
             <li class="nav-item dropdown">
@@ -84,13 +84,13 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
-
+    
       <a href="step1" class="brand-link" style="text-align: center;">
         <span class="brand-text">
-        <img src="{% static 'img/icon/ktpllogo.png' %}" class="brand-image center" style=" width:70%; height:70%;"><br>
+              <img src="{% static 'img/icon/ktpllogo.svg' %}" class="brand-image center" style=" width:100%; height:100%;"><br>
         </span>
       </a>
-
+    
       <!-- Sidebar -->
       <div class="sidebar">
         <!-- Sidebar user (optional) -->
@@ -102,46 +102,46 @@
             <h5 class="d-block" style="color:white">WhatsApp Beta</h5>
           </div>
         </div>
-
+    
         <!-- Sidebar Menu -->
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
-<!--        <li class="nav-item has-treeview" >-->
-<!--        <a href="dashboard" class="nav-link " >-->
-<!--            <i class="nav-icon fa fa-dashcube" ></i>-->
-<!--              <b><p>Dashboard</p></b>-->
-<!--          </a>-->
-<!--        </li>-->
-
+    
+            {% comment %} <li class="nav-item has-treeview" >
+           <a href="dashboard" class="nav-link " >
+               <i class="nav-icon fa fa-dashcube" ></i>
+                  <b><p>Dashboard</p></b>
+              </a>
+           </li> {% endcomment %}
+    
             <li class="nav-item has-treeview" >
-              <a href="step1" class="nav-link active active" >
+              <a href="step1" class="nav-link active" >
                 <i class="nav-icon fa fa-graduation-cap" ></i>
                 <p>Learn</p>
               </a>
             </li>
-
-            <li class="nav-item has-treeview">
+              <li class="nav-item has-treeview">
               <a href="businessprofile" class="nav-link">
                 <i class="nav-icon fa fa-try"></i>
                   <p>Apply</p>
               </a>
             </li>
-
-            {% comment %} <li class="nav-item has-treeview" >
+    
+    {% comment %} 
+            <li class="nav-item has-treeview" >
               <a href="sandbox" class="nav-link" >
                 <i class="nav-icon fa fa-shield" ></i>
                   <p>Sandbox</p>
               </a>
             </li> {% endcomment %}
-
+    
             <li class="nav-item has-treeview">
-              <a href="senders" class="nav-link ">
+              <a href="senders" class="nav-link">
                 <i class="nav-icon fa fa-users"></i>
                   <p>Whatsapp Numbers</p>
               </a>
             </li>
-
+    
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-commenting "></i>
@@ -151,7 +151,7 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                   <a href="chat_statistics" class="nav-link">
                     <i class="fa fa-circle nav-icon"></i>
                     <p>Chat Dashboard</p>
@@ -162,29 +162,29 @@
                     <i class="fa fa-circle nav-icon"></i>
                     <p>Audience</p>
                   </a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                   <a href="converse" class="nav-link">
                     <i class="fa fa-circle nav-icon"></i>
                     <p>Converse</p>
                   </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                   <a href="announce" class="nav-link">
                     <i class="fa fa-circle nav-icon"></i>
                     <p>Announce</p>
                   </a>
-                </li>
+                </li> -->
               </ul>
             </li>
-
-            <li class="nav-item has-treeview">
+    
+            <!-- <li class="nav-item has-treeview">
               <a href="logs" class="nav-link">
                 <i class="nav-icon fa fa-history"></i>
                   <p>Logs</p>
               </a>
             </li>
-
+    
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-edit"></i>
@@ -207,24 +207,23 @@
                   </a>
                 </li>
               </ul>
-            </li>
-
-            <li class="nav-item has-treeview">
+            </li> -->
+    
+            <!-- <li class="nav-item has-treeview">
               <a href="usage" class="nav-link">
                 <i class="nav-icon fa fa-hourglass-start"></i>
                   <p>Usage</p>
               </a>
-            </li>
-
+            </li> -->
+    
             <li class="nav-item has-treeview">
               <a href="profile" class="nav-link">
                 <i class="nav-icon fa fa-user"></i>
                   <p>Profile</p>
               </a>
             </li>
-
-
-
+    
+    
             {% comment %} <li class="nav-item has-treeview">
               <a href="general_settings" class="nav-link">
                 <i class="nav-icon fa fa-cogs"></i>
@@ -233,8 +232,8 @@
                 </p>
               </a>
             </li> {% endcomment %}
-
-
+    
+    
             <li class="nav-item has-treeview">
               <a href="logout" class="nav-link">
                 <i class="nav-icon fa fa-sign-out"></i>
