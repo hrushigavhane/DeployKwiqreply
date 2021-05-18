@@ -1,7 +1,7 @@
 
 
 import csv
-from datetime import datetime
+import datetime
 import os
 import sys
 import uuid
@@ -1946,7 +1946,7 @@ def get_chat(request):
                 ext = chat.m_url
                 ext = ext.split("/", 1)[1]
                 file1 = 'image_' + str(ts) + "." + "jpg"
-                fh = open(os.path.join(settings.MEDIA_ROOT + '/image/', file1), "wb")
+                fh = open(os.path.join(settings.MEDIA_ROOT + "/image/", file1), "wb")
                 fh.write(base64.decodebytes(encoded_data))
                 fh.close()
 
@@ -2009,7 +2009,7 @@ def get_unread(request):
                 ext = chat.m_url
                 ext = ext.split("/", 1)[1]
                 file1 = 'image_' + str(ts) + "." + ext
-                fh = open(os.path.join(settings.MEDIA_ROOT + '/image/', file1), "wb")
+                fh = open(os.path.join(settings.MEDIA_ROOT + "/image/", file1), "wb")
                 fh.write(base64.decodebytes(encoded_data))
                 fh.close()
             elif chat.m_type == 'video':
@@ -2173,7 +2173,7 @@ def send_file(request):
             json_data = json.loads(rt)
             file1 = request.FILES['browseFile'].name
             file1 = str(ts) + "_" + file1
-            fh = open(os.path.join(settings.MEDIA_ROOT + '/image', file1), "wb")
+            fh = open(os.path.join(settings.MEDIA_ROOT + "/image/", file1), "wb")
             fh.write(base64.decodebytes(encoded_data))
             fh.close()
             message1 = user_message()
@@ -2487,7 +2487,7 @@ def webhook(request):
             print(e)
     
   
-    now = datetime.now()
+    now = datetime.datetime.now()
     cnt=0
     response = json.loads(request.body)    
     print(response)
@@ -2553,9 +2553,9 @@ def webhook(request):
             type = str(response["messages"][0]["type"])
             text = str(response["messages"][0]["image"]["id"])
             print(id,name,text,type,id,now)
-            id_img = str(response["messages"][0]["image"]["id"])
-            resp = download_media(id_img)
-            image = str(resp.content)
+            m_id = str(response["messages"][0]["image"]["id"])
+            # resp = download_media(id_img)
+            # image = str(resp.content)
             data = {
                 "contacts": [
                     {
@@ -2577,9 +2577,31 @@ def webhook(request):
                     }
                 ]
             }
+        
+        if msg_type == "video" and len(phn) == 12:
+            id = str(response["contacts"][0]["wa_id"])
+            name = str(response["contacts"][0]["profile"]["name"])
+            timestamp1=str(response["messages"][0]["timestamp"])
+            type = str(response["messages"][0]["type"])
+            print(id,name,text,type,id,now)
+            text = str(response["messages"][0]["video"]["id"])
+            m_id = str(response["messages"][0]["video"]["id"])
+            # resp = download_media(id_video)
+            # video = str(resp.content)
+
+        if msg_type == "document" and len(phn) == 12:
+            id = str(response["contacts"][0]["wa_id"])
+            name = str(response["contacts"][0]["profile"]["name"])
+            timestamp1=str(response["messages"][0]["timestamp"])
+            type = str(response["messages"][0]["type"])
+            text = str(response["messages"][0]["document"]["id"])
+            print(id,name,text,type,id,now)
+            m_id = str(response["messages"][0]["document"]["id"])
+
         user1 = user_message()
         user1.wa_id = id
         user1.name = name
+        user1.m_media = m_id
         user1.message = text
         user1.m_type = type
         user1.m_from = id

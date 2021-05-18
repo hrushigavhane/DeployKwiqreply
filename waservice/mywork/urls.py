@@ -63,6 +63,7 @@ urlpatterns = [
     url(r'^ajax/get_count/$', views.get_count, name='get_count'),
     url(r'^ajax/check_message/$', views.check_message, name='check_message'),
     url(r'^ajax/send_template/$', views.send_template, name='send_template'),
+    url(r'^ajax/send_file/$', views.send_file, name='send_file'),
     url(r'^ajax/check_timediff/$', views.check_timediff, name='check_timediff'),
     url('error500', views.error500, name='error500'),
     url('error400', views.error400, name='error400'),
