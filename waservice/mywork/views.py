@@ -2558,6 +2558,7 @@ def webhook(request):
             m_id = str(response["messages"][0]["image"]["id"])
             # resp = download_media(id_img)
             # image = str(resp.content)
+            image = "Ok"
             data = {
                 "contacts": [
                     {
