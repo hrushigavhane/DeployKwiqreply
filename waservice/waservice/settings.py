@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'tba^9*isd&xa+35r_++c&#w5-w#mjw4#qd=y+zv)g5uh+ca6oi'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['3.7.252.53','app.kwiqreply.io','www.app.kwiqreply.io']
 
 # Application definition
 
@@ -81,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'wa',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD':'Khairnar@411014',
         'HOST': 'localhost',
         'PORT': '3306',
         'OPTIONS': {

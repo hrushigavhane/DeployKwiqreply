@@ -1,3 +1,5 @@
+
+
 import csv
 from datetime import datetime
 import os
@@ -2575,32 +2577,45 @@ def webhook(request):
                     }
                 ]
             }
-        connection = mysql.connector.connect(host='localhost',
+        user1 = user_message()
+        user1.wa_id = id
+        user1.name = name
+        user1.message = text
+        user1.m_type = type
+        user1.m_from = id
+        user1.timestamp1 = now
+        user1.m_status = 'unread'
+        user1.save()
+        """connection = mysql.connector.connect(host='localhost',
                                              database='wa',
                                              user='root',
-                                             password='')
-        mySql_insert_query = """INSERT INTO mywork_user_message (wa_id, name, message,m_type,m_from,timestamp1,m_status) 
+                                             password='Khairnar@411014')
+        mySql_insert_query = ""INSERT INTO mywork_user_message (wa_id, name, message,m_type,m_from,timestamp1,m_status) 
                                VALUES 
-                               (%s,%s,%s,%s,%s,%s,%s) """
+                               (%s,%s,%s,%s,%s,%s,%s) ""
         cursor = connection.cursor(prepared=True)
         insert_tuple=(id,name,text,type,id,now,'unread')
 
         cursor.execute(mySql_insert_query,insert_tuple)
-        connection.commit()
-        print(cursor.rowcount, "Record inserted successfully into  table")
+        connection.commit()"""
+        print("Record inserted successfully into  table")
         if text =="Hello There, I want to know more about the Whatsapp Business API":
-            mySql_insert_query = "UPDATE mywork_user_details SET sent_message=1 WHERE phone="+phn[2:]
-            cursor = connection.cursor(prepared=True)
-            cursor.execute(mySql_insert_query)
-            connection.commit()
+           # mySql_insert_query = "UPDATE mywork_user_details SET sent_message=1 WHERE phone="+phn[2:]
+            #cursor = connection.cursor(prepared=True)
+            #cursor.execute(mySql_insert_query)
+            #connection.commit()
+            User_Details.objects
+            user2 = User_Details(phone = phn[2:])
+            user2.sent_message = 1
+            user2.save()
             print("Changed status for user")
 
-        cursor.close()
+        
 
 
-        if (connection.is_connected()):
-            connection.close()
-            print("MySQL connection is closed")
+        #if (connection.is_connected()):
+         #   connection.close()
+          #  print("MySQL connection is closed")
 
 
 
@@ -2617,7 +2632,7 @@ def webhook(request):
     except Exception as e:
         print(e)
 
-    return None
+    return render(request,'step1.html')
 '''
 
 def error400(request, exception):

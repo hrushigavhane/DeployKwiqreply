@@ -98,7 +98,7 @@ class user_message(models.Model):
     name = models.CharField(max_length=50)
     message = models.TextField(blank=True)
     m_type = models.CharField(max_length=12)
-    m_url = models.CharField(max_length=1000, blank=True)
+    m_url = models.CharField(max_length=1000, blank=True,default='URL')
     m_service = models.CharField(max_length=15, blank=True)
     m_fileName = models.CharField(max_length=100, blank=True)
     m_from = models.CharField(max_length=15)
