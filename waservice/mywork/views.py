@@ -2463,28 +2463,28 @@ def webhook(request):
         return response
 
 
-    def send_msg(frm, body):
-        print("In def send_msg")
-        authkey = update_authkey()
-        url2 = url_main + "/v1/messages"
-        options = {'Yes': '{"to": "'+str(frm)+'","type": "text","recipient_type": "individual","text": {"body": "Kya aap soch rahe hai, CLASS 11th KI PADHAI KAISE KARU, toh don’t worry!\\nJoin Free Live Batch on Vidyakul App -\\n\\n🚀Fast Track Concept Revision \\n✅Chaptr-wise Important Questions \\n📋Notes & Sample Paper - PDF \\n💡Mind Mapping for Exam \\n\\n🆓Sab Free Mein!😊\\n\\n📲Download Now ⬇️\\nhttps://vidyakul.onelink.me/qQal/whatsapp"},"preview_url": true}',
-                'No': '{"to": "'+str(frm)+'","type": "text","recipient_type": "individual","text": {"body": "Kya aap soch rahe hai, CLASS 11th KI PADHAI KAISE KARU, toh don’t worry!\\nJoin Free Live Batch on Vidyakul App -\\n\\n🚀Fast Track Concept Revision \\n✅Chaptr-wise Important Questions \\n📋Notes & Sample Paper - PDF \\n💡Mind Mapping for Exam \\n\\n🆓Sab Free Mein!😊\\n\\n📲Download Now ⬇️\\nhttps://vidyakul.onelink.me/qQal/whatsapp"},"preview_url": true}',
-                'Know More': '{"to": "'+str(frm)+'","type": "text","recipient_type": "individual","text": {"body": "Kya aap soch rahe hai, CLASS 11th KI PADHAI KAISE KARU, toh don’t worry!\\nJoin Free Live Batch on Vidyakul App -\\n\\n🚀Fast Track Concept Revision \\n✅Chaptr-wise Important Questions \\n📋Notes & Sample Paper - PDF \\n💡Mind Mapping for Exam \\n\\n🆓Sab Free Mein!😊\\n\\n📲Download Now ⬇️\\nhttps://vidyakul.onelink.me/qQal/whatsapp"},"preview_url": true}',
-                }
+    # def send_msg(frm, body):
+    #     print("In def send_msg")
+    #     authkey = update_authkey()
+    #     url2 = url_main + "/v1/messages"
+    #     options = {'Yes': '{"to": "'+str(frm)+'","type": "text","recipient_type": "individual","text": {"body": "Kya aap soch rahe hai, CLASS 11th KI PADHAI KAISE KARU, toh don’t worry!\\nJoin Free Live Batch on Vidyakul App -\\n\\n🚀Fast Track Concept Revision \\n✅Chaptr-wise Important Questions \\n📋Notes & Sample Paper - PDF \\n💡Mind Mapping for Exam \\n\\n🆓Sab Free Mein!😊\\n\\n📲Download Now ⬇️\\nhttps://vidyakul.onelink.me/qQal/whatsapp"},"preview_url": true}',
+    #             'No': '{"to": "'+str(frm)+'","type": "text","recipient_type": "individual","text": {"body": "Kya aap soch rahe hai, CLASS 11th KI PADHAI KAISE KARU, toh don’t worry!\\nJoin Free Live Batch on Vidyakul App -\\n\\n🚀Fast Track Concept Revision \\n✅Chaptr-wise Important Questions \\n📋Notes & Sample Paper - PDF \\n💡Mind Mapping for Exam \\n\\n🆓Sab Free Mein!😊\\n\\n📲Download Now ⬇️\\nhttps://vidyakul.onelink.me/qQal/whatsapp"},"preview_url": true}',
+    #             'Know More': '{"to": "'+str(frm)+'","type": "text","recipient_type": "individual","text": {"body": "Kya aap soch rahe hai, CLASS 11th KI PADHAI KAISE KARU, toh don’t worry!\\nJoin Free Live Batch on Vidyakul App -\\n\\n🚀Fast Track Concept Revision \\n✅Chaptr-wise Important Questions \\n📋Notes & Sample Paper - PDF \\n💡Mind Mapping for Exam \\n\\n🆓Sab Free Mein!😊\\n\\n📲Download Now ⬇️\\nhttps://vidyakul.onelink.me/qQal/whatsapp"},"preview_url": true}',
+    #             }
 
-        headers = {
-            'Content-Type': "application/json",
-            'Authorization': "Bearer " + authkey
-        }
-        b = body
-        payload = options[b]
-        paylod = payload.encode()
+    #     headers = {
+    #         'Content-Type': "application/json",
+    #         'Authorization': "Bearer " + authkey
+    #     }
+    #     b = body
+    #     payload = options[b]
+    #     paylod = payload.encode()
 
-        try:
-            response = requests.request("POST", url2.rstrip(), data=payload, headers=headers, verify=False)
-            rs = response.text
-        except Exception as e:
-            print(e)
+    #     try:
+    #         response = requests.request("POST", url2.rstrip(), data=payload, headers=headers, verify=False)
+    #         rs = response.text
+    #     except Exception as e:
+    #         print(e)
     
   
     now = datetime.datetime.now()
@@ -2508,7 +2508,8 @@ def webhook(request):
             name = str(response["contacts"][0]["profile"]["name"])
             timestamp1=str(response["messages"][0]["timestamp"])
             type = str(response["messages"][0]["type"])
-            send_msg(id, text)
+            m_id = "None"
+            # send_msg(id, text)
             print(id,name,text,type,id,now)
 
 
@@ -2518,7 +2519,8 @@ def webhook(request):
             name = str(response["contacts"][0]["profile"]["name"])
             timestamp1=str(response["messages"][0]["timestamp"])
             type = str(response["messages"][0]["type"])
-            print(timestamp1)
+            m_id = "None"
+            print("Type Text Called")
             ## check if password
             ## yes: map user to client and store json_data
             ## no: map user to client and send data to client
