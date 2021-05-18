@@ -2586,46 +2586,14 @@ def webhook(request):
         user1.timestamp1 = now
         user1.m_status = 'unread'
         user1.save()
-        """connection = mysql.connector.connect(host='localhost',
-                                             database='wa',
-                                             user='root',
-                                             password='Khairnar@411014')
-        mySql_insert_query = ""INSERT INTO mywork_user_message (wa_id, name, message,m_type,m_from,timestamp1,m_status) 
-                               VALUES 
-                               (%s,%s,%s,%s,%s,%s,%s) ""
-        cursor = connection.cursor(prepared=True)
-        insert_tuple=(id,name,text,type,id,now,'unread')
-
-        cursor.execute(mySql_insert_query,insert_tuple)
-        connection.commit()"""
+        
         print("Record inserted successfully into  table")
-        if text =="Hello There, I want to know more about the Whatsapp Business API":
-           # mySql_insert_query = "UPDATE mywork_user_details SET sent_message=1 WHERE phone="+phn[2:]
-            #cursor = connection.cursor(prepared=True)
-            #cursor.execute(mySql_insert_query)
-            #connection.commit()
+        if text =="Hello There, I want to know more about the Whatsapp Business API":           
             User_Details.objects
             user2 = User_Details(phone = phn[2:])
             user2.sent_message = 1
             user2.save()
             print("Changed status for user")
-
-        
-
-
-        #if (connection.is_connected()):
-         #   connection.close()
-          #  print("MySQL connection is closed")
-
-
-
-
-
-      #  response = requests.post(wekbook_url, data=json.dumps(
-       #     data), headers={'Content-Type': 'application/json'})
-
-        #print('Response: ' + str(response.text))
-        #print('Response code: ' + str(response.status_code))
 
 
 
@@ -2633,7 +2601,7 @@ def webhook(request):
         print(e)
 
     return render(request,'step1.html')
-'''
+
 
 def error400(request, exception):
     data = {}
@@ -2643,4 +2611,4 @@ def error400(request, exception):
 def error500(request, exception):
     data = {}
     return render(request, 'error500.html', data)
-'''
+
