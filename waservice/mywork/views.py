@@ -1954,13 +1954,16 @@ def get_chat(request):
                 m_url = 'media/video/'
                 ext = chat.m_url
                 ext = ext.split("/", 1)[1]
-                file1 = 'video_' + str(ts) + "." + ext
+                file1 = 'video_' + str(ts) + "." + "mp4"
                 fh = open(os.path.join(settings.MEDIA_ROOT + '/video/', file1), "wb")
                 fh.write(base64.decodebytes(encoded_data))
                 fh.close()
             elif chat.m_type == 'documents':
                 m_url = 'media/documents/'
-                file1 = chat.m_fileName
+                ext = chat.m_url
+                ext = ext.split("/", 1)[1]
+                # file1 = chat.m_fileName
+                file1 = 'document_' + str(ts) + "." + "pdf"
                 fh = open(os.path.join(settings.MEDIA_ROOT + '/documents/', file1), "wb")
                 fh.write(base64.decodebytes(encoded_data))
                 fh.close()
@@ -2008,7 +2011,7 @@ def get_unread(request):
                 m_url = 'media/image/'
                 ext = chat.m_url
                 ext = ext.split("/", 1)[1]
-                file1 = 'image_' + str(ts) + "." + ext
+                file1 = 'image_' + str(ts) + "." + "jpg"
                 fh = open(os.path.join(settings.MEDIA_ROOT + "/image/", file1), "wb")
                 fh.write(base64.decodebytes(encoded_data))
                 fh.close()
@@ -2508,9 +2511,12 @@ def webhook(request):
             name = str(response["contacts"][0]["profile"]["name"])
             timestamp1=str(response["messages"][0]["timestamp"])
             type = str(response["messages"][0]["type"])
-            m_id = "None"
+            m_id = ""
+            m_url = ""
+            file1 = ""
             # send_msg(id, text)
-            print(id,name,text,type,id,now)
+            print("In Button")
+            print(id,name,text,type,id,now,m_id,m_url,file1)
 
 
         if msg_type == "text" and len(phn) == 12:
@@ -2519,8 +2525,11 @@ def webhook(request):
             name = str(response["contacts"][0]["profile"]["name"])
             timestamp1=str(response["messages"][0]["timestamp"])
             type = str(response["messages"][0]["type"])
-            m_id = "None"
-            print("Type Text Called")
+            m_id = ""
+            m_url = ""
+            file1 = ""
+            print("In text")
+            print(id,name,text,type,id,now,m_id,m_url,file1)
             ## check if password
             ## yes: map user to client and store json_data
             ## no: map user to client and send data to client
@@ -2545,20 +2554,37 @@ def webhook(request):
                 ]
             }
 
-        print("Above Image if")
+
         ## Image message
         if msg_type == "image" and len(phn) == 12:
-            print("inside image if")
+
             id = str(response["contacts"][0]["wa_id"])
             name = str(response["contacts"][0]["profile"]["name"])
             timestamp1=str(response["messages"][0]["timestamp"])
             type = str(response["messages"][0]["type"])
-            text = str(response["messages"][0]["image"]["id"])
+            text = ''
             print(id,name,text,type,id,now)
             m_id = str(response["messages"][0]["image"]["id"])
-            # resp = download_media(id_img)
-            # image = str(resp.content)
-            image = "Ok"
+
+            resp = download_media(m_id)
+            image = resp.content
+            encoded_data = base64.b64encode(image)
+            ts = int(time.time())   
+            m_url = "media/image/"  
+            ext = str(response["messages"][0]["image"]["mime_type"])
+            ext = ext.split("/", 1)[1]            
+
+            # content_type = mimetypes.guess_type(image)
+            # print(content_type)
+            
+            file1 = 'image_' + str(ts) + "." + ext
+            fh = open(os.path.join(settings.MEDIA_ROOT + "\image", file1), "wb")
+            fh.write(base64.decodebytes(encoded_data))
+            fh.close()
+            print("In Image")
+            print(id,name,text,type,id,now,m_id,m_url,file1) 
+
+
             data = {
                 "contacts": [
                     {
@@ -2586,20 +2612,47 @@ def webhook(request):
             name = str(response["contacts"][0]["profile"]["name"])
             timestamp1=str(response["messages"][0]["timestamp"])
             type = str(response["messages"][0]["type"])
-            print(id,name,text,type,id,now)
-            text = str(response["messages"][0]["video"]["id"])
+            text = ''
+                       
             m_id = str(response["messages"][0]["video"]["id"])
-            # resp = download_media(id_video)
-            # video = str(resp.content)
+
+            resp = download_media(m_id)
+            video = resp.content
+            encoded_data = base64.b64encode(video)
+            ts = int(time.time())   
+            m_url = "media/video/"  
+            ext = str(response["messages"][0]["video"]["mime_type"])
+            ext = ext.split("/", 1)[1]
+            file1 = 'video_' + str(ts) + "." + ext
+            fh = open(os.path.join(settings.MEDIA_ROOT + "\\video", file1), "wb")
+            fh.write(base64.decodebytes(encoded_data))
+            fh.close()
+            print("In Video")
+            print(id,name,text,type,id,now,m_id,m_url,file1)
+            
 
         if msg_type == "document" and len(phn) == 12:
             id = str(response["contacts"][0]["wa_id"])
             name = str(response["contacts"][0]["profile"]["name"])
             timestamp1=str(response["messages"][0]["timestamp"])
             type = str(response["messages"][0]["type"])
-            text = str(response["messages"][0]["document"]["id"])
+            text = ''
             print(id,name,text,type,id,now)
             m_id = str(response["messages"][0]["document"]["id"])
+
+            resp = download_media(m_id)
+            doc = resp.content
+            encoded_data = base64.b64encode(doc)
+            ts = int(time.time())   
+            m_url = "media/documents/"  
+            ext = str(response["messages"][0]["document"]["mime_type"])
+            ext = ext.split("/", 1)[1]
+            file1 = 'doc_' + str(ts) + "." + ext
+            fh = open(os.path.join(settings.MEDIA_ROOT + "\documents", file1), "wb")
+            fh.write(base64.decodebytes(encoded_data))
+            fh.close()
+            print("In Document")
+            print(id,name,text,type,id,now,m_id,m_url,file1)
 
         user1 = user_message()
         user1.wa_id = id
@@ -2609,6 +2662,8 @@ def webhook(request):
         user1.m_type = type
         user1.m_from = id
         user1.timestamp1 = now
+        user1.m_url = m_url
+        user1.m_fileName = file1
         user1.m_status = 'unread'
         user1.save()
         
