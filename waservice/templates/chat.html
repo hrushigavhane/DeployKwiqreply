@@ -43,10 +43,10 @@
                          {% elif j.m_type == "document" %}
                               {% if j.m_url == 'media/documents/' %}
                                 <a href="{{j.m_url}}{{j.m_fileName}}" target="_blank">
-                                <img src="static/img/file-empty.png" class="img-fluid" style="height:200px" /></a>
+                                <img src="static/img/file-empty.png" class="img-fluid" style="height:40px" /></a>
                               {% else %}
                                 <a href="{{j.m_url}}" target="_blank">
-                                <img src="static/img/file-empty.png" class="img-fluid" style="height:200px" /></a>
+                                <img src="static/img/file-empty.png" class="img-fluid" style="height:40px" /></a>
                               {% endif %}
                              {{j.message}}
                         {% endif %}

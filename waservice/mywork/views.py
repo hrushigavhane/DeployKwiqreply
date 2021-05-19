@@ -1909,65 +1909,65 @@ def get_chat(request):
     response = ""
     response1 = ""
     wa_number = request.GET.get('wa_number', None)
-    chats = user_message.objects.filter(wa_id=wa_number)
-    for chat in chats:
-        if chat.m_media != '':
-            url = url_main + "/v1/users/login"
-            payload = "{\n\t\"new_password\": \""+pass_for_api+"\"\n}"
-            headers = {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic <base64(username:password)>',
-                'Authorization': 'Basic ' + base_64 +"'"
-            }
-            response = requests.request("POST", url, headers=headers, data=payload, verify=False)
-            rs = response.text
-            print(rs)
-            json_data = json.loads(rs)
-            authkey = json_data["users"][0]["token"]
+    # chats = user_message.objects.filter(wa_id=wa_number)
+    # for chat in chats:
+    #     if chat.m_media != '':
+    #         url = url_main + "/v1/users/login"
+    #         payload = "{\n\t\"new_password\": \""+pass_for_api+"\"\n}"
+    #         headers = {
+    #             'Content-Type': 'application/json',
+    #             'Authorization': 'Basic <base64(username:password)>',
+    #             'Authorization': 'Basic ' + base_64 +"'"
+    #         }
+    #         response = requests.request("POST", url, headers=headers, data=payload, verify=False)
+    #         rs = response.text
+    #         print(rs)
+    #         json_data = json.loads(rs)
+    #         authkey = json_data["users"][0]["token"]
 
-            url = url_main + "/v1/media/" + chat.m_media
+    #         url = url_main + "/v1/media/" + chat.m_media
 
-            headers = {
-                'Content-Type': "application/json",
-                'Authorization': "Bearer " + authkey,
-                'cache-control': "no-cache",
-                'Postman-Token': "c7225772-08c7-43f8-b905-1b18da80d814"
-            }
-            response1 = requests.request("GET", url, headers=headers, verify=False)
-            image = response1.content
-            encoded_data = base64.b64encode(image)
-            ts = int(time.time())
-            file1 = ""
-            m_url = ""
-            ext = ""
+    #         headers = {
+    #             'Content-Type': "application/json",
+    #             'Authorization': "Bearer " + authkey,
+    #             'cache-control': "no-cache",
+    #             'Postman-Token': "c7225772-08c7-43f8-b905-1b18da80d814"
+    #         }
+    #         response1 = requests.request("GET", url, headers=headers, verify=False)
+    #         image = response1.content
+    #         encoded_data = base64.b64encode(image)
+    #         ts = int(time.time())
+    #         file1 = ""
+    #         m_url = ""
+    #         ext = ""
 
-            if chat.m_type == 'image':
-                m_url = "media/image/"
-                ext = chat.m_url
-                ext = ext.split("/", 1)[1]
-                file1 = 'image_' + str(ts) + "." + "jpg"
-                fh = open(os.path.join(settings.MEDIA_ROOT + "/image/", file1), "wb")
-                fh.write(base64.decodebytes(encoded_data))
-                fh.close()
+    #         if chat.m_type == 'image':
+    #             m_url = "media/image/"
+    #             ext = chat.m_url
+    #             ext = ext.split("/", 1)[1]
+    #             file1 = 'image_' + str(ts) + "." + "jpg"
+    #             fh = open(os.path.join(settings.MEDIA_ROOT + "/image/", file1), "wb")
+    #             fh.write(base64.decodebytes(encoded_data))
+    #             fh.close()
 
-            elif chat.m_type == 'video':
-                m_url = 'media/video/'
-                ext = chat.m_url
-                ext = ext.split("/", 1)[1]
-                file1 = 'video_' + str(ts) + "." + "mp4"
-                fh = open(os.path.join(settings.MEDIA_ROOT + '/video/', file1), "wb")
-                fh.write(base64.decodebytes(encoded_data))
-                fh.close()
-            elif chat.m_type == 'documents':
-                m_url = 'media/documents/'
-                ext = chat.m_url
-                ext = ext.split("/", 1)[1]
-                # file1 = chat.m_fileName
-                file1 = 'document_' + str(ts) + "." + "pdf"
-                fh = open(os.path.join(settings.MEDIA_ROOT + '/documents/', file1), "wb")
-                fh.write(base64.decodebytes(encoded_data))
-                fh.close()
-            user_message.objects.filter(id=chat.id).update(m_url=m_url, m_fileName=file1, m_media='')
+    #         elif chat.m_type == 'video':
+    #             m_url = 'media/video/'
+    #             ext = chat.m_url
+    #             ext = ext.split("/", 1)[1]
+    #             file1 = 'video_' + str(ts) + "." + "mp4"
+    #             fh = open(os.path.join(settings.MEDIA_ROOT + '/video/', file1), "wb")
+    #             fh.write(base64.decodebytes(encoded_data))
+    #             fh.close()
+    #         elif chat.m_type == 'documents':
+    #             m_url = 'media/documents/'
+    #             ext = chat.m_url
+    #             ext = ext.split("/", 1)[1]
+    #             file1 = chat.m_fileName
+    #             # file1 = 'document_' + str(ts) + "." + "pdf"
+    #             fh = open(os.path.join(settings.MEDIA_ROOT + '/documents/', file1), "wb")
+    #             fh.write(base64.decodebytes(encoded_data))
+    #             fh.close()
+    #         user_message.objects.filter(id=chat.id).update(m_url=m_url, m_fileName=file1, m_media='')
     chats = user_message.objects.filter(wa_id=wa_number)
     user_message.objects.filter(wa_id=wa_number).update(m_status='read')
     return render(request, 'chat.html', {'obj': chats})
@@ -1976,60 +1976,63 @@ def get_chat(request):
 def get_unread(request):
 
     wa_number = request.GET.get('wa_number', None)
-    chat1 = user_message.objects.raw('select * from mywork_user_message where wa_id=%s and m_status=%s ORDER BY '
-                                     'timestamp1', [wa_number, 'unread'])
-    for chat in chat1:
-        if chat.m_media != '':
-            url = url_main + "/v1/users/login"
-            payload = "{\n\t\"new_password\": \""+pass_for_api+"\"\n}"
-            headers = {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic <base64(username:password)>',
-                'Authorization': 'Basic '+base_64 + "'"
-            }
-            response = requests.request("POST", url, headers=headers, data=payload, verify=False)
-            rs = response.text
-            json_data = json.loads(rs)
-            authkey = json_data["users"][0]["token"]
-            url = url_main + "/v1/media/" + chat.m_media
+    # chat1 = user_message.objects.raw('select * from mywork_user_message where wa_id=%s and m_status=%s ORDER BY '
+    #                                  'timestamp1', [wa_number, 'unread'])
+    # for chat in chat1:
+    #     if chat.m_media != '':
+    #         url = url_main + "/v1/users/login"
+    #         payload = "{\n\t\"new_password\": \""+pass_for_api+"\"\n}"
+    #         headers = {
+    #             'Content-Type': 'application/json',
+    #             'Authorization': 'Basic <base64(username:password)>',
+    #             'Authorization': 'Basic '+base_64 + "'"
+    #         }
+    #         response = requests.request("POST", url, headers=headers, data=payload, verify=False)
+    #         rs = response.text
+    #         json_data = json.loads(rs)
+    #         authkey = json_data["users"][0]["token"]
+    #         url = url_main + "/v1/media/" + chat.m_media
 
-            headers = {
-                'Content-Type': "application/json",
-                'Authorization': "Bearer " + authkey,
-                'cache-control': "no-cache",
-                'Postman-Token': "c7225772-08c7-43f8-b905-1b18da80d814"
-            }
-            response1 = requests.request("GET", url, headers=headers, verify=False)
-            image = response1.content
-            encoded_data = base64.b64encode(image)
-            ts = int(time.time())
-            file1 = ""
-            m_url = ""
-            ext = ""
+    #         headers = {
+    #             'Content-Type': "application/json",
+    #             'Authorization': "Bearer " + authkey,
+    #             'cache-control': "no-cache",
+    #             'Postman-Token': "c7225772-08c7-43f8-b905-1b18da80d814"
+    #         }
+    #         response1 = requests.request("GET", url, headers=headers, verify=False)
+    #         image = response1.content
+    #         encoded_data = base64.b64encode(image)
+    #         ts = int(time.time())
+    #         file1 = ""
+    #         m_url = ""
+    #         ext = ""
 
-            if chat.m_type == 'image':
-                m_url = 'media/image/'
-                ext = chat.m_url
-                ext = ext.split("/", 1)[1]
-                file1 = 'image_' + str(ts) + "." + "jpg"
-                fh = open(os.path.join(settings.MEDIA_ROOT + "/image/", file1), "wb")
-                fh.write(base64.decodebytes(encoded_data))
-                fh.close()
-            elif chat.m_type == 'video':
-                m_url = 'media/video/'
-                ext = chat.m_url
-                ext = ext.split("/", 1)[1]
-                file1 = 'video_' + str(ts) + "." + ext
-                fh = open(os.path.join(settings.MEDIA_ROOT + '/video/', file1), "wb")
-                fh.write(base64.decodebytes(encoded_data))
-                fh.close()
-            elif chat.m_type == 'document':
-                file1 = chat.m_fileName
-                m_url = 'media/documents/'
-                fh = open(os.path.join(settings.MEDIA_ROOT + '/documents/', file1), "wb")
-                fh.write(base64.decodebytes(encoded_data))
-                fh.close()
-            user_message.objects.filter(id=chat.id).update(m_url=m_url, m_fileName=file1, m_media='')
+    #         if chat.m_type == 'image':
+    #             m_url = 'media/image/'
+    #             ext = chat.m_url
+    #             ext = ext.split("/", 1)[1]
+    #             file1 = 'image_' + str(ts) + "." + "jpg"
+    #             fh = open(os.path.join(settings.MEDIA_ROOT + "/image/", file1), "wb")
+    #             fh.write(base64.decodebytes(encoded_data))
+    #             fh.close()
+    #         elif chat.m_type == 'video':
+    #             m_url = 'media/video/'
+    #             ext = chat.m_url
+    #             ext = ext.split("/", 1)[1]
+    #             file1 = 'video_' + str(ts) + "." + "mp4"
+    #             fh = open(os.path.join(settings.MEDIA_ROOT + '/video/', file1), "wb")
+    #             fh.write(base64.decodebytes(encoded_data))
+    #             fh.close()
+    #         elif chat.m_type == 'document':
+                
+    #             m_url = 'media/documents/'
+    #             ext = chat.m_url
+    #             ext = ext.split("/", 1)[1]
+    #             file1 = chat.m_fileName
+    #             fh = open(os.path.join(settings.MEDIA_ROOT + '/documents/', file1), "wb")
+    #             fh.write(base64.decodebytes(encoded_data))
+    #             fh.close()
+    #         user_message.objects.filter(id=chat.id).update(m_url=m_url, m_fileName=file1, m_media='')
 
     chat1 = user_message.objects.raw(
                 'select * from mywork_user_message where wa_id=%s and m_status=%s ORDER BY '
@@ -2063,9 +2066,12 @@ def search(request):
 
 
 def send_file(request):
+    print("Request below")
+    print(request.FILES)
     if request.method == 'POST':
         if "browseFile" in request.FILES:
             uploaded_file = request.FILES['browseFile']
+
         else:
             uploaded_file = ""
         caption = request.POST.get('caption', "")
@@ -2172,8 +2178,8 @@ def send_file(request):
             print(response.text)
             encoded_data = base64.b64encode(bi_data)
             ts = calendar.timegm(time.gmtime())
-            rt = response.text
-            json_data = json.loads(rt)
+            # rt = response.text
+            # json_data = json.loads(rt)
             file1 = request.FILES['browseFile'].name
             file1 = str(ts) + "_" + file1
             fh = open(os.path.join(settings.MEDIA_ROOT + "/image/", file1), "wb")
