@@ -2584,7 +2584,7 @@ def webhook(request):
             # print(content_type)
             
             file1 = 'image_' + str(ts) + "." + ext
-            fh = open(os.path.join(settings.MEDIA_ROOT + "\image", file1), "wb")
+            fh = open(os.path.join(settings.MEDIA_ROOT + "/image", file1), "wb")
             fh.write(base64.decodebytes(encoded_data))
             fh.close()
             print("In Image")
@@ -2630,7 +2630,7 @@ def webhook(request):
             ext = str(response["messages"][0]["video"]["mime_type"])
             ext = ext.split("/", 1)[1]
             file1 = 'video_' + str(ts) + "." + ext
-            fh = open(os.path.join(settings.MEDIA_ROOT + "\\video", file1), "wb")
+            fh = open(os.path.join(settings.MEDIA_ROOT + "/video", file1), "wb")
             fh.write(base64.decodebytes(encoded_data))
             fh.close()
             print("In Video")
@@ -2654,7 +2654,7 @@ def webhook(request):
             ext = str(response["messages"][0]["document"]["mime_type"])
             ext = ext.split("/", 1)[1]
             file1 = 'doc_' + str(ts) + "." + ext
-            fh = open(os.path.join(settings.MEDIA_ROOT + "\documents", file1), "wb")
+            fh = open(os.path.join(settings.MEDIA_ROOT + "/documents", file1), "wb")
             fh.write(base64.decodebytes(encoded_data))
             fh.close()
             print("In Document")
