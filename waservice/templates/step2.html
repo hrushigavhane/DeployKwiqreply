@@ -331,7 +331,7 @@
                           <div class="input-group mb-3">
                             <select name="select_template" class="custom-select" onchange="displayTemp($(this).val())" required>
                               <option disabled="" selected="" hidden="" value="none">Select</option>
-                              <option value="quick_reply" >Quick Reply</option>
+                              <option value="quick_reply" >Text Template</option>
                             </select>
                           </div>
 
@@ -420,10 +420,10 @@
                    <!-- second row closed -->
 
                   {% comment %} <div style="height:200px; padding-top:10px;  "> {% endcomment %}
-                    <p style="padding-left:20px; padding-right:20px; display:none;">
-                        Welcome to <b id="insert_param1"><i>Variable 1 Here</i></b> <br><br>
-Thanks for showing interest in <b id="insert_param2"><i>Variable 2 Here</i>.</b> <br><br>
-Please answer the following questions to get started : <br><b id="insert_param3"><i>Variable 3 Here</i></b> <br> </p>
+                    <p style="padding-left:20px; padding-right:20px; display:block;">
+                        Hi <b id="insert_param1"><i>Variable 1 Here</i></b> <br><br>
+Your course payment has failed.<br><br>For any course and payment related doubt <b id="insert_param2"><i>Variable 2 Here</i>.</b> <br><br>
+To complete payment click here 👉 <br><b id="insert_param3"><i>Variable 3 Here</i></b> <br> </p>
 
                   {% comment %} </div> <!-- col-12 closed --> {% endcomment %}
                 </div>
