@@ -2635,6 +2635,33 @@ def webhook(request):
             fh.close()
             print("In Video")
             print(id,name,text,type,id,now,m_id,m_url,file1)
+
+
+        if msg_type == "voice" or msg_type == "audio" and len(phn) == 12:
+            id = str(response["contacts"][0]["wa_id"])
+            name = str(response["contacts"][0]["profile"]["name"])
+            timestamp1=str(response["messages"][0]["timestamp"])
+            type = str(response["messages"][0]["type"])
+            text = ''
+                       
+            m_id = str(response["messages"][0]["voice"]["id"])
+
+            resp = download_media(m_id)
+            media = resp.content
+            encoded_data = base64.b64encode(media)
+            ts = int(time.time())   
+            m_url = "media/voice/"  
+            ext = str(response["messages"][0]["voice"]["mime_type"])
+            ext = ext.split("/", 1)[1]
+            ext = ext[0:3]
+            file1 = 'video_' + str(ts) + "." + ext
+            fh = open(os.path.join(settings.MEDIA_ROOT + "/voice", file1), "wb")
+            fh.write(base64.decodebytes(encoded_data))
+            fh.close()
+            print("In Voice")
+            print(id,name,text,type,id,now,m_id,m_url,file1)
+
+
             
 
         if msg_type == "document" and len(phn) == 12:

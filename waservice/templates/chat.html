@@ -49,6 +49,17 @@
                                 <img src="static/img/file-empty.png" class="img-fluid" style="height:40px" /></a>
                               {% endif %}
                              {{j.message}}
+                          {% elif j.m_type == "audio" or j.m_type == "voice" %}
+                              {% if j.m_url == 'media/voice/' %}                             
+                                
+                                <audio controls>  <source src="{{j.m_url}}{{j.m_fileName}}" type="audio/ogg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                              {% else %}
+                                <a href="{{j.m_url}}" target="_blank">
+                                <img src="static/img/audio-favicon.webp" class="img-fluid" style="height:40px" /></a>
+                              {% endif %}
+                             {{j.message}}   
                         {% endif %}
                     </div>
                     <!-- /.direct-chat-text -->
