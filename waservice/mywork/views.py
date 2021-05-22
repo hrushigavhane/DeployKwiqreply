@@ -700,10 +700,10 @@ def senders(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
@@ -711,7 +711,7 @@ def senders(request):
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'senders.html', {'obj': businessprofile_obj, 'obj1': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 
 def senderno(request):
@@ -1859,19 +1859,46 @@ def notification_api(request):
         else:
             return render(request, 'index.html')
 
+def clean_body(msg):    
+    new = []
+    su = ""
+
+    for i in msg:
+        if i == '\"':
+            i = i.replace(i,'\\"')
+        elif i == '\\':
+            i = i.replace(i, '\\\\')
+        elif i == '\n':
+            i = i.replace(i, '\\\\n')
+
+        else:
+            pass
+        new += i
+
+    for x in new:
+        su += x
+
+    return su
+
 
 def send_message(request):
     
-    body = request.GET.get('message', None)
-    to = request.GET.get('to', None)
+    msg = str(request.GET.get('message', None))
+    to = str(request.GET.get('to', None))
     name = request.GET.get('name', None)
+
+    body = clean_body(msg)
 
     print("to : " + to + " name : " + name + " body : "+ body)
 
     authkey= update_authkey()
     print(authkey)
-
+    
     url = url_main + "/v1/messages"
+    # print("to = {}this si braces {}one   ".format(to,body))
+    # payload = f'{"to": "{}","type": "text","recipient_type": "individual","text": { "body": "{}" }  \}'
+    # print("Payload Below")
+    # print(payload)
     payload = "{\n  \"to\": \"" + str(to) + "\",\n  \"type\": \"text\",\n  \"recipient_type\": \"individual\",\n  \"text\": {\n    \"body\": \"" + str(body) + "\"\n  }\n}\n"
     headers = {
         'Content-Type': "application/json",
@@ -1882,7 +1909,7 @@ def send_message(request):
         # resp = requests.request("POST", url.rstrip(), data=payload, headers=headers, verify=False)
         message1=user_message()
         message1.wa_id=to
-        message1.message=body
+        message1.message=msg
         message1.name=name
         message1.m_type='text'
         message1.m_from='website'

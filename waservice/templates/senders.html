@@ -296,8 +296,16 @@
                       <p>{{ i.business_disp_name }}</p>
                     </td>
                     <td>
-                      <p><i class="fa fa-times" aria-hidden="true" style="color:red"></i> {{ i.status }}</p>
+                    {% if i.status %}
+                      <p><i aria-hidden="true" style="color:green"></i>&#10004;</p>
+                    {% else%}                      
+                      <p><i class="fa fa-times" aria-hidden="true" style="color:red"></i> </p>
+                    {% endif%}  
+                      
                     </td>
+                    
+                   
+                    
                     <td>
                       <p><a href='configureno.html'>Configure</a></p>
                     </td>
