@@ -15,6 +15,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.files.storage import FileSystemStorage
 from django.core.mail import send_mail
 from django.db import connection
+from django.db.models.expressions import Subquery
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
@@ -495,7 +496,7 @@ def resend_link(request):
                     message = render_to_string('acc_active_email.html', {
                     'user1': user1,
                     'domain': current_site.domain,
-                    'uid':urlsafe_base64_encode(force_bytes(user1.pk)).decode(),
+                    'uid':urlsafe_base64_encode(force_bytes(user1.pk)),
                     'token':account_activation_token.make_token(user1),
                     })
 
@@ -546,7 +547,7 @@ def forgot_password(request):
                 message = render_to_string('password_reset_email.html', {
                 'user1': user1,
                 'domain': current_site.domain,
-                'uid':urlsafe_base64_encode(force_bytes(user1.pk)).decode(),
+                'uid':urlsafe_base64_encode(force_bytes(user1.pk)),
                 'token':account_activation_token.make_token(user1),
                 })
 
@@ -2064,11 +2065,11 @@ def get_unread(request):
     #             fh.close()
     #         user_message.objects.filter(id=chat.id).update(m_url=m_url, m_fileName=file1, m_media='')
 
-    # chat1 = user_message.objects.raw(
-    #             'select * from mywork_user_message where wa_id=%s and m_status=%s ORDER BY '
-    #             'timestamp1', [wa_number, 'unread'])
+    chat1 = user_message.objects.raw(
+                'select * from mywork_user_message where wa_id=%s and m_status=%s ORDER BY '
+                'timestamp1', [wa_number, 'unread'])
     
-    chat1 = user_message.objects.filter(wa_id = wa_number,m_status = 'unread')
+    # chat1 = user_message.objects.filter(wa_id = wa_number,m_status = 'unread' )
     
 
     return render(request, 'chat.html', {'obj': chat1})
@@ -2085,8 +2086,9 @@ def get_count(request):
                                                 'mywork_user_message where m_status=%s AND wa_id=number) as '
                                                 'no_of_messages  from mywork_user_message GROUP BY wa_id order by '
                                                 'timestamp1 DESC', ['unread'])
+    
 
-    # message_requests = user_message.objects.all(m_status = 'unread')
+    # message_requests = user_message.objects.values('id','name',number = 'wa_id',co=Subquery(user_message.objects.filter(m_status = 'unread').count())).filter(m_status = 'unread').order_by('-timestamp1')
     # print(message_requests.query)
     return render(request, 'get_count.html', {'obj2': message_requests})
 
@@ -2534,6 +2536,7 @@ def webhook(request):
     now = datetime.datetime.now()
     cnt=0
     response = json.loads(request.body)    
+
     print(response)
 
     try:
@@ -2672,23 +2675,37 @@ def webhook(request):
             print(id,name,text,type,id,now,m_id,m_url,file1)
 
 
-        if msg_type == "voice" or msg_type == "audio" and len(phn) == 12:
+        if (msg_type == "voice" or msg_type == "audio" and len(phn) == 12):
+            print("in audio voice")
             id = str(response["contacts"][0]["wa_id"])
             name = str(response["contacts"][0]["profile"]["name"])
             timestamp1=str(response["messages"][0]["timestamp"])
             type = str(response["messages"][0]["type"])
             text = ''
                        
-            m_id = str(response["messages"][0]["voice"]["id"])
-
+            m_id = ""
+            
+            ts = int(time.time())   
+            m_url = "media/voice/"  
+            if msg_type == "voice":
+                m_id = str(response["messages"][0]["voice"]["id"])
+                ext = response["messages"][0]["voice"]["mime_type"]
+                print(m_id)
+                
+            if msg_type == "audio":
+                m_id = str(response["messages"][0]["audio"]["id"])
+                ext = response["messages"][0]["audio"]["mime_type"]
+                print(m_id)
+                
             resp = download_media(m_id)
             media = resp.content
             encoded_data = base64.b64encode(media)
-            ts = int(time.time())   
-            m_url = "media/voice/"  
-            ext = str(response["messages"][0]["voice"]["mime_type"])
-            ext = ext.split("/", 1)[1]
-            ext = ext[0:3]
+
+            print(ext)
+            print("done")
+            ext = ext.split("/")[1]
+            print(ext)
+            # ext = ext[0:3]
             file1 = 'video_' + str(ts) + "." + ext
             fh = open(os.path.join(settings.MEDIA_ROOT + "/voice", file1), "wb")
             fh.write(base64.decodebytes(encoded_data))
@@ -2696,6 +2713,9 @@ def webhook(request):
             print("In Voice")
             print(id,name,text,type,id,now,m_id,m_url,file1)
 
+        
+
+        
 
             
 
@@ -2714,7 +2734,7 @@ def webhook(request):
             ts = int(time.time())   
             m_url = "media/documents/"  
             ext = str(response["messages"][0]["document"]["mime_type"])
-            ext = ext.split("/", 1)[1]
+            ext = ext.split("/", 2)[1]
             file1 = 'doc_' + str(ts) + "." + ext
             fh = open(os.path.join(settings.MEDIA_ROOT + "/documents", file1), "wb")
             fh.write(base64.decodebytes(encoded_data))
@@ -2727,7 +2747,7 @@ def webhook(request):
         user1.name = name
         user1.m_media = m_id
         user1.message = text
-        user1.m_type = type
+        user1.m_type = msg_type
         user1.m_from = id
         user1.timestamp1 = now
         user1.m_url = m_url
@@ -2747,6 +2767,7 @@ def webhook(request):
 
     except Exception as e:
         print(e)
+        print("Exception Printed")
 
     return render(request,'step1.html')
 

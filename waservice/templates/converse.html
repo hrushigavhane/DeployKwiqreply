@@ -294,20 +294,21 @@
                     </div>-->
                   </div>
               <div class="card-body"  style="height:520px ">
-                <div class="direct-chat-messages" id="chat-box" style="min-height: 100%; height:auto; overflow:scroll;overflow:auto; background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');">
+                <div class="direct-chat-messages" id="chat-box" style=" min-height: 100%; height:auto; overflow:auto; display: flex; flex-direction: column-reverse; background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');">
+                
                 </div>
               </div>
-              <div class="card-footer" style="background-color:white;display:none">
+              <div class="card-footer" style="background-color:white;display:none;">
                 <form >
                   {% csrf_token %}
                   <div class="input-group">
-                    <span class="input-group-prepend col-sm-12" >
-                        <button type="button" class="btn btn-default" title="Add Image/Video/File" data-toggle="modal" data-target="#richMix" ><i class="fa fa-paperclip" alt="aria-hidden="true"></i></button></input>
-                        <!--<button type="button" class="btn btn-default" title="Add Contact" data-toggle="modal" data-target="#richContact" ><i class="fa fa-address-book" alt="aria-hidden="true"></i></button></input>
-                        <button type="button" class="btn btn-default" title="Add Location" data-toggle="modal" data-target="#richLoc" ><i class="fa fa-map-marker" alt="aria-hidden="true"></i></button></input>
-                        <button type="button" class="btn btn-default" title="Add Audio" data-toggle="modal" data-target="#richAudio" ><i class="fa fa-music" alt="aria-hidden="true"></i></button></input>-->
+                    <span class="input-group-prepend col-sm-12" style="float:left; margin-left:-30px; max-width:20px;" >
+                        <button type="button" class="btn btn-default" title="Add Image/Video/File" data-toggle="modal" data-target="#richMix" ><i class="fa fa-paperclip" alt="aria-hidden=" true ></i></button></input>
+                        <!--<button type="button" class="btn btn-default" title="Add Contact" data-toggle="modal" data-target="#richContact" ><i class="fa fa-address-book" alt="aria-hidden="true"></i></button></input>-->
+                        {% comment %} <button type="button" class="btn btn-default" title="Add Location" data-toggle="modal" data-target="#richLoc" ><i class="fa fa-map-marker" alt="aria-hidden="true"></i></button></input>
+                        <button type="button" class="btn btn-default" title="Add Audio" data-toggle="modal" data-target="#richAudio" ><i class="fa fa-music" alt="aria-hidden="true"></i></button></input> {% endcomment %}
                     </span>
-                    <textarea name="message" id="message" placeholder="Type Message ..." class="form-control" rows="1"></textarea>
+                    <textarea name="message" id="message" placeholder="Type Message ..." class="form-control" rows="1" style="float:left; margin-left:20px;"></textarea>
                     <span class="input-group-append">
                       <button  type="button" class="btn btn-primary" onclick="send_message()"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                     </span>
@@ -359,7 +360,7 @@
 
                       </div>
                     <div class="modal-footer">
-                      <button type="submit" class="mgb"  id="addMessage" disabled>Add</button>
+                      <button type="submit" class="mgb"  id="addMessage" disabled>Send File</button>
                       <button type="button" class="mgb" data-dismiss="modal" style="background-color:red;">Close</button>
                     </div>
                   </form>
