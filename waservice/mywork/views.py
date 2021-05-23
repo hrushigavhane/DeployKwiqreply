@@ -1868,8 +1868,8 @@ def clean_body(msg):
             i = i.replace(i,'\\"')
         elif i == '\\':
             i = i.replace(i, '\\\\')
-        elif i == '\n':
-            i = i.replace(i, '\\\\n')
+        # elif i == '\n':
+        #     i = i.replace(i, '\\\\n')
 
         else:
             pass
@@ -1886,6 +1886,8 @@ def send_message(request):
     msg = str(request.GET.get('message', None))
     to = str(request.GET.get('to', None))
     name = request.GET.get('name', None)
+    print(msg)
+    # body = "i"
 
     body = clean_body(msg)
 
@@ -1896,10 +1898,11 @@ def send_message(request):
     
     url = url_main + "/v1/messages"
     # print("to = {}this si braces {}one   ".format(to,body))
-    # payload = f'{"to": "{}","type": "text","recipient_type": "individual","text": { "body": "{}" }  \}'
+    # payload = '''{"to": "{}","type": "text","recipient_type": "individual","text": { "body": "{}" }  \}'''.format(to,msg)
     # print("Payload Below")
     # print(payload)
     payload = "{\n  \"to\": \"" + str(to) + "\",\n  \"type\": \"text\",\n  \"recipient_type\": \"individual\",\n  \"text\": {\n    \"body\": \"" + str(body) + "\"\n  }\n}\n"
+    print(payload)
     headers = {
         'Content-Type': "application/json",
         'Authorization': "Bearer " + authkey,
@@ -2061,9 +2064,12 @@ def get_unread(request):
     #             fh.close()
     #         user_message.objects.filter(id=chat.id).update(m_url=m_url, m_fileName=file1, m_media='')
 
-    chat1 = user_message.objects.raw(
-                'select * from mywork_user_message where wa_id=%s and m_status=%s ORDER BY '
-                'timestamp1', [wa_number, 'unread'])
+    # chat1 = user_message.objects.raw(
+    #             'select * from mywork_user_message where wa_id=%s and m_status=%s ORDER BY '
+    #             'timestamp1', [wa_number, 'unread'])
+    
+    chat1 = user_message.objects.filter(wa_id = wa_number,m_status = 'unread')
+    
 
     return render(request, 'chat.html', {'obj': chat1})
 
@@ -2079,6 +2085,8 @@ def get_count(request):
                                                 'mywork_user_message where m_status=%s AND wa_id=number) as '
                                                 'no_of_messages  from mywork_user_message GROUP BY wa_id order by '
                                                 'timestamp1 DESC', ['unread'])
+
+    # message_requests = user_message.objects.all(m_status = 'unread')
     # print(message_requests.query)
     return render(request, 'get_count.html', {'obj2': message_requests})
 

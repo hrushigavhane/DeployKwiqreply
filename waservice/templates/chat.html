@@ -1,4 +1,5 @@
  {% load static %}
+ 
 
                   {% for j in obj %}
                     {% if j.wa_id == j.m_from %}
@@ -20,7 +21,7 @@
                     <!-- /.direct-chat-infos -->
 
                     <!-- /.direct-chat-img -->
-                    <div class="direct-chat-text">
+                    <div class="direct-chat-text" style="width:50%;">
                         {% if j.m_type == "image" %}
                             {% if j.m_url == 'media/image/' %}
                             <img src="{{j.m_url}}{{j.m_fileName}}" class="img-fluid" width="200" onclick="$('#media_view_{{j.id}}').modal('show'); $('#media_view_{{j.id}}').appendTo('body');" />

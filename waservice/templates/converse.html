@@ -275,7 +275,8 @@
                   <i class="fa fa-chevron-circle-down" aria-hidden="true" style="color:black; padding-left:10px;"></i></button> {% endcomment %}
 
                     <div class="content whatsapp_number" style="display:block;  max-height:500px; overflow:scroll; overflow:auto;">
-                      {% include "get_count.html" %}
+                      {% include "get_count.html" %}                      
+
                     </div>
                   </div>
                 </div>
@@ -292,8 +293,8 @@
                       <button type="button" class="btn btn-tool"><i class="fa fa-info-circle" aria-hidden="true"></i></button>
                     </div>-->
                   </div>
-              <div class="card-body"  style="height:520px">
-                <div class="direct-chat-messages" id="chat-box" style="height:auto; overflow:scroll;overflow:auto;">
+              <div class="card-body"  style="height:520px ">
+                <div class="direct-chat-messages" id="chat-box" style="min-height: 100%; height:auto; overflow:scroll;overflow:auto; background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');">
                 </div>
               </div>
               <div class="card-footer" style="background-color:white;display:none">
@@ -385,7 +386,16 @@
   </div>
   <!-- ./wrapper -->
 
+  
   <script>
+  $(document).ready(function () {
+      
+      get_unread();
+      get_count();  
+      
+    });
+
+
   var coll = document.getElementsByClassName("collapsible");
   var i;
 
@@ -400,19 +410,16 @@
       }
     });
   }
-  </script>
 
-  <script>
-    /*$(document).ready(function () {
-      bsCustomFileInput.init();
-    });*/
-  </script>
-  <script>
+
+
   var timer=false;
     function send_message(){
       var message = $("#message").val();
       var to = $("#wa_number1").html();
       var name=$("#wa_name1").html()
+
+      console.log(to,message,name)
 
       $.ajax({
         url: '/ajax/send_message/',
@@ -485,13 +492,16 @@
       });
 
     }
+   
 
 $(function(){
       get_cnt=setInterval('get_count()', 5000);
    });
-function get_count(){
+
+    function get_count(){
   $(".whatsapp_number").load("/ajax/get_count/");
 }
+
 
 function loadFile(){
 
