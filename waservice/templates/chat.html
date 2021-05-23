@@ -33,7 +33,7 @@
                             {% endif %}
                             {{j.message}}                             
                         {% elif j.m_type == "text" %}
-                            {{j.message}} <div style="float:right; font-size:9.5px; margin-top:20px;position: absolute; bottom: 0; right: 0;">{{j.timestamp1}}</div>
+                            {{j.message}} <div style="float:right; font-size:9.5px; margin-top:20px;position: absolute; bottom: 0; right: 0; color:grey;">{{j.timestamp1}}</div>
                         {% elif j.m_type == "video" %}
                             <video  height="200" controls>
                                 {% if j.m_url == 'media/video/' %}
