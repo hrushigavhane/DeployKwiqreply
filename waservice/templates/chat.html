@@ -8,7 +8,7 @@
                       <div class="direct-chat-msg">
                           <div class="direct-chat-infos clearfix">
                       <span class="direct-chat-name float-left">{{ j.name }}</span>
-                      {% comment %} <span class="direct-chat-timestamp float-left" style="padding-left:15px;">{{j.timestamp1}}</span> {% endcomment %}
+                       <span class="direct-chat-timestamp float-left" style="padding-left:15px; font-size:10px; ">{{j.timestamp1}}</span> 
                     </div>
                           <img class="direct-chat-img" src="static/img/default_user_icon.png" >
                     {% else %}
@@ -16,7 +16,7 @@
                          <div class="direct-chat-msg right">
                              <div class="direct-chat-infos clearfix">
                       <span class="direct-chat-name float-right">{{k.comp_name}}</span>
-                      {% comment %} <span class="direct-chat-timestamp float-right" style="padding-right:30px;">{{j.timestamp1}}</span> {% endcomment %}
+                      <span class="direct-chat-timestamp float-right" style="padding-right:30px;font-size:10px; " >{{j.timestamp1}}</span>
                     </div>
                     {% comment %} <img class="direct-chat-img" src="static/img/default_user_icon.png" > {% endcomment %}
                     
@@ -31,41 +31,42 @@
                     <!-- /.direct-chat-infos -->
 
                     <!-- /.direct-chat-img -->
-                    <div class="direct-chat-text" style="width:50%;">
+                    <div class="direct-chat-text" style="width:auto;">
                         {% if j.m_type == "image" %}
                             {% if j.m_url == 'media/image/' %}
                             <img src="{{j.m_url}}{{j.m_fileName}}" class="img-fluid" width="200" onclick="$('#media_view_{{j.id}}').modal('show'); $('#media_view_{{j.id}}').appendTo('body');" /><br>{{j.caption}}
-                             <span style="float:right; font-size:9.5px; position: absolute; bottom: 0; right: 0; width: 100px; color:grey;">{{j.timestamp1}}</span>
+                             {% comment %} <span style="float:right; font-size:9.5px; position: absolute; bottom: 0; right: 0; width: 100px; color:grey;">{{j.timestamp1}}</span> {% endcomment %}
                             {% else %}
                             <img src="{{j.m_url}}" class="img-fluid" width="200" onclick="$('#media_view_{{j.id}}').modal('show'); $('#media_view_{{j.id}}').appendTo('body');" /><br>{{j.caption}}
-                             <span style="float:right; font-size:10px; position: absolute; bottom: 0; right: 0; width: 100px; color:grey;">{{j.timestamp1}}</span>
+                             {% comment %} <span style="float:right; font-size:10px; position: absolute; bottom: 0; right: 0; width: 100px; color:grey;">{{j.timestamp1}}</span> {% endcomment %}
                             {% endif %}
                             {{j.message}}                             
                         {% elif j.m_type == "text" %}
-                            {{j.message}} <div style="float:right; font-size:9.5px; margin-top:20px;position: absolute; bottom: 0; right: 0; color:grey;">{{j.timestamp1}}</div>
+                            {{j.message}} 
+                            {% comment %} <div style="float:right; font-size:9.5px; margin-top:20px;position: absolute; bottom: 0; right: 0; color:grey;">{{j.timestamp1}}</div> {% endcomment %}
                         {% elif j.m_type == "video" %}
                             
                                 {% if j.m_url == 'media/video/' %}
                                 <video  height="200" controls>
                                     <source src="{{j.m_url}}{{j.m_fileName}}" type="video/mp4">
                                     </video><br><span>{{j.caption}}</span>
-                                     <span style="float:right; font-size:10px; position: absolute; bottom: 0; right: 0; width: 100px; color:grey;">{{j.timestamp1}}</span>
+                                     {% comment %} <span style="float:right; font-size:10px; position: absolute; bottom: 0; right: 0; width: 100px; color:grey;">{{j.timestamp1}}</span> {% endcomment %}
                                 {% else %}
                                     <source src="{{j.m_url}}" type="video/mp4">{{j.caption}}
-                                     <span style="float:right; font-size:10px; position: absolute; bottom: 0; right: 0; width: 100px;color:grey;">{{j.timestamp1}}</span>
+                                     {% comment %} <span style="float:right; font-size:10px; position: absolute; bottom: 0; right: 0; width: 100px;color:grey;">{{j.timestamp1}}</span> {% endcomment %}
                                 {% endif %}                              
-                               <span style="float:right; font-size:10px; position: absolute; bottom: 0; right: 0; width: 100px;color:grey;">{{j.timestamp1}}</span>
+                               {% comment %} <span style="float:right; font-size:10px; position: absolute; bottom: 0; right: 0; width: 100px;color:grey;">{{j.timestamp1}}</span> {% endcomment %}
                             
                             {{j.message}}
                          {% elif j.m_type == "document" %}
                               {% if j.m_url == 'media/documents/' %}
                                 <a href="{{j.m_url}}{{j.m_fileName}}" target="_blank">
                                 <img src="static/img/file-empty.png" class="img-fluid" style="height:40px" /></a><br>{{j.caption}}
-                                 <span style="float:right; font-size:9.5px; position: absolute; bottom: 0; right: 0; width: 100px;color:grey;">{{j.timestamp1}}</span>
+                                 {% comment %} <span style="float:right; font-size:9.5px; position: absolute; bottom: 0; right: 0; width: 100px;color:grey;">{{j.timestamp1}}</span> {% endcomment %}
                               {% else %}
                                 <a href="{{j.m_url}}" target="_blank">
                                 <img src="static/img/file-empty.png" class="img-fluid" style="height:40px" /></a><br>{{j.caption}}
-                                 <span style="float:right; font-size:10px; position: absolute; bottom: 0; right: 0; width: 100px;color:grey;">{{j.timestamp1}}</span>
+                                 {% comment %} <span style="float:right; font-size:10px; position: absolute; bottom: 0; right: 0; width: 100px;color:grey;">{{j.timestamp1}}</span> {% endcomment %}
                               {% endif %}
                              {{j.message}}
                               
@@ -74,15 +75,15 @@
                                 
                                 <audio controls>  <source src="{{j.m_url}}{{j.m_fileName}}" type="audio/ogg">
                                     Your browser does not support the audio element.
-                                     <span style="float:right; font-size:9.5px; position: absolute; bottom: 0; right: 0; width: 100px;color:grey;">{{j.timestamp1}}</span>
+                                     {% comment %} <span style="float:right; font-size:9.5px; position: absolute; bottom: 0; right: 0; width: 100px;color:grey;">{{j.timestamp1}}</span> {% endcomment %}
                                 </audio>{{j.caption}}
                               {% else %}
                                 <a href="{{j.m_url}}" target="_blank">
                                 <img src="static/img/audio-favicon.webp" class="img-fluid" style="height:40px" /></a>{{j.caption}}
-                                 <span style="float:right; font-size:10px; position: absolute; bottom: 0; right: 0; width: 100px;color:grey;">{{j.timestamp1}}</span>
+                                 {% comment %} <span style="float:right; font-size:10px; position: absolute; bottom: 0; right: 0; width: 100px;color:grey;">{{j.timestamp1}}</span> {% endcomment %}
                               {% endif %}
                              {{j.message}}   
-                              <span style="float:right; font-size:10px; position: absolute; bottom: 0; right: 0; width: 100px;color:grey;">{{j.timestamp1}}</span>
+                              {% comment %} <span style="float:right; font-size:10px; position: absolute; bottom: 0; right: 0; width: 100px;color:grey;">{{j.timestamp1}}</span> {% endcomment %}
                         {% endif %}
                     </div>
                     <!-- /.direct-chat-text -->
