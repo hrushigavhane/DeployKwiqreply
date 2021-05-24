@@ -289,8 +289,8 @@
                     {% for i in obj %}
                   <tr>
                     <td>
-                      {% comment %} <p><a href="{% url 'senderno'%}?business_number={{ i.business_number }}">{{ i.business_number }}</a></p> {% endcomment %}
-                       <p><a href="#">{{ i.business_number }}</a></p>
+                      <p><a href="{% url 'senderno'%}?business_number={{ i.business_number }}">{{ i.business_number }}</a></p>
+                       {% comment %} <p><a href="#">{{ i.business_number }}</a></p> {% endcomment %}
                     </td>
                     <td>
                       <p>{{ i.business_disp_name }}</p>

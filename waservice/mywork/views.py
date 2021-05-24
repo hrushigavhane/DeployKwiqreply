@@ -1186,7 +1186,7 @@ def profile(request):
             for sql_query_id in sql_query_all:
                 print(sql_query_id[0])
 
-            if uploaded_file.content_type == 'image/jpeg':
+            if uploaded_file.content_type == 'image/jpeg' or uploaded_file.content_type == 'image/png' :
                 with connection.cursor() as cursor:
                     if sql_query_id[0] != "default_avatar.png":
                         os.remove(os.path.join(settings.MEDIA_ROOT, sql_query_id[0]))
@@ -1197,7 +1197,7 @@ def profile(request):
                     cursor.execute('update mywork_user_details set user_img=%s where id=%s', [file_name,user_id])
 
             else:
-                return render(request, 'profile.html', {'img_content':'Please upload a png image.', 'obj':user_obj})
+                return render(request, 'profile.html', {'img_content':'Please upload a JPEG/PNG image type.', 'obj':user_obj})
 
         except:
             pass
@@ -1887,7 +1887,7 @@ def send_message(request):
     msg = str(request.GET.get('message', None))
     to = str(request.GET.get('to', None))
     name = request.GET.get('name', None)
-    print(msg)
+    # print(msg)
     # body = "i"
 
     body = clean_body(msg)
@@ -1895,7 +1895,7 @@ def send_message(request):
     print("to : " + to + " name : " + name + " body : "+ body)
 
     authkey= update_authkey()
-    print(authkey)
+    # print(authkey)
     
     url = url_main + "/v1/messages"
     # print("to = {}this si braces {}one   ".format(to,body))
@@ -1909,28 +1909,40 @@ def send_message(request):
         'Authorization': "Bearer " + authkey,
     }
 
-    if body!="":
-        # resp = requests.request("POST", url.rstrip(), data=payload, headers=headers, verify=False)
-        message1=user_message()
-        message1.wa_id=to
-        message1.message=msg
-        message1.name=name
-        message1.m_type='text'
-        message1.m_from='website'
-        # message1.timestamp1=datetime.datetime.now()
-        message1.timestamp1=timezone.now()
-        print(timezone.now())
-        message1.m_status='unread'
-        message1.save()
+    
         # return HttpResponse(resp)
 
     try:
-        resp = requests.request("POST", url.rstrip(), data=payload, headers=headers, verify=False)
-        rs = resp.text
+        resp = requests.request("POST", url, data=payload, headers=headers, verify=False)
+        
+        rs = json.loads(resp.text)      
+        print(rs)
+        msg_id = rs["messages"][0]["id"]     
+        
+        
+        if body!="":
+            # resp = requests.request("POST", url.rstrip(), data=payload, headers=headers, verify=False)
+            message1=user_message()
+            message1.wa_id=to
+            message1.message=msg
+            message1.name=name
+            message1.m_type='text'
+            message1.m_from='website'
+            # message1.timestamp1=datetime.datetime.now()
+            message1.timestamp1=timezone.now()
+            print(timezone.now())
+            message1.m_status='unread'
+            message1.unique_msg_id = msg_id
+            message1.save()
+            print("record Inserted in db")
+
+
+        
         return JsonResponse({'status':'success'})
 
     except Exception as e:
         print(e)
+        print("Exception printd")
         return JsonResponse({'status':'Error'})
     # return HttpResponse(resp)
 
@@ -1940,6 +1952,7 @@ def get_chat(request):
     response = ""
     response1 = ""
     wa_number = request.GET.get('wa_number', None)
+    id = request.session.get('id')
     # chats = user_message.objects.filter(wa_id=wa_number)
     # for chat in chats:
     #     if chat.m_media != '':
@@ -2001,7 +2014,13 @@ def get_chat(request):
     #         user_message.objects.filter(id=chat.id).update(m_url=m_url, m_fileName=file1, m_media='')
     chats = user_message.objects.filter(wa_id=wa_number)
     user_message.objects.filter(wa_id=wa_number).update(m_status='read')
-    return render(request, 'chat.html', {'obj': chats})
+
+    # print(id)
+    # print("ID PRINTEC ABOVW")
+
+    user_detail = User_Details.objects.filter(id = id)
+    
+    return render(request, 'chat.html', {'obj': chats,'user_detail_model' : user_detail})
 
 
 def get_unread(request):
@@ -2069,9 +2088,8 @@ def get_unread(request):
                 'select * from mywork_user_message where wa_id=%s and m_status=%s ORDER BY '
                 'timestamp1', [wa_number, 'unread'])
     
-    # chat1 = user_message.objects.filter(wa_id = wa_number,m_status = 'unread' )
+    # chat1 = user_message.objects.filter(wa_id = wa_number,m_status = 'unread' )  
     
-
     return render(request, 'chat.html', {'obj': chat1})
 
 
@@ -2162,6 +2180,10 @@ def send_file(request):
             }
             response = requests.request("POST", url, data=payload1, headers=headers, verify=False)
             print(response.text)
+            rs = json.loads(response.text)                  
+            msg_id = rs["messages"][0]["id"]   
+
+
             message1 = user_message()
             message1.wa_id = to
             message1.message = caption
@@ -2172,6 +2194,7 @@ def send_file(request):
             message1.m_status = 'unread'
             message1.m_fileName = filename
             message1.m_url = link
+            message1.unique_msg_id = msg_id
             message1.save()
             return JsonResponse({"message": "success"})
 
@@ -2213,6 +2236,8 @@ def send_file(request):
             }
             response = requests.request("POST", url, data=payload1, headers=headers, verify=False)
             print(response.text)
+            rs = json.loads(response.text)                  
+            msg_id = rs["messages"][0]["id"]  
             encoded_data = base64.b64encode(bi_data)
             ts = calendar.timegm(time.gmtime())
             # rt = response.text
@@ -2232,6 +2257,7 @@ def send_file(request):
             message1.m_status = 'unread'
             message1.m_fileName = file1
             message1.m_url = "media/image/"
+            message1.unique_msg_id = msg_id
             message1.save()
             return JsonResponse({"message": "success"})
 
@@ -2272,6 +2298,8 @@ def send_file(request):
             }
             response = requests.request("POST", url, data=payload1, headers=headers, verify=False)
             print(response.text)
+            rs = json.loads(response.text)                  
+            msg_id = rs["messages"][0]["id"]   
             encoded_data = base64.b64encode(bi_data)
             ts = calendar.timegm(time.gmtime())
             rt = response.text
@@ -2291,6 +2319,7 @@ def send_file(request):
             message1.m_status = 'unread'
             message1.m_fileName = file1
             message1.m_url = "media/video/"
+            message1.unique_msg_id = msg_id
             message1.save()
             return JsonResponse({"message": "success"})
 
@@ -2331,6 +2360,8 @@ def send_file(request):
             }
             response = requests.request("POST", url, data=payload1, headers=headers, verify=False)
             print(response.text)
+            rs = json.loads(response.text)                  
+            msg_id = rs["messages"][0]["id"]   
             encoded_data = base64.b64encode(bi_data)
             ts = calendar.timegm(time.gmtime())
             rt = response.text
@@ -2350,6 +2381,7 @@ def send_file(request):
             message1.m_status = 'unread'
             message1.m_fileName = file1
             message1.m_url = "media/documents/"
+            message1.unique_msg_id = msg_id
             message1.save()
             return JsonResponse({"message": "success"})
 
@@ -2459,7 +2491,7 @@ def check_timediff(request):
             print(time)
             break
 
-        now = datetime.now()
+        now = datetime.datetime.now()
         timediff = now - time
         # print(now, timediff)
 
@@ -2547,6 +2579,8 @@ def webhook(request):
         id=""
         name=""
         timestamp1=""
+        caption = ""
+        unique_msg_id = str(response["messages"][0]["id"])
         print(msg_type)
         ## Text message
         if (msg_type == "button"):
@@ -2555,9 +2589,11 @@ def webhook(request):
             name = str(response["contacts"][0]["profile"]["name"])
             timestamp1=str(response["messages"][0]["timestamp"])
             type = str(response["messages"][0]["type"])
+            
             m_id = ""
             m_url = ""
             file1 = ""
+            caption = ""
             # send_msg(id, text)
             print("In Button")
             print(id,name,text,type,id,now,m_id,m_url,file1)
@@ -2572,6 +2608,7 @@ def webhook(request):
             m_id = ""
             m_url = ""
             file1 = ""
+            caption = ""
             print("In text")
             print(id,name,text,type,id,now,m_id,m_url,file1)
             ## check if password
@@ -2616,7 +2653,15 @@ def webhook(request):
             ts = int(time.time())   
             m_url = "media/image/"  
             ext = str(response["messages"][0]["image"]["mime_type"])
-            ext = ext.split("/", 1)[1]            
+            ext = ext.split("/", 1)[1]
+            
+            # if "caption" in response["messages"][0]["image"]["caption"]:           
+            #     caption = str(response["messages"][0]["image"]["caption"])
+            #     print(response["messages"][0]["image"]["caption"])
+
+            if "caption" in response["messages"][0]["image"]:           
+                caption = str(response["messages"][0]["image"]["caption"])
+                print(response["messages"][0]["image"]["caption"])
 
             # content_type = mimetypes.guess_type(image)
             # print(content_type)
@@ -2659,6 +2704,8 @@ def webhook(request):
             text = ''
                        
             m_id = str(response["messages"][0]["video"]["id"])
+            if "caption" in response["messages"][0]["video"]:
+                caption = str(response["messages"][0]["video"]["caption"])
 
             resp = download_media(m_id)
             video = resp.content
@@ -2690,11 +2737,15 @@ def webhook(request):
             if msg_type == "voice":
                 m_id = str(response["messages"][0]["voice"]["id"])
                 ext = response["messages"][0]["voice"]["mime_type"]
+                # if response["messages"][0]["audio"]["caption"]:
+                #     caption = str(response["messages"][0]["voice"]["caption"])
                 print(m_id)
                 
             if msg_type == "audio":
                 m_id = str(response["messages"][0]["audio"]["id"])
                 ext = response["messages"][0]["audio"]["mime_type"]
+                # if response["messages"][0]["audio"]["caption"]:
+                #     caption = str(response["messages"][0]["audio"]["caption"])
                 print(m_id)
                 
             resp = download_media(m_id)
@@ -2729,6 +2780,9 @@ def webhook(request):
             m_id = str(response["messages"][0]["document"]["id"])
 
             resp = download_media(m_id)
+            
+            if "caption" in response["messages"][0]["document"]:
+                caption = str(response["messages"][0]["document"]["caption"])
             doc = resp.content
             encoded_data = base64.b64encode(doc)
             ts = int(time.time())   
@@ -2752,7 +2806,9 @@ def webhook(request):
         user1.timestamp1 = now
         user1.m_url = m_url
         user1.m_fileName = file1
+        user1.caption = caption
         user1.m_status = 'unread'
+        user1.unique_msg_id = unique_msg_id
         user1.save()
         
         print("Record inserted successfully into  table")

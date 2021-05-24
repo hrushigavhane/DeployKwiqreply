@@ -164,4 +164,4 @@ EMAIL_HOST_PASSWORD = 'Noreply@1972!'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
-AUTH_PROFILE_MODULE = 'mywork.User_Details'
+AUTH_PROFILE_MODULE = 'mywork.user_details'
