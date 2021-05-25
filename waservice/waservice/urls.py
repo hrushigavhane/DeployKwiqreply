@@ -31,6 +31,7 @@ urlpatterns = [
      # url('channels_settings', views.channels_settings, name='channels_settings'),
      url('businessprofile', views.businessprofile, name='businessprofile'),
      url('configureno', views.configureno, name='configureno'),
+     url('password_reset_confirm', views.password_reset_confirm, name='password_reset_confirm'),
      url('profile', views.profile, name='profile'),
      url('support', views.support, name='support'),
      url('submit_ticket', views.submit_ticket, name='submit_ticket'),

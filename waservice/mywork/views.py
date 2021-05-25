@@ -318,7 +318,7 @@ def register(request):
         print(request.POST.get('first_name'))
         user1 = User_Details()
         user2 = Sandbox_Names()
-
+        register_flag = True
         user1.first_name = request.POST.get('first_name')
         user1.last_name = request.POST.get('last_name')
         phone = request.POST.get('phone')
@@ -338,17 +338,21 @@ def register(request):
             return render(request,'login.html')
 
         if len_phone != 10:
-            return render(request, 'register.html', {'phone_error':'Please type 10 digit number', 'error':'Mobile Number Error'})
+            register_flag = False
+            return render(request, 'register.html', {'phone_error':'Enter a Valid Number', 'error':'Mobile Number Error'})
 
         for i in new_user:
             if user1.username in i.username:
-               return render(request, 'register.html', {'email_error':'Type a new email', 'error': 'Email already exists'})
+                register_flag = False
+                return render(request, 'register.html', {'email_error':'Type a new email', 'error': 'Email already exists'})
 
         if len_pass < 8:
+            register_flag = False
             #messages.info(request, 'Password does not meet the requirement')
             return render(request, 'register.html', {'pass_error':'Password too short', 'error':'Password Error'})
 
         elif password != c_password:
+            register_flag = False
             #messages.info(request, 'Password does not match')
             return render(request, 'register.html', {'c_pass_error':'Password does not match', 'error':'Password Error'})
 
@@ -365,39 +369,40 @@ def register(request):
         except:
             return HttpResponse("Server Unavailable")
 
-        user2.username = user1.username
-        user2.code = code
-        user2.save()
+        if register_flag:
 
-        user1.save()
-        user1.is_active = False;
+            user2.username = user1.username
+            user2.code = code
+            user2.save()
+            user1.save()
+            user1.is_active = False;
 
-        #s_user=User_Details.objects.raw('select * from mywork_user_details ')
+            #s_user=User_Details.objects.raw('select * from mywork_user_details ')
 
-        current_site = get_current_site(request)
-        mail_subject = 'Activate your account.'
-        print("hello1")
-        message = render_to_string('acc_active_email.html', {
-        'user1': user1,
-        'domain': current_site.domain,
-        'uid':urlsafe_base64_encode(force_bytes(user1.pk)),
-        # 'uid': force_bytes(user1.pk),
-        'token':account_activation_token.make_token(user1),
-        })
-        print("hello2")
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your account.'
+            print("hello1")
+            message = render_to_string('acc_active_email.html', {
+            'user1': user1,
+            'domain': current_site.domain,
+            'uid':urlsafe_base64_encode(force_bytes(user1.pk)),
+            # 'uid': force_bytes(user1.pk),
+            'token':account_activation_token.make_token(user1),
+            })
+            print("hello2")
 
-        to_email =  request.POST.get('username')
-        print(to_email)
-        send_mail(
-        mail_subject,
-        message,
-        email_of_off,
-        [to_email],
-        fail_silently=False)
-        #email = EmailMessage(mail_subject, message, to=[to_email])
-        #email.send()
-        messages.info(request, 'Please confirm your email address to complete the registration')
-        return redirect('login_verify')
+            to_email =  request.POST.get('username')
+            print(to_email)
+            send_mail(
+            mail_subject,
+            message,
+            email_of_off,
+            [to_email],
+            fail_silently=False)
+            #email = EmailMessage(mail_subject, message, to=[to_email])
+            #email.send()
+            messages.info(request, 'Please confirm your email address to complete the registration')
+            return redirect('login_verify')
 
     else:
         return render(request, 'register.html')
@@ -545,7 +550,7 @@ def forgot_password(request):
                 current_site = get_current_site(request)
                 mail_subject = 'Activate your account.'
                 message = render_to_string('password_reset_email.html', {
-                'user1': user1,
+                'user1': i.username,
                 'domain': current_site.domain,
                 'uid':urlsafe_base64_encode(force_bytes(user1.pk)),
                 'token':account_activation_token.make_token(user1),
@@ -577,7 +582,26 @@ def recover_password(request, uidb64, token):
         return render(request, 'login_success.html', {'successful':'Thanking you for confirming your email.'})
 
     else:
-        return render(request, 'login_success.html', {'successful':'Activation link is invalid.'})
+        return render(request, 'recover_password.html')
+
+def password_reset_confirm(request):
+    try:
+        new_password = request.POST.get('password')
+        confirm_password = request.POST.get('c_password')
+        print(new_password, confirm_password)
+        if new_password != confirm_password:
+            return render(request, 'recover_password', {'error':'Passwords do not match'})
+        else:
+            user1 = User_Details()
+            email = request.GET.get('email')
+
+
+            print(email)
+
+            return render(request, 'password_verify')
+
+    except:
+        return redirect('password_verify')
 
 def password_verify(request):
     return render(request, 'password_verify.html')
@@ -1889,10 +1913,10 @@ def send_message(request):
     name = request.GET.get('name', None)
     # print(msg)
     # body = "i"
+    print(msg)
+    body = str(clean_body(msg).encode('UTF_8'))
 
-    body = clean_body(msg)
-
-    print("to : " + to + " name : " + name + " body : "+ body)
+    print("to : " + to + " name : " + name + " body : "+ body[2:-1])
 
     authkey= update_authkey()
     # print(authkey)
@@ -1902,8 +1926,8 @@ def send_message(request):
     # payload = '''{"to": "{}","type": "text","recipient_type": "individual","text": { "body": "{}" }  \}'''.format(to,msg)
     # print("Payload Below")
     # print(payload)
-    payload = "{\n  \"to\": \"" + str(to) + "\",\n  \"type\": \"text\",\n  \"recipient_type\": \"individual\",\n  \"text\": {\n    \"body\": \"" + str(body) + "\"\n  }\n}\n"
-    print(payload)
+    payload = "{\n  \"to\": \"" + str(to) + "\",\n  \"type\": \"text\",\n  \"recipient_type\": \"individual\",\n  \"text\": {\n    \"body\": \"" + str(body[2:-1]) + "\"\n  }\n}\n"
+    # print(type(payload.encode('UTF-8')))
     headers = {
         'Content-Type': "application/json",
         'Authorization': "Bearer " + authkey,
@@ -1917,14 +1941,14 @@ def send_message(request):
         
         rs = json.loads(resp.text)      
         print(rs)
-        msg_id = rs["messages"][0]["id"]     
-        
+        msg_id = rs["messages"][0]["id"]
         
         if body!="":
             # resp = requests.request("POST", url.rstrip(), data=payload, headers=headers, verify=False)
             message1=user_message()
             message1.wa_id=to
-            message1.message=msg
+            body = body.replace('\\n','<br>')
+            message1.message=body[2:-1]
             message1.name=name
             message1.m_type='text'
             message1.m_from='website'
