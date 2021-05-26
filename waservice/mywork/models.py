@@ -111,6 +111,7 @@ class user_message(models.Model):
     timestamp1 = models.DateTimeField()
     caption = models.TextField(blank=True)
     unique_msg_id = models.CharField(max_length=35,blank=False,default="")
+    unique_msg_status = models.CharField(max_length=10,blank=True,default='sent')
 
     class Meta:
         verbose_name_plural = "User Mesages"

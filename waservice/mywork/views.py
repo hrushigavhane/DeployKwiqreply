@@ -1212,8 +1212,8 @@ def profile(request):
 
             if uploaded_file.content_type == 'image/jpeg' or uploaded_file.content_type == 'image/png' :
                 with connection.cursor() as cursor:
-                    if sql_query_id[0] != "default_avatar.png":
-                        os.remove(os.path.join(settings.MEDIA_ROOT, sql_query_id[0]))
+                    # if sql_query_id[0] != "default_avatar.png":
+                    #     os.remove(os.path.join(settings.MEDIA_ROOT, sql_query_id[0]))
                     file_name = uuid.uuid4().hex
                     file_storage = FileSystemStorage()
                     file_storage.save(file_name, uploaded_file)
@@ -2587,15 +2587,27 @@ def webhook(request):
     #         rs = response.text
     #     except Exception as e:
     #         print(e)
-    
-  
+    print(request.method)
+    print("Auth Printed Below")
+    print(request.GET.get('auth',None))
     now = datetime.datetime.now()
     cnt=0
     response = json.loads(request.body)    
 
     print(response)
+    print(response["statuses"][0]["status"])
 
     try:
+        if "id" in response["statuses"][0]:            
+            
+            unique_msg_id = response["statuses"][0]["id"]
+            status = response["statuses"][0]["status"]        
+            
+            with connection.cursor() as cursor:
+                sql_query = cursor.execute('update mywork_user_message set unique_msg_status=%s where unique_msg_id=%s',[status, unique_msg_id])
+
+            
+            print("staus updated Successfully")
 
         phn = str(response["messages"][0]["from"])
         msg_type = response["messages"][0]["type"]
@@ -2820,6 +2832,9 @@ def webhook(request):
             print("In Document")
             print(id,name,text,type,id,now,m_id,m_url,file1)
 
+
+        
+
         user1 = user_message()
         user1.wa_id = id
         user1.name = name
@@ -2833,6 +2848,7 @@ def webhook(request):
         user1.caption = caption
         user1.m_status = 'unread'
         user1.unique_msg_id = unique_msg_id
+        user1.unique_msg_status = 'read'
         user1.save()
         
         print("Record inserted successfully into  table")
