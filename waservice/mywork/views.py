@@ -546,14 +546,16 @@ def forgot_password(request):
                 messages.info(request, 'User not found')
                 return redirect('forgot_password')
             else:
+                uid = urlsafe_base64_encode(force_bytes(user1.pk))
+                token = account_activation_token.make_token(user1)
                 user1.save()
                 current_site = get_current_site(request)
                 mail_subject = 'Activate your account.'
                 message = render_to_string('password_reset_email.html', {
                 'user1': i.username,
                 'domain': current_site.domain,
-                'uid':urlsafe_base64_encode(force_bytes(user1.pk)),
-                'token':account_activation_token.make_token(user1),
+                'uid': uid,
+                'token': token,
                 })
 
                 to_email = request.POST.get('username')
@@ -566,6 +568,9 @@ def forgot_password(request):
                 fail_silently=False)
                 #email = EmailMessage(mail_subject, message, to=[to_email])
                 #email.send()
+                i.reset_token = token
+                i.save()
+                print(token)
                 return redirect('password_verify')
 
     else:
@@ -574,11 +579,14 @@ def forgot_password(request):
 
 def recover_password(request, uidb64, token):
     try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
-        print(uid)
+        print(type(token))
+        user = User_Details(reset_token=token)
+        print(user.username)
+        
+        # user = User_Details.objects.filter(token=)
 
-    except:
-        pass
+    except Exception as e:
+        print(e)
         return render(request, 'login_success.html', {'successful':'Thanking you for confirming your email.'})
 
     else:
@@ -586,19 +594,36 @@ def recover_password(request, uidb64, token):
 
 def password_reset_confirm(request):
     try:
-        new_password = request.POST.get('password')
+        up_password = request.POST.get('password')
         confirm_password = request.POST.get('c_password')
         print(new_password, confirm_password)
-        if new_password != confirm_password:
-            return render(request, 'recover_password', {'error':'Passwords do not match'})
-        else:
-            user1 = User_Details()
-            email = request.GET.get('email')
+        if curr_pass is not None:
 
+                if check_password(curr_pass, update_user.password):
 
-            print(email)
+                    if curr_pass != up_password:
 
-            return render(request, 'password_verify')
+                        if up_password == confrim_password:
+
+                            if len_pass >= 8:
+
+                                if up_password == confrim_password:
+                                    up_password = make_password(up_password)
+                                    with connection.cursor() as cursor:
+                                        sql_query = cursor.execute('update mywork_user_details set password=%s where id=%s',[up_password, user_id])
+                                    return render(request, 'recover_password.html', {'success_update':'Password has been successfully changed.', 'obj':user_obj})
+
+                            else:
+                                return render(request, 'recover_password.html', {'min_error':'Password should be minimum 8 characters.', 'obj':user_obj})
+
+                        else:
+                            return render(request, 'recover_password.html', {'diff_pass':'Please make sure the entered passwords match.', 'obj':user_obj})
+
+                    else:
+                        return render(request, 'recover_password.html', {'old_new_error':'Old password matches the new password.', 'obj':user_obj})
+
+                else:
+                    return render(request, 'recover_password.html', {'curr_error':'Current password entered is incorrect.', 'obj':user_obj})
 
     except:
         return redirect('password_verify')
@@ -1212,8 +1237,6 @@ def profile(request):
 
             if uploaded_file.content_type == 'image/jpeg' or uploaded_file.content_type == 'image/png' :
                 with connection.cursor() as cursor:
-                    # if sql_query_id[0] != "default_avatar.png":
-                    #     os.remove(os.path.join(settings.MEDIA_ROOT, sql_query_id[0]))
                     file_name = uuid.uuid4().hex
                     file_storage = FileSystemStorage()
                     file_storage.save(file_name, uploaded_file)
@@ -1924,8 +1947,6 @@ def send_message(request):
     url = url_main + "/v1/messages"
     # print("to = {}this si braces {}one   ".format(to,body))
     # payload = '''{"to": "{}","type": "text","recipient_type": "individual","text": { "body": "{}" }  \}'''.format(to,msg)
-    # print("Payload Below")
-    # print(payload)
     payload = "{\n  \"to\": \"" + str(to) + "\",\n  \"type\": \"text\",\n  \"recipient_type\": \"individual\",\n  \"text\": {\n    \"body\": \"" + str(body[2:-1]) + "\"\n  }\n}\n"
     # print(type(payload.encode('UTF-8')))
     headers = {
@@ -2587,27 +2608,15 @@ def webhook(request):
     #         rs = response.text
     #     except Exception as e:
     #         print(e)
-    print(request.method)
-    print("Auth Printed Below")
-    print(request.GET.get('auth',None))
+    
+  
     now = datetime.datetime.now()
     cnt=0
     response = json.loads(request.body)    
 
     print(response)
-    print(response["statuses"][0]["status"])
 
     try:
-        if "id" in response["statuses"][0]:            
-            
-            unique_msg_id = response["statuses"][0]["id"]
-            status = response["statuses"][0]["status"]        
-            
-            with connection.cursor() as cursor:
-                sql_query = cursor.execute('update mywork_user_message set unique_msg_status=%s where unique_msg_id=%s',[status, unique_msg_id])
-
-            
-            print("staus updated Successfully")
 
         phn = str(response["messages"][0]["from"])
         msg_type = response["messages"][0]["type"]
@@ -2832,9 +2841,6 @@ def webhook(request):
             print("In Document")
             print(id,name,text,type,id,now,m_id,m_url,file1)
 
-
-        
-
         user1 = user_message()
         user1.wa_id = id
         user1.name = name
@@ -2848,7 +2854,6 @@ def webhook(request):
         user1.caption = caption
         user1.m_status = 'unread'
         user1.unique_msg_id = unique_msg_id
-        user1.unique_msg_status = 'read'
         user1.save()
         
         print("Record inserted successfully into  table")

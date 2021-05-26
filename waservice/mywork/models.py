@@ -14,6 +14,7 @@ class User_Details(models.Model):
     is_active = models.BooleanField(default=False)
     user_img = models.ImageField(upload_to='pics')
     sent_message = models.BooleanField(default=False)
+    reset_token = models.CharField(max_length=200, blank=True)
 
     # logged_in = models.BooleanField(default=False)
 
