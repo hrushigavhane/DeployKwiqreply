@@ -546,8 +546,8 @@ def forgot_password(request):
                 messages.info(request, 'User not found')
                 return redirect('forgot_password')
             else:
-                uid = urlsafe_base64_encode(force_bytes(user1.pk))
-                token = account_activation_token.make_token(user1)
+                uid = urlsafe_base64_encode(force_bytes((i.username).pk))
+                token = account_activation_token.make_token(i.username)
                 user1.save()
                 current_site = get_current_site(request)
                 mail_subject = 'Activate your account.'
@@ -1931,6 +1931,9 @@ def clean_body(msg):
 
 def send_message(request):
     
+    
+    # active_user = Business_Profile(user_id = id, status = 1)
+
     msg = str(request.GET.get('message', None))
     to = str(request.GET.get('to', None))
     name = request.GET.get('name', None)
@@ -1941,7 +1944,7 @@ def send_message(request):
 
     print("to : " + to + " name : " + name + " body : "+ body[2:-1])
 
-    authkey= update_authkey()
+    authkey= update_authkey(request)
     # print(authkey)
     
     url = url_main + "/v1/messages"
@@ -2458,13 +2461,25 @@ def check_message(request):
     return JsonResponse({"status": status})
 
 
-def update_authkey():
-    url=url_main + "/v1/users/login"
-    payload = "{\n\t\"new_password\": \""+pass_for_api+"\"\n}"
+def update_authkey(request):
+
+    id = request.session.get('id')
+    print("IN UPDATE AUTH KEY")
+    print(id)
+    active_user = Business_Profile(user_id = id)
+
+    print(active_user.ip_address)
+
+    # url = url_main + "/v1/users/login"
+    url = active_user.ip_address + "/v1/users/login"
+
+
+    # payload = "{\n\t\"new_password\": \""+pass_for_api+"\"\n}"
+    payload = "{\n\t\"new_password\": \""+ active_user.wa_pass  +"\"\n}"
     headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + base_64 +"'"
-            }
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + active_user.wa_user_pass_base +"'"
+                }
     response = requests.request("POST", url, headers=headers, data = payload,verify=False)
     rs=response.text
     json_data=json.loads(rs)
@@ -2573,7 +2588,7 @@ def error500(request):
 def webhook(request):    
 
     def download_media(id):
-        authkey = update_authkey()
+        authkey = update_authkey(request)
         url =  url_main + "/v1/media/" + id
 
         headers = {
@@ -2610,14 +2625,22 @@ def webhook(request):
     #         print(e)
     
   
-    now = datetime.datetime.now()
-    cnt=0
+    
+    
     response = json.loads(request.body)    
 
     print(response)
 
-    try:
+    kwiq_token = ""
 
+    if request.GET.get('token'):
+        print("Setting Token into variable")
+        print(request.GET.get('token'))
+        kwiq_token = request.GET.get('token')
+
+    
+    try:
+        now = datetime.datetime.now()
         phn = str(response["messages"][0]["from"])
         msg_type = response["messages"][0]["type"]
         timestamp = int(response["messages"][0]["timestamp"])
@@ -2854,6 +2877,7 @@ def webhook(request):
         user1.caption = caption
         user1.m_status = 'unread'
         user1.unique_msg_id = unique_msg_id
+        user1.user_message_token = kwiq_token
         user1.save()
         
         print("Record inserted successfully into  table")

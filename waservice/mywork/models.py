@@ -16,6 +16,7 @@ class User_Details(models.Model):
     sent_message = models.BooleanField(default=False)
     reset_token = models.CharField(max_length=200, blank=True)
 
+
     # logged_in = models.BooleanField(default=False)
 
     class Meta:
@@ -45,6 +46,14 @@ class Business_Profile(models.Model):
     website = models.CharField(max_length=200, blank=False, default="website")
     user = models.ForeignKey('User_Details', on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
+
+
+    ip_address = models.CharField(max_length=100, blank=True)
+    wa_username = models.CharField(max_length=20, blank=True)
+    wa_pass = models.CharField(max_length=50, blank=True)
+    wa_user_pass_base = models.CharField(max_length=50, blank=True)
+    kwiqreply_token = models.CharField(max_length=500, blank=True)
+
 
     class Meta:
         verbose_name_plural = "Business Profile Form Submission Data"
@@ -113,6 +122,7 @@ class user_message(models.Model):
     caption = models.TextField(blank=True)
     unique_msg_id = models.CharField(max_length=35,blank=False,default="")
     unique_msg_status = models.CharField(max_length=10,blank=True,default='sent')
+    user_message_token = models.CharField(max_length=500, blank=True)
 
     class Meta:
         verbose_name_plural = "User Mesages"
