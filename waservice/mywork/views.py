@@ -1931,7 +1931,7 @@ def clean_body(msg):
 
 def send_message(request):
     
-    
+    id = request.session['id']
     # active_user = Business_Profile(user_id = id, status = 1)
     id = request.session.get('id')
     msg = str(request.GET.get('message', None))
@@ -1943,6 +1943,11 @@ def send_message(request):
     body = str(clean_body(msg).encode('UTF_8'))
 
     print("to : " + to + " name : " + name + " body : "+ body[2:-1])
+
+    active_user = Business_Profile.objects.get(user_id = id,status = 1)
+    print(active_user)
+    token = active_user.kwiqreply_token
+    print(token)
 
     authkey= update_authkey(id)
     # print(authkey)
@@ -1981,6 +1986,7 @@ def send_message(request):
             print(timezone.now())
             message1.m_status='unread'
             message1.unique_msg_id = msg_id
+            message1.user_message_token = token
             message1.save()
             print("record Inserted in db")
 
@@ -2001,6 +2007,9 @@ def get_chat(request):
     response1 = ""
     wa_number = request.GET.get('wa_number', None)
     id = request.session.get('id')
+    active_user = Business_Profile.objects.get(user_id = id, status = 1)
+    token = active_user.kwiqreply_token
+    
     # chats = user_message.objects.filter(wa_id=wa_number)
     # for chat in chats:
     #     if chat.m_media != '':
@@ -2060,8 +2069,8 @@ def get_chat(request):
     #             fh.write(base64.decodebytes(encoded_data))
     #             fh.close()
     #         user_message.objects.filter(id=chat.id).update(m_url=m_url, m_fileName=file1, m_media='')
-    chats = user_message.objects.filter(wa_id=wa_number)
-    user_message.objects.filter(wa_id=wa_number).update(m_status='read')
+    chats = user_message.objects.filter(user_message_token = token,wa_id = wa_number)
+    user_message.objects.filter(user_message_token = token,wa_id = wa_number).update(m_status='read')
 
     # print(id)
     # print("ID PRINTEC ABOVW")
@@ -2074,6 +2083,11 @@ def get_chat(request):
 def get_unread(request):
 
     wa_number = request.GET.get('wa_number', None)
+
+    id = request.session.get('id')
+    active_user = Business_Profile.objects.get(user_id = id, status = 1)
+    token = active_user.kwiqreply_token
+    
     # chat1 = user_message.objects.raw('select * from mywork_user_message where wa_id=%s and m_status=%s ORDER BY '
     #                                  'timestamp1', [wa_number, 'unread'])
     # for chat in chat1:
@@ -2133,8 +2147,8 @@ def get_unread(request):
     #         user_message.objects.filter(id=chat.id).update(m_url=m_url, m_fileName=file1, m_media='')
 
     chat1 = user_message.objects.raw(
-                'select * from mywork_user_message where wa_id=%s and m_status=%s ORDER BY '
-                'timestamp1', [wa_number, 'unread'])
+                'select * from mywork_user_message where wa_id=%s and m_status=%s and user_message_token=%s ORDER BY '
+                'timestamp1', [wa_number, 'unread',token])
     
     # chat1 = user_message.objects.filter(wa_id = wa_number,m_status = 'unread' )  
     
@@ -2143,15 +2157,25 @@ def get_unread(request):
 
 def update_status(request):
     wa_number = request.GET.get('wa_number', None)
-    ac = user_message.objects.filter(wa_id=wa_number).filter(m_status="unread").update(m_status="read")
+
+    id = request.session.get('id')
+    active_user = Business_Profile.objects.get(user_id = id, status = 1)
+    token = active_user.kwiqreply_token
+    ac = user_message.objects.filter(wa_id=wa_number,m_status="unread",user_message_token=token).update(m_status="read")
     return HttpResponse(status=200)
 
 
 def get_count(request):
+    id = request.session.get('id')
+    active_user = Business_Profile.objects.get(user_id = id, status = 1)
+    token = active_user.kwiqreply_token
+    print("in get_count")
+    print(id)
+    print(token)
     message_requests = user_message.objects.raw('SELECT id,name,wa_id as number,(SELECT COUNT(*)  FROM '
-                                                'mywork_user_message where m_status=%s AND wa_id=number) as '
+                                                'mywork_user_message where m_status=%s AND wa_id=number AND user_message_token=%s) as '
                                                 'no_of_messages  from mywork_user_message GROUP BY wa_id order by '
-                                                'timestamp1 DESC', ['unread'])
+                                                'timestamp1 DESC', ['unread',token])
     
 
     # message_requests = user_message.objects.values('id','name',number = 'wa_id',co=Subquery(user_message.objects.filter(m_status = 'unread').count())).filter(m_status = 'unread').order_by('-timestamp1')
@@ -2465,9 +2489,11 @@ def update_authkey(id):
 
     print("IN UPDATE AUTH KEY")
     print(id)
-    active_user = Business_Profile.objects.get(user_id = id)
+    active_user = Business_Profile.objects.get(user_id = id,status = 1)
 
-    print(active_user)
+    print(active_user.ip_address)
+    print(active_user.wa_pass)
+    print(active_user.wa_user_pass_base)
 
     # url = url_main + "/v1/users/login"
     url = active_user.ip_address + "/v1/users/login"
@@ -2639,6 +2665,26 @@ def webhook(request):
 
     
     try:
+
+        try:
+            ##Status Update Read Receipt
+            if "id" in response["statuses"][0]:            
+                
+                unique_msg_id = response["statuses"][0]["id"]
+                print(unique_msg_id)
+                status = response["statuses"][0]["status"]        
+                print(status)
+                
+                with connection.cursor() as cursor:
+                    sql_query = cursor.execute('update mywork_user_message set unique_msg_status=%s where unique_msg_id=%s',[status, unique_msg_id])
+
+                
+                print("staus updated Successfully")
+        except Exception as e:
+            print(e)
+            print("Not a Status Type request")
+
+
         now = datetime.datetime.now()
         phn = str(response["messages"][0]["from"])
         msg_type = response["messages"][0]["type"]
@@ -2649,6 +2695,10 @@ def webhook(request):
         caption = ""
         unique_msg_id = str(response["messages"][0]["id"])
         print(msg_type)
+
+       
+
+
         ## Text message
         if (msg_type == "button"):
             text = response["messages"][0]["button"]["text"]
@@ -2877,6 +2927,7 @@ def webhook(request):
         user1.m_status = 'unread'
         user1.unique_msg_id = unique_msg_id
         user1.user_message_token = kwiq_token
+        user1.unique_msg_status = 'read'
         user1.save()
         
         print("Record inserted successfully into  table")
