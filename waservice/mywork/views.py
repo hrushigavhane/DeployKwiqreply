@@ -1933,7 +1933,7 @@ def send_message(request):
     
     
     # active_user = Business_Profile(user_id = id, status = 1)
-
+    id = request.session.get('id')
     msg = str(request.GET.get('message', None))
     to = str(request.GET.get('to', None))
     name = request.GET.get('name', None)
@@ -1944,7 +1944,7 @@ def send_message(request):
 
     print("to : " + to + " name : " + name + " body : "+ body[2:-1])
 
-    authkey= update_authkey(request)
+    authkey= update_authkey(id)
     # print(authkey)
     
     url = url_main + "/v1/messages"
@@ -2461,14 +2461,13 @@ def check_message(request):
     return JsonResponse({"status": status})
 
 
-def update_authkey(request):
+def update_authkey(id):
 
-    id = request.session.get('id')
     print("IN UPDATE AUTH KEY")
     print(id)
-    active_user = Business_Profile(user_id = id)
+    active_user = Business_Profile.objects.get(user_id = id)
 
-    print(active_user.ip_address)
+    print(active_user)
 
     # url = url_main + "/v1/users/login"
     url = active_user.ip_address + "/v1/users/login"
