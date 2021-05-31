@@ -192,7 +192,7 @@
                         <td>{{ i.about_business }}</td>
                         <td>{{ i.business_address }}</td>
                         <td>{{ i.business_email }}</td>
-                        <td><a href="admin_business_waba">{{ i.business_number }}</a></td>
+                        <td><a id="edit_info" onclick="send_number()" href="admin_business_waba.html">{{ i.business_number }}</a></td>
                         <td>{{ i.radio }}</td>
                         <td>{{ i.website }}</td>
                         <td>{{ i.user_id }}</td>
@@ -232,6 +232,19 @@
   <!-- ./wrapper -->
 
 
+
+  <script>
+    function send_number(){
+      var phone = $("#edit_info").text();
+      console.log(phone);
+      $.ajax({
+        url:'ajax/admin_business_waba/',
+        dataType:'JSON',
+        data:{'phone':phone},
+        success:console.log('success'),
+      })
+    }
+  </script>
 
   </body>
 </html>

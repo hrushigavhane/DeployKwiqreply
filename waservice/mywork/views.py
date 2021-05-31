@@ -238,8 +238,7 @@ def admin_business_p(request):
         return render(request, 'login.html')
     else:
         if admin_flag:
-            user_disp = User.objects.filter(id=request.session['id'])
-            user_obj = Business_Profile.objects.all()
+            user_obj = Business_profile.objects.all()
             return render(request,  'admin_business_p.html', {'obj': user_disp, 'obj1': user_obj})
         else:
            return render(request, 'login.html')
@@ -268,9 +267,11 @@ def admin_business_waba(request):
         return render(request, 'login.html')
     else:
         if admin_flag:
-            user_disp = User.objects.filter(id=request.session['id'])
-            user_obj = Business_Profile.objects.all()
-            return render(request,  'admin_business_waba.html', {'obj': user_disp, 'obj1': user_obj})
+            phone = request.GET.get('phone')
+            print(phone)
+            # Busniess_Profile.objects
+            user_obj = Business_Profile.objects.filter(business_number=phone)
+            return render(request, 'admin_business_waba.html', {'obj': user_obj})
         else:
            return render(request, 'login.html')
 
