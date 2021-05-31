@@ -151,7 +151,7 @@
           <div class="card card-primary card-outline" >
             <div class="card-body ">
 
-            <h2 class="mt-4" style="padding-bottom:10px">Ticket History</h2>
+            <h2 class="mt-4" style="padding-bottom:10px">Update WABA Details</h2>
 
           <div class="col-12">
             <div class="card">
@@ -162,20 +162,21 @@
                     <tr>
                       <th>Business Id </th>
                       <th>Company Name</th>
-                      <th>Business Description</th>
-                      <th>Business Category</th>
-                      <th>Fb_id</th>
+                     
+                      
                       <th>Business Display Name</th>
-                      <th>About Business</th>
-                      <th>Business Address</th>
-                      <th>Business E-Mail</th>
+                      
+                      
                       <th>Business Number</th>
-                      <th>Is Whatsapp Installed</th>
-                      <th>Website</th>
-                      <th>User_id</th>
+                      
+                      
+                      
                       <th>Status</th>
                       <th>Kwiqreply Token</th>
-                      
+                      <th>Whatsapp Pass</th>
+                      <th>IP Address</th>
+                      <th>User Pass in Base 64</th>
+                      <th>WA Username</th>
                       
                     </tr>
                   </thead>
@@ -185,20 +186,20 @@
                     <tr>
                         <td>{{ loop.index }} {{ i.id }}</td>
                         <td>{{ i.Comp_name }}</td>
-                        <td>{{ i.Business_desc}}</td>
-                        <td>{{ i.Business_Category }}</td>
-                        <td>{{ i.facebook_id }}</td>
+                        
+                        
                         <td>{{ i.business_disp_name }}</td>
-                        <td>{{ i.about_business }}</td>
-                        <td>{{ i.business_address }}</td>
-                        <td>{{ i.business_email }}</td>
-                        <td><a href="admin_business_waba">{{ i.business_number }}</a></td>
-                        <td>{{ i.radio }}</td>
-                        <td>{{ i.website }}</td>
-                        <td>{{ i.user_id }}</td>
+                        
+                        <td><a href="#">{{ i.business_number }}</a></td>
+                        
+                        
+                        
                         <td>{{ i.status }}</td>
                         <td>{{ i.kwiqreply_token }}</td>
-                        
+                        <td>{{ i.wa_pass }}</td>
+                        <td>{{ i.ip_address }}</td>
+                        <td>{{ i.wa_user_pass_base }}</td>
+                        <td>{{ i.wa_username }}</td>
                     </tr>
                     {% endfor %}
                   </tbody>

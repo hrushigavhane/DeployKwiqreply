@@ -244,6 +244,36 @@ def admin_business_p(request):
         else:
            return render(request, 'login.html')
 
+
+def admin_business_waba(request):
+    response=""
+    response1=""
+
+    if request.session.get('id'):
+        user_id = request.session.get('id')
+        response += "User Id : {0}".format(user_id)
+        print(response)
+
+    if request.session.get('admin'):
+        admin_flag = request.session.get('admin')
+        response1 += "Admin : {0}".format(admin_flag)
+        print(response1)
+
+    else:
+        admin_flag = False
+        response1 += "Admin : {0}".format(admin_flag)
+        print(response1)
+
+    if not response and not response1:
+        return render(request, 'login.html')
+    else:
+        if admin_flag:
+            user_disp = User.objects.filter(id=request.session['id'])
+            user_obj = Business_Profile.objects.all()
+            return render(request,  'admin_business_waba.html', {'obj': user_disp, 'obj1': user_obj})
+        else:
+           return render(request, 'login.html')
+
 # ----------USER SECTION-------------#
 
 def login(request):
@@ -1913,6 +1943,8 @@ def clean_body(msg):
             i = i.replace(i,'\\"')
         elif i == '\\':
             i = i.replace(i, '\\\\')
+        elif i == '’':
+            i = i.replace(i, '\'')
         # elif i == '\n':
         #     i = i.replace(i, '\\\\n')
 
@@ -1936,7 +1968,8 @@ def send_message_khairnar(request):
     # print(msg)
     # body = "i"
     print(msg)
-    body = str(clean_body(msg).encode('UTF_8'))
+    
+    body = str(clean_body(msg).encode('UTF-8'))
 
     print("to : " + to + " name : " + name + " body : "+ body[2:-1])
 
@@ -2016,7 +2049,8 @@ def send_message(request):
     # print(msg)
     # body = "i"
     print(msg)
-    body = str(clean_body(msg).encode('UTF_8'))
+    print(type(msg))
+    body = clean_body(msg).encode('UTF-8')
 
     print("to : " + to + " name : " + name + " body : "+ body[2:-1])
 
