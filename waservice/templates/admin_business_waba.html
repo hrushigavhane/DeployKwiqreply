@@ -150,7 +150,7 @@
             <div class="card card-primary card-outline" >
               <div class="card-body ">
 
-            {% if profile_update %}
+            {% if waba_update %}
                 <div  class="alert alert-success alert-dismissible" style="display:block">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                   <h5><i class="icon fa fa-check"></i> Success!</h5>
@@ -164,7 +164,7 @@
                   {{ success_update }}
                 </div>
 
-          {% elif phone_error_len %}
+          {% elif phone_none %}
               <div class="alert alert-danger alert-dismissible" style="display:block">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                 <h5><i class="icon fa fa-ban"></i> Error!</h5>
@@ -211,7 +211,7 @@
           <h2 class="mt-4" style="padding-bottom:10px;">User Settings</h2>
 
         {% for i in obj %}
-            <form method="POST" action="admin_business_waba" name="business_info" enctype="multipart/form-data" role="form">
+            <form method="POST" action="{% url "update_waba" %}" name="update_waba" enctype="multipart/form-data" role="form">
                 {% csrf_token %}
 
               <div class="row ">
@@ -221,28 +221,33 @@
 
                         <label class="col-lg-3 col-sm-2 col-form-label" style="padding-bottom:40px;">Company Name</label>
                         <div class="col-lg-9 col-sm-10">
-                          <label></label>
-                          <input name="company_name" type="text" class="form-control" placeholder="Company Name" value="{{ i.Comp_name }}" required/>
+                          
+                          <input name="company_name" type="text" class="form-control" placeholder="{{ i.Comp_name }}" disabled>
                         </div>
 
                         <label class="col-lg-3 col-sm-2 col-form-label" style="padding-bottom:40px;">Business Number</label>
                         <div class="col-lg-9 col-sm-10">
-                          <input name="business_number" type="tel" class="form-control" placeholder="Business Number" onkeypress="return /[0-9]/i.test(event.key)" value="{{ i.bus_num }}" required/>
+                          <input name="business_number" type="text" class="form-control" placeholder="{{ i.business_number }}" value="{{ i.business_number }}"   >
                         </div>
 
                         <label class="col-lg-3 col-sm-2 col-form-label" style="padding-bottom:40px;">IP Address</label>
                         <div class="col-lg-9 col-sm-10">
-                          <input name="IP_address" type="text" class="form-control" placeholder="IP Address" value="{{ i.ip_address }}" disabled required/>
+                          <input name="ip_address" type="text" class="form-control" placeholder="IP Address" value="{{ i.ip_address }}" required/>
                         </div>
 
                         <label class="col-lg-3 col-sm-2 col-form-label" style="padding-bottom:40px;">Username</label>
                         <div class="col-lg-9 col-sm-10">
-                          <input name="Username" type="text" class="form-control" placeholder="Username" value="{{ i.username }}" required/>
+                          <input name="Username" type="text" class="form-control" placeholder="{{ i.wa_username }}" value="{{ i.wa_username }}" required/>
                         </div>
 
                         <label class="col-lg-3 col-sm-2 col-form-label" style="padding-bottom:40px;">Password</label>
                         <div class="col-lg-9 col-sm-10">
-                          <input name="Password" type="password" class="form-control" placeholder="Password" value="{{ i.password }}">
+                          <input name="Password" type="text" class="form-control" placeholder="{{ i.wa_pass }}" value="{{ i.wa_pass }}">
+                        </div>
+                        
+                        <label class="col-lg-3 col-sm-2 col-form-label" style="padding-bottom:40px;">Status</label>
+                        <div class="col-lg-9 col-sm-10">
+                          <input name="status" type="checkbox" class="form-control" placeholder="{{ i.status }}" value="1">
                         </div><br>
                       </div>
                     <div class="col-lg-5" >

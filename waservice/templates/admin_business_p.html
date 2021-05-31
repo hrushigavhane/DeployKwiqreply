@@ -192,7 +192,7 @@
                         <td>{{ i.about_business }}</td>
                         <td>{{ i.business_address }}</td>
                         <td>{{ i.business_email }}</td>
-                        <td><a id="edit_info" onclick="send_number()" href="admin_business_waba.html">{{ i.business_number }}</a></td>
+                        <td><a id="edit_info"  href="{% url 'admin_business_waba' %}?obj={{i.business_number}}">{{ i.business_number }}</a></td>
                         <td>{{ i.radio }}</td>
                         <td>{{ i.website }}</td>
                         <td>{{ i.user_id }}</td>
@@ -233,7 +233,7 @@
 
 
 
-  <script>
+  {% comment %} <script>
     function send_number(){
       var phone = $("#edit_info").text();
       console.log(phone);
@@ -244,7 +244,7 @@
         success:console.log('success'),
       })
     }
-  </script>
+  </script> {% endcomment %}
 
   </body>
 </html>

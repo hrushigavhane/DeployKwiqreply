@@ -85,6 +85,69 @@ def admin_section(request):
     else:
         return render(request,  'admin_section.html')
 
+
+def update_waba(request):
+    response=""
+    response1=""
+    print("Inside update waba")
+    print(request.method)
+    if request.method=='POST':
+        
+        phone = request.POST.get('business_number')
+        print(phone)
+        user_obj = Business_Profile.objects.filter(business_number = phone)
+        ip = request.POST.get('ip_address')
+        waba_user = request.POST.get('Username')
+        waba_pass = request.POST.get('Password')
+        status = request.POST.get('status')
+
+        print(ip,waba_user,waba_pass, status)
+
+    
+
+        
+        try:
+            if phone is not None:
+                len_phone = len(phone)
+                print(len)
+                if len_phone >= 10:
+                    with connection.cursor() as cursor:
+                        sql_query = cursor.execute('update mywork_business_profile set ip_address=%s, wa_username=%s,  wa_pass=%s ,status=%s where business_number=%s', [ip, waba_user, waba_pass, status,phone])
+                    return render(request, 'admin_business_waba.html', {'waba_update':'Details updated successfully.', 'obj':user_obj})
+                else:
+                    return render(request, 'admin_business_waba.html', {'phone_none':'Phone Number not present', 'obj':user_obj})
+        except Exception as e:
+            pass
+            print(e)
+            print("IN Exception")
+
+        
+
+    if request.session.get('id'):
+        user_id = request.session.get('id')
+        response += "User Id : {0}".format(user_id)
+        print(response)
+
+    if request.session.get('admin') == False:
+        admin_flag = request.session.get('admin')
+        response1 += "Admin : {0}".format(admin_flag)
+        print(response1)
+
+    else:
+        return render(request, 'login.html')
+
+    if not response or not response1:
+        return render(request, 'login.html')
+
+    else:
+        if admin_flag == True:
+            user_disp = User_Details.objects.filter(business_number = phone)
+            return render(request, 'admin_business_waba.html', {'obj':user_obj, 'obj1':user_disp})
+        else:
+            return render(request, 'login.html')
+
+
+
 def admin_panel(request):
     response=""
     response1=""
@@ -238,8 +301,8 @@ def admin_business_p(request):
         return render(request, 'login.html')
     else:
         if admin_flag:
-            user_obj = Business_profile.objects.all()
-            return render(request,  'admin_business_p.html', {'obj': user_disp, 'obj1': user_obj})
+            user_obj = Business_Profile.objects.all()
+            return render(request,  'admin_business_p.html', { 'obj1': user_obj})
         else:
            return render(request, 'login.html')
 
@@ -252,11 +315,13 @@ def admin_business_waba(request):
         user_id = request.session.get('id')
         response += "User Id : {0}".format(user_id)
         print(response)
+        print("IN WABA ADMIN")
 
     if request.session.get('admin'):
         admin_flag = request.session.get('admin')
         response1 += "Admin : {0}".format(admin_flag)
         print(response1)
+        print("IN WABA ADMIN")
 
     else:
         admin_flag = False
@@ -267,10 +332,14 @@ def admin_business_waba(request):
         return render(request, 'login.html')
     else:
         if admin_flag:
-            phone = request.GET.get('phone')
+
+            print("IN WABA ADMIN")
+            phone = request.GET.get('obj')
             print(phone)
             # Busniess_Profile.objects
-            user_obj = Business_Profile.objects.filter(business_number=phone)
+            # user_obj = Business_Profile(business_number = phone) 
+            user_obj = Business_Profile.objects.filter(business_number = phone)
+            
             return render(request, 'admin_business_waba.html', {'obj': user_obj})
         else:
            return render(request, 'login.html')

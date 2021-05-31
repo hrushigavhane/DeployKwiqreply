@@ -1,3 +1,4 @@
+from waservice.mywork.views import update_waba
 from django.conf import settings
 from django.conf.urls import url
 from django.conf.urls.static import static
@@ -58,7 +59,9 @@ urlpatterns = [
     url('admin_sale_submission', views.admin_sale_submission, name='admin_sale_submission'),
     url('admin_business_p', views.admin_business_p, name='admin_business_p'),
     url('admin_business_waba', views.admin_business_waba, name='admin_business_waba'),
-    url(r'^ajax/admin_business_waba', views.admin_business_waba, name='admin_business_waba'),
+    url(r'^ajax/update_waba/$',views.update_waba, name='update_waba'),
+    url('update_waba',views.update_waba, name='update_waba'),
+    # url(r'^ajax/admin_business_waba/$', views.admin_business_waba, name='admin_business_waba'),
     url(r'^ajax/send_message/$', views.send_message, name='send_message'),
     url(r'^ajax/send_message_khairnar/$', views.send_message_khairnar, name='send_message_khairnar'),
     url(r'^ajax/get_chat/$', views.get_chat, name='get_chat'),
