@@ -160,14 +160,26 @@
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th>Ticket Number </th>
-                      <th>Number</th>
-                      <th>Display Name</th>
-                      <th>Facebook Id</th>
-                      <th>Company Address</th>
-                      <th>Company Email</th>
+                      <th>Business Id </th>
+                      <th>Company Name</th>
+                      <th>Business Description</th>
+                      <th>Business Category</th>
+                      <th>Fb_id</th>
+                      <th>Business Display Name</th>
+                      <th>About Business</th>
+                      <th>Business Address</th>
+                      <th>Business E-Mail</th>
+                      <th>Business Number</th>
+                      <th>Is Whatsapp Installed</th>
                       <th>Website</th>
-                      <th>Logo Link</th>
+                      <th>User_id</th>
+                      <th>Status</th>
+                      <th>Kwiqreply Token</th>
+                      <th>Whatsapp Pass</th>
+                      <th>IP Address</th>
+                      <th>User Pass in Base 64</th>
+                      <th>WA Username</th>
+                      
                     </tr>
                   </thead>
                   <tbody>
@@ -175,13 +187,24 @@
 
                     <tr>
                         <td>{{ loop.index }} {{ i.id }}</td>
-                        <td>{{ i.business_number }}</td>
-                        <td>{{ i.Comp_name}}</td>
+                        <td>{{ i.Comp_name }}</td>
+                        <td>{{ i.Business_desc}}</td>
+                        <td>{{ i.Business_Category }}</td>
                         <td>{{ i.facebook_id }}</td>
+                        <td>{{ i.business_disp_name }}</td>
+                        <td>{{ i.about_business }}</td>
                         <td>{{ i.business_address }}</td>
                         <td>{{ i.business_email }}</td>
+                        <td>{{ i.business_number }}</td>
+                        <td>{{ i.radio }}</td>
                         <td>{{ i.website }}</td>
-                        <td>{{ i.about_business }}</td>
+                        <td>{{ i.user_id }}</td>
+                        <td>{{ i.status }}</td>
+                        <td>{{ i.kwiqreply_token }}</td>
+                        <td>{{ i.wa_pass }}</td>
+                        <td>{{ i.ip_address }}</td>
+                        <td>{{ i.wa_user_pass_base }}</td>
+                        <td>{{ i.wa_username }}</td>
                     </tr>
                     {% endfor %}
                   </tbody>

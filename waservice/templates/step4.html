@@ -323,9 +323,9 @@
                     <p><b>Parameters</b></p>
                   </div>
 
-                  <div class="col-lg-4">
+                  {% comment %} <div class="col-lg-4">
                     <p><a href="#">View Docs</a></p>
-                  </div>
+                  </div> {% endcomment %}
                 </div> <!-- second row closed -->
 
                 <p>TO<p>
@@ -548,7 +548,7 @@ $("#submit_hide").click(function(){
       console.log(to, body);
       
       $.ajax({
-      url: '/ajax/send_message/',
+      url: '/ajax/send_message_khairnar/',
       dataType: 'JSON',
       data: {
       'to': to.trim(),

@@ -120,7 +120,7 @@ class user_message(models.Model):
     m_session = models.CharField(max_length=8, default='')
     timestamp1 = models.DateTimeField()
     caption = models.TextField(blank=True)
-    unique_msg_id = models.CharField(max_length=35,blank=False,default="")
+    unique_msg_id = models.CharField(max_length=200,blank=False,default="")
     unique_msg_status = models.CharField(max_length=10,blank=True,default='sent')
     user_message_token = models.CharField(max_length=500, blank=True)
 

@@ -53,14 +53,14 @@ from django.views.decorators.csrf import csrf_exempt
 #login_user.username == "ktpl.tech@gmail.com":
 
 current_user={'username':'', 'password':'', 'first_name':'', 'last_name':'', 'comp_name':'','phone':'', 'is_active':False}
-url_main = "https://3.137.182.68:9090"
-pass_for_api = "Khairnar@1234!"
-base_64 = "YWRtaW46S2hhaXJuYXJAMTIzNCE="
+# url_main = "https://3.137.182.68:9090"
+# pass_for_api = "Khairnar@1234!"
+# base_64 = "YWRtaW46S2hhaXJuYXJAMTIzNCE="
 email_of_off = "noreply@kwiqreply.io"
 
 def home(request):
     print(request)
-    return render(request, 'index.html')
+    return render(request, 'login.html')
 
 # ----------ADMIN SECTION-------------#
 
@@ -105,7 +105,7 @@ def admin_panel(request):
         print(response1)
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag:
@@ -121,7 +121,7 @@ def admin_panel(request):
             list_count = [auth_user_count, user_details_count, businessprofile_count, submit_ticket_count, sales_count, sandboxweb_count]
             return render(request,  'admin_panel.html', {'obj': user_disp, 'auth_user_count':list_count[0], 'user_details_count':list_count[1],'businessprofile_count':list_count[2], 'submit_ticket_count':list_count[3], 'sales_count':list_count[4], 'sandboxweb_count':list_count[5]})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 
 def admin_registered_user(request):
@@ -144,7 +144,7 @@ def admin_registered_user(request):
         print(response1)
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
          if admin_flag:
@@ -152,7 +152,7 @@ def admin_registered_user(request):
              user_obj = User_Details.objects.all()
              return render(request,  'admin_registered_user.html', {'obj': user_disp, 'obj1': user_obj})
          else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 
 def admin_ticket_submission(request):
@@ -175,7 +175,7 @@ def admin_ticket_submission(request):
         print(response1)
 
     if not response and not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag:
@@ -183,7 +183,7 @@ def admin_ticket_submission(request):
             user_obj = Submit_Ticket.objects.all()
             return render(request,  'admin_ticket_submission.html', {'obj': user_disp, 'obj1': user_obj})
         else:
-           return render(request, 'index.html')
+           return render(request, 'login.html')
 
 
 def admin_sale_submission(request):
@@ -206,14 +206,14 @@ def admin_sale_submission(request):
         print(response1)
 
     if not response and not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
     else:
         if admin_flag:
             user_disp = User.objects.filter(id=request.session['id'])
             user_obj = Sales.objects.all()
             return render(request,  'admin_sale_submission.html', {'obj': user_disp, 'obj1': user_obj})
         else:
-           return render(request, 'index.html')
+           return render(request, 'login.html')
 
 def admin_business_p(request):
     response=""
@@ -235,14 +235,14 @@ def admin_business_p(request):
         print(response1)
 
     if not response and not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
     else:
         if admin_flag:
             user_disp = User.objects.filter(id=request.session['id'])
             user_obj = Business_Profile.objects.all()
             return render(request,  'admin_business_p.html', {'obj': user_disp, 'obj1': user_obj})
         else:
-           return render(request, 'index.html')
+           return render(request, 'login.html')
 
 # ----------USER SECTION-------------#
 
@@ -374,8 +374,9 @@ def register(request):
             user2.username = user1.username
             user2.code = code
             user2.save()
-            user1.save()
             user1.is_active = False;
+            user1.save()
+            
 
             #s_user=User_Details.objects.raw('select * from mywork_user_details ')
 
@@ -642,17 +643,17 @@ def dashboard(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'dashboard.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 
 def sandbox(request):
@@ -708,10 +709,10 @@ def sandbox(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
@@ -729,7 +730,7 @@ def sandbox(request):
             return render(request, 'sandbox.html', {'obj': code_obj, 'obj1': user_disp})
 
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 def senders(request):
     response=""
@@ -791,10 +792,10 @@ def senderno(request):
             response1 += "Admin : {0}".format(admin_flag)
             print(response1)
         else:
-            return render(request,'index.html')
+            return render(request,'login.html')
 
         if not response or not response1:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 
         if admin_flag == False:
@@ -804,7 +805,7 @@ def senderno(request):
             print(user_disp)
             return render(request, 'senderno.html', {'obj': businessprofile_obj, 'obj1': user_disp})
         else:
-            return render(request,'index.html')
+            return render(request,'login.html')
 
 
 def configureno(request):
@@ -822,17 +823,17 @@ def configureno(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'configureno.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 def logs(request):
     response=""
@@ -849,10 +850,10 @@ def logs(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
@@ -861,7 +862,7 @@ def logs(request):
 
             return render(request, 'logs.html', {'obj': chats, 'user':user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 
 # def send_template(request):
@@ -879,10 +880,10 @@ def logs(request):
 #         print(response1)
 
 #     else:
-#         return render(request, 'index.html')
+#         return render(request, 'login.html')
 
 #     if not response or not response1:
-#         return render(request, 'index.html')
+#         return render(request, 'login.html')
 
 #     else:
 #         if admin_flag == False:
@@ -891,7 +892,7 @@ def logs(request):
 
 #             return render(request, 'send_template.html', {'obj': templates, 'user': user_disp})
 #         else:
-#             return render(request, 'index.html')
+#             return render(request, 'login.html')
 
 
 def send_temp(request):
@@ -995,17 +996,17 @@ def insight1(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'insight1.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 def insight2(request):
     response=""
@@ -1022,17 +1023,17 @@ def insight2(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'insight2.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 def usage(request):
     response=""
@@ -1049,17 +1050,17 @@ def usage(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'usage.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 def viewuse(request):
     response=""
@@ -1076,17 +1077,17 @@ def viewuse(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'viewuse.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 def general_settings(request):
     response=""
@@ -1103,17 +1104,17 @@ def general_settings(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'general_settings.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 def businessprofile(request):
     response = ""
@@ -1192,10 +1193,10 @@ def businessprofile(request):
             print(response1)
 
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
         if not response or not response1:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
         else:
             if admin_flag == False:
@@ -1203,7 +1204,7 @@ def businessprofile(request):
                 user_disp = User_Details.objects.filter(id=request.session.get('id'))
                 return render(request, 'businessprofile.html', {'obj': user_disp})
             else:
-                return render(request, 'index.html')
+                return render(request, 'login.html')
 
 def profile(request):
     response=""
@@ -1307,17 +1308,17 @@ def profile(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'profile.html', {'obj':user_obj, 'obj1':user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 
 def support(request):
@@ -1340,17 +1341,17 @@ def support(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'support.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 def submit_ticket(request):
     if request.method=='POST':
@@ -1399,17 +1400,17 @@ def submit_ticket(request):
             print(response1)
 
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
         if not response or not response1:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
         else:
             if admin_flag == False:
                 user_disp = User_Details.objects.filter(id=request.session['id'])
                 return render(request, 'submit_ticket.html', {'obj': user_disp})
             else:
-                return render(request, 'index.html')
+                return render(request, 'login.html')
 
 def ticket_history(request):
     response=""
@@ -1425,10 +1426,10 @@ def ticket_history(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
@@ -1436,7 +1437,7 @@ def ticket_history(request):
             ticket_obj = Submit_Ticket.objects.filter(user_id=request.session['id'])
             return render(request, 'ticket_history.html', {'obj': user_disp, 'obj1':ticket_obj})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 def chat_window(request):
     response=""
@@ -1453,10 +1454,10 @@ def chat_window(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
@@ -1464,7 +1465,7 @@ def chat_window(request):
             return render(request, 'chat_window.html', {'obj': user_disp})
 
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 def sales(request):
     if request.method=='POST':
@@ -1523,10 +1524,10 @@ def sales(request):
             print(response1)
 
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
         if not response or not response1:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
         else:
             if admin_flag == False:
@@ -1534,7 +1535,7 @@ def sales(request):
                 return render(request, 'sales.html', {'obj': user_disp})
 
             else:
-                return render(request, 'index.html')
+                return render(request, 'login.html')
 
 def step1(request):
     response=""
@@ -1551,10 +1552,10 @@ def step1(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
@@ -1565,7 +1566,7 @@ def step1(request):
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'step1.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 def step2(request):
     response=""
@@ -1582,17 +1583,17 @@ def step2(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'step2.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 def step3(request):
     response=""
@@ -1609,17 +1610,17 @@ def step3(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'step3.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 def step4(request):
     response=""
@@ -1636,17 +1637,17 @@ def step4(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'step4.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 def step5(request):
     response=""
@@ -1663,17 +1664,17 @@ def step5(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'step5.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 
 def converse(request):
@@ -1692,10 +1693,10 @@ def converse(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
    # if not response or not response1:
-     #   return render(request, 'index.html')
+     #   return render(request, 'login.html')
 
    # else:
          #message_details = user_message.objects.raw('select * from mywork_user_message')
@@ -1705,7 +1706,7 @@ def converse(request):
         user_disp = User_Details.objects.filter(id=request.session['id'])
         return render(request, 'converse.html', {'obj': user_disp})
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
 
 def chat_statistics(request):
@@ -1723,17 +1724,17 @@ def chat_statistics(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'chat_statistics.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 
 def audience(request):
@@ -1751,17 +1752,17 @@ def audience(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'audience.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 
 def announce(request):
@@ -1779,17 +1780,17 @@ def announce(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'announce.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 
 def create_new_ant(request):
@@ -1807,17 +1808,17 @@ def create_new_ant(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'create_new_ant.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 
 def session_manage(request):
@@ -1835,17 +1836,17 @@ def session_manage(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'session_manage.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 
 def post_session(request):
@@ -1863,17 +1864,17 @@ def post_session(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'post_session.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 
 def notification_api(request):
@@ -1891,17 +1892,17 @@ def notification_api(request):
         print(response1)
 
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     if not response or not response1:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
     else:
         if admin_flag == False:
             user_disp = User_Details.objects.filter(id=request.session['id'])
             return render(request, 'notification_api.html', {'obj': user_disp})
         else:
-            return render(request, 'index.html')
+            return render(request, 'login.html')
 
 def clean_body(msg):    
     new = []
@@ -1925,6 +1926,85 @@ def clean_body(msg):
     return su
 
 
+def send_message_khairnar(request):
+    
+    # active_user = Business_Profile(user_id = id, status = 1)
+
+    msg = str(request.GET.get('message', None))
+    to = str(request.GET.get('to', None))
+    name = request.GET.get('name', None)
+    # print(msg)
+    # body = "i"
+    print(msg)
+    body = str(clean_body(msg).encode('UTF_8'))
+
+    print("to : " + to + " name : " + name + " body : "+ body[2:-1])
+
+    token = "khairnar"
+    print(token)
+
+    url_main1 = "https://3.141.37.94:9090"
+    url = url_main1 + "/v1/users/login"
+    payload = "{\n\t\"new_password\": \""+ "Khairnar@411014"  +"\"\n}"
+    
+    headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic YWRtaW46S2hhaXJuYXJANDExMDE0'
+                    }        
+       
+    response = requests.request("POST", url, headers=headers, data = payload,verify=False)
+    rs=response.text
+    json_data=json.loads(rs)
+    d = dict()
+    authkey = json_data["users"][0]["token"]
+
+    
+        
+    url = url_main1 + "/v1/messages"
+
+    payload = "{\n  \"to\": \"" + str(to) + "\",\n  \"type\": \"text\",\n  \"recipient_type\": \"individual\",\n  \"text\": {\n    \"body\": \"" + str(body[2:-1]) + "\"\n  }\n}\n"
+
+    headers = {
+        'Content-Type': "application/json",
+        'Authorization': "Bearer " + authkey,
+    }
+
+    try:
+        resp = requests.request("POST", url, data=payload, headers=headers, verify=False)
+        
+        rs = json.loads(resp.text)      
+        print(rs)
+        msg_id = rs["messages"][0]["id"]
+        
+        if body!="":
+            # resp = requests.request("POST", url.rstrip(), data=payload, headers=headers, verify=False)
+            message1=user_message()
+            message1.wa_id=to
+            body = body.replace('\\n','\n')
+            message1.message=body[2:-1]
+            message1.name=name
+            message1.m_type='text'
+            message1.m_from='website_sandbox'
+            # message1.timestamp1=datetime.datetime.now()
+            message1.timestamp1=timezone.now()
+            print(timezone.now())
+            message1.m_status='unread'
+            message1.unique_msg_id = msg_id
+            message1.user_message_token = token
+            message1.save()
+            print("record Inserted in db")
+
+
+        
+        return JsonResponse({'status':'success'})
+
+    except Exception as e:
+        print(e)
+        print("Exception printd")
+        return JsonResponse({'status':'Error'})
+
+
+
 def send_message(request):
     
     id = request.session['id']
@@ -1945,17 +2025,17 @@ def send_message(request):
     token = active_user.kwiqreply_token
     print(token)
 
-    authkey= update_authkey(id)
-    # print(authkey)
+    data= update_authkey(id)
+    print(data)
     
-    url = url_main + "/v1/messages"
+    url = data['ip'] + "/v1/messages"
     # print("to = {}this si braces {}one   ".format(to,body))
     # payload = '''{"to": "{}","type": "text","recipient_type": "individual","text": { "body": "{}" }  \}'''.format(to,msg)
     payload = "{\n  \"to\": \"" + str(to) + "\",\n  \"type\": \"text\",\n  \"recipient_type\": \"individual\",\n  \"text\": {\n    \"body\": \"" + str(body[2:-1]) + "\"\n  }\n}\n"
     # print(type(payload.encode('UTF-8')))
     headers = {
         'Content-Type': "application/json",
-        'Authorization': "Bearer " + authkey,
+        'Authorization': "Bearer " + data['token'],
     }
 
     
@@ -1972,7 +2052,7 @@ def send_message(request):
             # resp = requests.request("POST", url.rstrip(), data=payload, headers=headers, verify=False)
             message1=user_message()
             message1.wa_id=to
-            body = body.replace('\\n','<br>')
+            body = body.replace('\\n','\n')
             message1.message=body[2:-1]
             message1.name=name
             message1.m_type='text'
@@ -2171,7 +2251,7 @@ def get_count(request):
     message_requests = user_message.objects.raw('SELECT id,name,wa_id as number,(SELECT COUNT(*)  FROM '
                                                 'mywork_user_message where m_status=%s AND wa_id=number AND user_message_token=%s) as '
                                                 'no_of_messages  from mywork_user_message GROUP BY wa_id order by '
-                                                'timestamp1 DESC', ['unread',token])
+                                                'no_of_messages DESC', ['unread',token])
     
 
     # message_requests = user_message.objects.values('id','name',number = 'wa_id',co=Subquery(user_message.objects.filter(m_status = 'unread').count())).filter(m_status = 'unread').order_by('-timestamp1')
@@ -2191,6 +2271,11 @@ def search(request):
 def send_file(request):
     print("Request below")
     print(request.FILES)
+    id = request.session['id']
+    active_user = Business_Profile.objects.get(user_id = id,status = 1)
+    print("Account Printed Below")
+    token = active_user.kwiqreply_token
+    print(token)
     if request.method == 'POST':
         if "browseFile" in request.FILES:
             uploaded_file = request.FILES['browseFile']
@@ -2207,17 +2292,10 @@ def send_file(request):
         if link != "":
 
             #url = "https://waent-lb-387296617.ap-southeast-1.elb.amazonaws.com" + "/v1/users/login"
-            url = url_main + "/v1/users/login"
-            payload = "{\n\t\"new_password\": \""+pass_for_api+"\"\n}"
-            headers = {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic <base64(username:password)>',
-                'Authorization': 'Basic ' + base_64 + "'"
-            }
-            response = requests.request("POST", url, headers=headers, data=payload, verify=False)
-            rs = response.text
-            json_data = json.loads(rs)
-            authkey = json_data["users"][0]["token"]
+            data = update_authkey(id)
+            
+            
+            
             response = requests.get(link)
             content_type = mimetypes.guess_type(link)
             a = urlparse(link)
@@ -2237,12 +2315,12 @@ def send_file(request):
                 type1 = 'document'
                 payload1 = "{\n\t\"to\": \"" + to + "\",\n\t\"type\": \"document\",\n\t\"recipient_type\": \"individual\",\n\t\"document\": {\n\t\t\t\"caption\": \"" + caption + "\",\n\t\t\"link\": \"" + link + "\",\n\t\t\"filename\": \"" + filename + "\"\n\t}\n}\n"
 
-            url = url_main + "/v1/messages/"
+            url = data['ip'] + "/v1/messages/"
             # print(payload1)
             # payload1 = "{\n\t\"to\": \"" + to + "\", \n\t\"type\": \"image\", \n\t\"recipient_type\": \"individual\", \n\t\"image\": {\n\t\t\"id\": \"" + img_id + "\",\n\t\t\t\"caption\": \"" + caption + "\"\n\t\t}\n}\n"
             headers = {
                 'Content-Type': "application/json",
-                'Authorization': "Bearer " + authkey,
+                'Authorization': "Bearer " + data['token'],
                 'cache-control': "no-cache"
 
             }
@@ -2263,29 +2341,21 @@ def send_file(request):
             message1.m_fileName = filename
             message1.m_url = link
             message1.unique_msg_id = msg_id
+            message1.user_message_token = token
             message1.save()
             return JsonResponse({"message": "success"})
 
         elif uploaded_file.content_type == 'image/png' or uploaded_file.content_type == 'image/jpg' or uploaded_file.content_type == 'image/jpeg':
 
             bi_data = request.FILES['browseFile'].read()
-            url = url_main + "/v1/users/login"
-            payload = "{\n\t\"new_password\": \""+pass_for_api+"\"\n}"
-            headers = {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic <base64(username:password)>',
-                'Authorization': 'Basic ' + base_64 +"'"
-            }
-            response = requests.request("POST", url, headers=headers, data=payload, verify=False)
-            rs = response.text
-            json_data = json.loads(rs)
-            authkey = json_data["users"][0]["token"]
+            
+            data = update_authkey(id)
 
-            url = url_main + "/v1/media"
+            url = data['ip'] + "/v1/media"
             payload = bi_data
             headers = {
                 'Content-Type': 'image/jpeg',
-                'Authorization': "Bearer " + authkey,
+                'Authorization': "Bearer " + data['token'],
                 'cache-control': "no-cache",
                 'Postman-Token': "1083c9be-a60e-4a0d-94a4-448ef126085e",
             }
@@ -2293,12 +2363,12 @@ def send_file(request):
             rt = response.text
             json_data = json.loads(rt)
             img_id = json_data["media"][0]["id"]
-            url = url_main + "/v1/messages/"
+            url = data['ip'] + "/v1/messages/"
 
             payload1 = "{\n\t\"to\": \"" + to + "\", \n\t\"type\": \"image\", \n\t\"recipient_type\": \"individual\", \n\t\"image\": {\n\t\t\"id\": \"" + img_id + "\",\n\t\t\t\"caption\": \"" + caption + "\"\n\t\t}\n}\n"
             headers = {
                 'Content-Type': "application/json",
-                'Authorization': "Bearer " + authkey,
+                'Authorization': "Bearer " + data['token'],
                 'cache-control': "no-cache",
                 'Postman-Token': "1083c9be-a60e-4a0d-94a4-448ef126085e"
             }
@@ -2326,28 +2396,19 @@ def send_file(request):
             message1.m_fileName = file1
             message1.m_url = "media/image/"
             message1.unique_msg_id = msg_id
+            message1.user_message_token = token
             message1.save()
             return JsonResponse({"message": "success"})
 
         elif uploaded_file.content_type == 'video/mp4' or uploaded_file.content_type == 'video/avi':
             bi_data = request.FILES['browseFile'].read()
-            url = url_main + "/v1/users/login"
-            payload = "{\n\t\"new_password\": \""+pass_for_api+"\"\n}"
-            headers = {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic <base64(username:password)>',
-                'Authorization': 'Basic ' + base_64 +"'"
-            }
-            response = requests.request("POST", url, headers=headers, data=payload, verify=False)
-            rs = response.text
-            json_data = json.loads(rs)
-            authkey = json_data["users"][0]["token"]
+            data = update_authkey(id)
             print(uploaded_file.content_type)
-            url = url_main + "/v1/media"
+            url = data['ip'] + "/v1/media"
             payload = bi_data
             headers = {
                 'Content-Type': uploaded_file.content_type,
-                'Authorization': "Bearer " + authkey,
+                'Authorization': "Bearer " + data['token'],
                 'cache-control': "no-cache"
 
             }
@@ -2355,12 +2416,12 @@ def send_file(request):
             rt = response.text
             json_data = json.loads(rt)
             img_id = json_data["media"][0]["id"]
-            url = url_main + "/v1/messages/"
+            url = data['ip'] + "/v1/messages/"
 
             payload1 = "{\n\t\"to\": \"" + to + "\", \n\t\"type\": \"video\", \n\t\"recipient_type\": \"individual\", \n\t\"video\": {\n\t\t\"id\": \"" + img_id + "\",\n\t\t\t\"caption\": \"" + caption + "\"\n\t\t}\n}\n"
             headers = {
                 'Content-Type': "application/json",
-                'Authorization': "Bearer " + authkey,
+                'Authorization': "Bearer " + data['token'],
                 'cache-control': "no-cache"
 
             }
@@ -2388,28 +2449,18 @@ def send_file(request):
             message1.m_fileName = file1
             message1.m_url = "media/video/"
             message1.unique_msg_id = msg_id
+            message1.user_message_token = token
             message1.save()
             return JsonResponse({"message": "success"})
 
         elif uploaded_file.content_type == 'application/pdf' or uploaded_file.content_type == 'text/plain' or uploaded_file.content_type == 'application/octet-stream':
             bi_data = request.FILES['browseFile'].read()
-            url = url_main + "/v1/users/login"
-            payload = "{\n\t\"new_password\": \""+pass_for_api+"\"\n}"
-            headers = {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic <base64(username:password)>',
-                'Authorization': 'Basic ' + base_64 +"'"
-            }
-            response = requests.request("POST", url, headers=headers, data=payload, verify=False)
-            rs = response.text
-            json_data = json.loads(rs)
-            authkey = json_data["users"][0]["token"]
-
-            url = url_main + "/v1/media"
+            data = update_authkey(id)            
+            url = data['ip'] + "/v1/media"
             payload = bi_data
             headers = {
                 'Content-Type': uploaded_file.content_type,
-                'Authorization': "Bearer " + authkey,
+                'Authorization': "Bearer " + data['token'],
                 'cache-control': "no-cache"
 
             }
@@ -2417,12 +2468,12 @@ def send_file(request):
             rt = response.text
             json_data = json.loads(rt)
             img_id = json_data["media"][0]["id"]
-            url = url_main + "/v1/messages/"
+            url = data['ip'] + "/v1/messages/"
 
             payload1 = "{\n\t\"to\": \"" + to + "\", \n\t\"type\": \"document\", \n\t\"recipient_type\": \"individual\", \n\t\"document\": {\n\t\t\"id\": \"" + img_id + "\",\n\t\t\t\"caption\": \"" + caption + "\"\n\t\t}\n}\n"
             headers = {
                 'Content-Type': "application/json",
-                'Authorization': "Bearer " + authkey,
+                'Authorization': "Bearer " + data['token'],
                 'cache-control': "no-cache"
                 
             }
@@ -2450,6 +2501,7 @@ def send_file(request):
             message1.m_fileName = file1
             message1.m_url = "media/documents/"
             message1.unique_msg_id = msg_id
+            message1.user_message_token = token
             message1.save()
             return JsonResponse({"message": "success"})
 
@@ -2482,33 +2534,62 @@ def check_message(request):
 
 
 def update_authkey(id):
+    try:
 
-    print("IN UPDATE AUTH KEY")
-    print(id)
-    active_user = Business_Profile.objects.get(user_id = id,status = 1)
+        # print("IN UPDATE AUTH KEY")
+        # print(id)
+        active_user = Business_Profile.objects.get(user_id = id,status = 1)
 
-    print(active_user.ip_address)
-    print(active_user.wa_pass)
-    print(active_user.wa_user_pass_base)
+        # print(active_user.ip_address)
+        # print(active_user.wa_pass)
+        # print(active_user.wa_user_pass_base)
 
-    # url = url_main + "/v1/users/login"
-    url = active_user.ip_address + "/v1/users/login"
+        # url = url_main + "/v1/users/login"
+        url = active_user.ip_address + "/v1/users/login"
+        # print(url)
 
 
-    # payload = "{\n\t\"new_password\": \""+pass_for_api+"\"\n}"
-    payload = "{\n\t\"new_password\": \""+ active_user.wa_pass  +"\"\n}"
-    headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + active_user.wa_user_pass_base +"'"
-                }
-    response = requests.request("POST", url, headers=headers, data = payload,verify=False)
-    rs=response.text
-    json_data=json.loads(rs)
-    return json_data["users"][0]["token"]
+        # payload = "{\n\t\"new_password\": \""+pass_for_api+"\"\n}"
+        payload = "{\n\t\"new_password\": \""+ active_user.wa_pass  +"\"\n}"
+        # print(payload)
+        headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + active_user.wa_user_pass_base 
+                    }
+        
+        # print(headers)
+        response = requests.request("POST", url, headers=headers, data = payload,verify=False)
+        rs=response.text
+        json_data=json.loads(rs)
+        d = dict()
+        d['token'] = json_data["users"][0]["token"]
+        d['ip'] = active_user.ip_address
+        
+        
+        return d
+
+    except Exception as e:
+        print(e)
+        print("Error in def update_authkey")
 
 
 def check_contact(phone):
-    authkey = update_authkey()
+
+    url_main = "https://3.141.37.94:9090"
+    url = url_main + "/v1/users/login"
+    payload = "{\n\t\"new_password\": \""+ "Khairnar@411014"  +"\"\n}"
+    
+    headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic YWRtaW46S2hhaXJuYXJANDExMDE0'
+                    }        
+       
+    response = requests.request("POST", url, headers=headers, data = payload,verify=False)
+    rs=response.text
+    json_data=json.loads(rs)
+    
+    authkey = json_data["users"][0]["token"]
+    
     url = url_main + "/v1/contacts"
     payload = '{"blocking": "wait","contacts": ["+91'+str(phone)+'"]}'
     headers = {
@@ -2529,12 +2610,27 @@ def send_template(request):
     param1 = request.GET.get('param1', None)
     param2 = request.GET.get('param2', None)
     param3 = request.GET.get('param3', None)
-    authkey = update_authkey()
+    url_main = "https://3.141.37.94:9090"
+    url = url_main + "/v1/users/login"
+    payload = "{\n\t\"new_password\": \""+ "Khairnar@411014"  +"\"\n}"
+    
+    headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic YWRtaW46S2hhaXJuYXJANDExMDE0'
+                    }        
+       
+    response = requests.request("POST", url, headers=headers, data = payload,verify=False)
+    rs=response.text
+    json_data=json.loads(rs)
+    d = dict()
+    authkey = json_data["users"][0]["token"]
+    print(authkey)    
 
     url = url_main + "/v1/messages/"
     # Payload of tag_callback
-    payload = '{"to": "91'+ str(to) +'", "type": "template", "template": {"namespace": "8533d4ae_209a_48c4_847c_8b7e0bb86430", "name": "tb_paylink_three_param", "language": {"policy": "deterministic", "code": "en_US"}, "components": [ {"type": "body", "parameters": [{"type": "text", "text": "*'+param1+'*"}, {"type": "text", "text": "*'+param2+'*"}, {"type": "text", "text": "*'+param3+'*"}]}]}} '
-    payload = '{"to": "91' + str(to) + '", "type": "template", "template": {"namespace": "10aac1cc_58ce_4275_8374_9b0ffd4b9de1", "name": "ktpl_reply", "language": {"policy": "deterministic", "code": "en"}, "components": [{"type": "header", "parameters": [{"type": "image", "image": {"link": "https://www.khairnar.tech/img/ktpllogo.png"}}]}, {"type": "body", "parameters": [{"type": "text", "text": "'+param1+'"}, {"type": "text", "text": "'+param2+'"}, {"type": "text", "text": "'+param3+'"}]}, {"type": "button", "sub_type": "quick_reply", "index": "2", "parameters": [{"type": "payload", "payload": "Payoad Text sended"}]}]}} '
+    # payload = '{"to": "91'+ str(to) +'", "type": "template", "template": {"namespace": "8533d4ae_209a_48c4_847c_8b7e0bb86430", "name": "tb_paylink_three_param", "language": {"policy": "deterministic", "code": "en_US"}, "components": [ {"type": "body", "parameters": [{"type": "text", "text": "*'+param1+'*"}, {"type": "text", "text": "*'+param2+'*"}, {"type": "text", "text": "*'+param3+'*"}]}]}} '
+    payload = '{"to": "91' + str(to) + '", "type": "template", "template": {"namespace": "10aac1cc_58ce_4275_8374_9b0ffd4b9de1", "name": "ktpl_reply", "language": {"policy": "deterministic", "code": "en"}, "components": [{"type": "header", "parameters": [{"type": "image", "image": {"link": "https://www.khairnar.tech/img/ktpllogo.png"}}]}, {"type": "body", "parameters": [{"type": "text", "text": "*'+param1+'*"}, {"type": "text", "text": "*'+param2+'*"}, {"type": "text", "text": "*'+param3+'*"}]}, {"type": "button", "sub_type": "quick_reply", "index": "2", "parameters": [{"type": "payload", "payload": "Payoad Text sended"}]}]}} '
+    # payload = '{"to": "91' + str(to) + '", "type": "template", "template": {"namespace": "10aac1cc_58ce_4275_8374_9b0ffd4b9de1", "name": "ktpl_reply", "language": {"policy": "deterministic", "code": "mr"}, "components": [{"type": "body", "parameters": [{"type": "text", "text": "*'+ param1 +'*"}, {"type": "text", "text": "*'+ param2 +'*"}, {"type": "text", "text": "*'+ param3 +'*"}]}, {"type": "button", "sub_type": "quick_reply", "index": "2", "parameters": [{"type": "payload", "payload": "Payoad Text sended"}]}]}} '
     headers = {
         'Content-Type': "application/json",
         'Authorization': "Bearer " + authkey
@@ -2564,7 +2660,7 @@ def check_timediff(request):
     print(phone)
     try:
         with connection.cursor() as cursor:
-            sql_query = cursor.execute('select timestamp1 from mywork_user_message where wa_id=%s ORDER BY timestamp1 DESC', [phone])
+            sql_query = cursor.execute('select timestamp1 from mywork_user_message where wa_id=%s AND user_message_token="khairnar" ORDER BY timestamp1 DESC', [phone])
             sql_query_all = cursor.fetchall()
 
         for sql_query in sql_query_all:
@@ -2609,7 +2705,7 @@ def error500(request):
 def webhook(request):    
 
     def download_media(id):
-        authkey = update_authkey(request)
+        authkey = update_authkey(request.session['id'])
         url =  url_main + "/v1/media/" + id
 
         headers = {
@@ -2659,7 +2755,7 @@ def webhook(request):
         print(request.GET.get('token'))
         kwiq_token = request.GET.get('token')
 
-    
+    print("IN WEBHOOK")
     try:
 
         try:
@@ -2767,17 +2863,10 @@ def webhook(request):
             m_url = "media/image/"  
             ext = str(response["messages"][0]["image"]["mime_type"])
             ext = ext.split("/", 1)[1]
-            
-            # if "caption" in response["messages"][0]["image"]["caption"]:           
-            #     caption = str(response["messages"][0]["image"]["caption"])
-            #     print(response["messages"][0]["image"]["caption"])
 
             if "caption" in response["messages"][0]["image"]:           
                 caption = str(response["messages"][0]["image"]["caption"])
                 print(response["messages"][0]["image"]["caption"])
-
-            # content_type = mimetypes.guess_type(image)
-            # print(content_type)
             
             file1 = 'image_' + str(ts) + "." + ext
             fh = open(os.path.join(settings.MEDIA_ROOT + "/image", file1), "wb")
@@ -2927,12 +3016,16 @@ def webhook(request):
         user1.save()
         
         print("Record inserted successfully into  table")
-        if text =="Hello There, I want to know more about the Whatsapp Business API":           
-            User_Details.objects
-            user2 = User_Details(phone = phn[2:])
-            user2.sent_message = 1
-            user2.save()
-            print("Changed status for user")
+        print(text)
+        if kwiq_token == "khairnar":
+            if text =="Hello There, I want to know more about the Whatsapp Business API":   
+                print("INSIDE IFIFIFIF") 
+
+                # User_Details.objects
+                user2 = User_Details.objects.get(phone = phn[2:])
+                user2.sent_message = 1
+                user2.save()
+                print("Changed status for user")
 
 
 
@@ -2941,6 +3034,8 @@ def webhook(request):
         print("Exception Printed")
 
     return render(request,'step1.html')
+
+
 
 
 def error400(request, exception):
