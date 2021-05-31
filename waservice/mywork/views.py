@@ -546,15 +546,15 @@ def forgot_password(request):
                 messages.info(request, 'User not found')
                 return redirect('forgot_password')
             else:
-                uid = urlsafe_base64_encode(force_bytes((i.username).pk))
-                token = account_activation_token.make_token(i.username)
+                uid = urlsafe_base64_encode(force_bytes(user1.pk))
+                token = account_activation_token.make_token(user1)
                 user1.save()
                 current_site = get_current_site(request)
                 mail_subject = 'Activate your account.'
                 message = render_to_string('password_reset_email.html', {
                 'user1': i.username,
                 'domain': current_site.domain,
-                'uid': uid,
+                'uid': urlsafe_base64_encode(force_bytes(user1.pk)),
                 'token': token,
                 })
 
@@ -579,54 +579,50 @@ def forgot_password(request):
 
 def recover_password(request, uidb64, token):
     try:
-        print(type(token))
-        user = User_Details(reset_token=token)
-        print(user.username)
-        
-        # user = User_Details.objects.filter(token=)
+        print(token)
+        user = User_Details.objects.get(reset_token=token)
 
     except Exception as e:
         print(e)
-        return render(request, 'login_success.html', {'successful':'Thanking you for confirming your email.'})
+        return render(request, 'password_reset_unauthorized.html', {'unsuccessful':'Unauthenticated token recieved'})
 
     else:
-        return render(request, 'recover_password.html')
+        return render(request, 'recover_password.html', {'token': token})
 
 def password_reset_confirm(request):
     try:
+
+        token = request.POST.get('token')
         up_password = request.POST.get('password')
         confirm_password = request.POST.get('c_password')
-        print(new_password, confirm_password)
-        if curr_pass is not None:
+        nt = ""
+        user = User_Details.objects.get(reset_token = token)
 
-                if check_password(curr_pass, update_user.password):
+        if up_password != "" and confirm_password != "":
 
-                    if curr_pass != up_password:
+            if up_password == confirm_password:
 
-                        if up_password == confrim_password:
+                if len(up_password) >= 8:
+                    
+                    new_password = make_password(up_password)
+                    with connection.cursor() as cursor:
+                        sql_query = cursor.execute('update mywork_user_details set password=%s where username=%s',[new_password, user.username])
+                        sql_query = cursor.execute('update mywork_user_details set reset_token=%s where username=%s',[nt, user.username])
 
-                            if len_pass >= 8:
-
-                                if up_password == confrim_password:
-                                    up_password = make_password(up_password)
-                                    with connection.cursor() as cursor:
-                                        sql_query = cursor.execute('update mywork_user_details set password=%s where id=%s',[up_password, user_id])
-                                    return render(request, 'recover_password.html', {'success_update':'Password has been successfully changed.', 'obj':user_obj})
-
-                            else:
-                                return render(request, 'recover_password.html', {'min_error':'Password should be minimum 8 characters.', 'obj':user_obj})
-
-                        else:
-                            return render(request, 'recover_password.html', {'diff_pass':'Please make sure the entered passwords match.', 'obj':user_obj})
-
-                    else:
-                        return render(request, 'recover_password.html', {'old_new_error':'Old password matches the new password.', 'obj':user_obj})
+                    return render(request, 'password_reset_done.html', {'success_update':'Password has been successfully changed.'})
 
                 else:
-                    return render(request, 'recover_password.html', {'curr_error':'Current password entered is incorrect.', 'obj':user_obj})
+                    return render(request, 'recover_password.html', {'min_error':'Password should be minimum 8 characters.'})
 
-    except:
-        return redirect('password_verify')
+            else:
+                return render(request, 'recover_password.html', {'diff_pass':'Please make sure the entered passwords match.'})
+
+        else:
+            return render(request, 'recover_password.html', {'empty_error':'Please make sure you have entered the password'})
+
+    except Exception as e:
+        print(str(e) + "in exception")
+        return redirect('password_reset_unauthorized', {'unsuccessful': 'Something went wrong'})
 
 def password_verify(request):
     return render(request, 'password_verify.html')
