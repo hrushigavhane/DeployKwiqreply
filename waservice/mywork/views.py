@@ -99,9 +99,11 @@ def update_waba(request):
         ip = request.POST.get('ip_address')
         waba_user = request.POST.get('Username')
         waba_pass = request.POST.get('Password')
-        status = request.POST.get('status')
+        status = request.POST.get('status')        
+        base64 = request.POST.get('waba_base64')
+        kwiqreply_token = request.POST.get('kwiqreply_token')
 
-        print(ip,waba_user,waba_pass, status)
+        print(ip,waba_user,waba_pass, status, base64, kwiqreply_token)
 
     
 
@@ -112,7 +114,7 @@ def update_waba(request):
                 print(len)
                 if len_phone >= 10:
                     with connection.cursor() as cursor:
-                        sql_query = cursor.execute('update mywork_business_profile set ip_address=%s, wa_username=%s,  wa_pass=%s ,status=%s where business_number=%s', [ip, waba_user, waba_pass, status,phone])
+                        sql_query = cursor.execute('update mywork_business_profile set ip_address=%s, wa_username=%s,  wa_pass=%s ,status=%s, wa_user_pass_base=%s, kwiqreply_token=%s where business_number=%s', [ip, waba_user, waba_pass, status,base64,kwiqreply_token,phone])
                     return render(request, 'admin_business_waba.html', {'waba_update':'Details updated successfully.', 'obj':user_obj})
                 else:
                     return render(request, 'admin_business_waba.html', {'phone_none':'Phone Number not present', 'obj':user_obj})
@@ -2120,7 +2122,7 @@ def send_message(request):
     # body = "i"
     print(msg)
     print(type(msg))
-    body = clean_body(msg).encode('UTF-8')
+    body = str(clean_body(msg).encode('UTF-8'))
 
     print("to : " + to + " name : " + name + " body : "+ body[2:-1])
 
@@ -2273,7 +2275,7 @@ def get_unread(request):
     # for chat in chat1:
     #     if chat.m_media != '':
     #         url = url_main + "/v1/users/login"
-    #         payload = "{\n\t\"new_password\": \""+pass_for_api+"\"\n}"
+    #         payload = "{\n\t\"new_password\": \""+pass_for_apcleari+"\"\n}"
     #         headers = {
     #             'Content-Type': 'application/json',
     #             'Authorization': 'Basic <base64(username:password)>',
@@ -2714,6 +2716,7 @@ def send_template(request):
     param1 = request.GET.get('param1', None)
     param2 = request.GET.get('param2', None)
     param3 = request.GET.get('param3', None)
+    print ( type(param1))
     url_main = "https://3.141.37.94:9090"
     url = url_main + "/v1/users/login"
     payload = "{\n\t\"new_password\": \""+ "Khairnar@411014"  +"\"\n}"
@@ -2728,7 +2731,7 @@ def send_template(request):
     json_data=json.loads(rs)
     d = dict()
     authkey = json_data["users"][0]["token"]
-    print(authkey)    
+    # print(authkey)    
 
     url = url_main + "/v1/messages/"
     # Payload of tag_callback
