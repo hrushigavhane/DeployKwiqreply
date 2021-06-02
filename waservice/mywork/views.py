@@ -2272,6 +2272,7 @@ def get_unread(request):
     id = request.session.get('id')
     active_user = Business_Profile.objects.get(user_id = id, status = 1)
     token = active_user.kwiqreply_token
+    # print("IN GET UNREAD AND TOKEN = "+ token)
     
     # chat1 = user_message.objects.raw('select * from mywork_user_message where wa_id=%s and m_status=%s ORDER BY '
     #                                  'timestamp1', [wa_number, 'unread'])
@@ -2354,13 +2355,13 @@ def get_count(request):
     id = request.session.get('id')
     active_user = Business_Profile.objects.get(user_id = id, status = 1)
     token = active_user.kwiqreply_token
-    print("in get_count")
-    print(id)
-    print(token)
+    # print("in get_count")
+    # print(id)
+    # print(token)
     message_requests = user_message.objects.raw('SELECT id,name,wa_id as number,(SELECT COUNT(*)  FROM '
                                                 'mywork_user_message where m_status=%s AND wa_id=number AND user_message_token=%s) as '
-                                                'no_of_messages  from mywork_user_message GROUP BY wa_id order by '
-                                                'no_of_messages DESC', ['unread',token])
+                                                'no_of_messages  from mywork_user_message where user_message_token=%s GROUP BY wa_id order by '
+                                                'no_of_messages DESC', ['unread',token,token])
     
 
     # message_requests = user_message.objects.values('id','name',number = 'wa_id',co=Subquery(user_message.objects.filter(m_status = 'unread').count())).filter(m_status = 'unread').order_by('-timestamp1')
@@ -2815,12 +2816,12 @@ def error500(request):
 def webhook(request):    
 
     def download_media(id):
-        authkey = update_authkey(request.session['id'])
-        url =  url_main + "/v1/media/" + id
+        data = update_authkey(request.session['id'])
+        url =  data['ip'] + "/v1/media/" + id
 
         headers = {
             'Content-Type': "application/json",
-            'Authorization': "Bearer "+ authkey,
+            'Authorization': "Bearer "+ data['token'],
             'cache-control': "no-cache",
             'Postman-Token': "c7225772-08c7-43f8-b905-1b18da80d814"
             }
