@@ -2017,8 +2017,8 @@ def clean_body(msg):
             i = i.replace(i, '\\\\')
         elif i == '’':
             i = i.replace(i, '\'')
-        # elif i == '\n':
-        #     i = i.replace(i, '\\\\n')
+        elif i == '\n':
+            i = i.replace(i, '\\n')
 
         else:
             pass
@@ -2122,9 +2122,11 @@ def send_message(request):
     # body = "i"
     print(msg)
     print(type(msg))
-    body = str(clean_body(msg).encode('UTF-8'))
+    # body = str(clean_body(msg).encode('UTF-8'))
+    body = clean_body(msg)
 
-    print("to : " + to + " name : " + name + " body : "+ body[2:-1])
+    # print("to : " + to + " name : " + name + " body : "+ body[2:-1])
+    print("to : " + to + " name : " + name + " body : "+ body)
 
     active_user = Business_Profile.objects.get(user_id = id,status = 1)
     print(active_user)
@@ -2137,7 +2139,7 @@ def send_message(request):
     url = data['ip'] + "/v1/messages"
     # print("to = {}this si braces {}one   ".format(to,body))
     # payload = '''{"to": "{}","type": "text","recipient_type": "individual","text": { "body": "{}" }  \}'''.format(to,msg)
-    payload = "{\n  \"to\": \"" + str(to) + "\",\n  \"type\": \"text\",\n  \"recipient_type\": \"individual\",\n  \"text\": {\n    \"body\": \"" + str(body[2:-1]) + "\"\n  }\n}\n"
+    payload = "{\n  \"to\": \"" + str(to) + "\",\n  \"type\": \"text\",\n  \"recipient_type\": \"individual\",\n  \"text\": {\n    \"body\": \"" + str(body) + "\"\n  }\n}\n"
     # print(type(payload.encode('UTF-8')))
     headers = {
         'Content-Type': "application/json",
@@ -2148,7 +2150,7 @@ def send_message(request):
         # return HttpResponse(resp)
 
     try:
-        resp = requests.request("POST", url, data=payload, headers=headers, verify=False)
+        resp = requests.request("POST", url, data=payload.encode(), headers=headers, verify=False)
         
         rs = json.loads(resp.text)      
         print(rs)
@@ -2159,7 +2161,8 @@ def send_message(request):
             message1=user_message()
             message1.wa_id=to
             body = body.replace('\\n','\n')
-            message1.message=body[2:-1]
+            # message1.message=body[2:-1]
+            message1.message=body
             message1.name=name
             message1.m_type='text'
             message1.m_from='website'
