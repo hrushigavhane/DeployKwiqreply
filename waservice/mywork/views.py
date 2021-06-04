@@ -2041,7 +2041,7 @@ def send_message_khairnar(request):
     # body = "i"
     print(msg)
     
-    body = str(clean_body(msg).encode('UTF-8'))
+    body = clean_body(msg)
 
     print("to : " + to + " name : " + name + " body : "+ body[2:-1])
 
@@ -2915,6 +2915,47 @@ def webhook(request):
             file1 = ""
             caption = ""
             # send_msg(id, text)
+            #****************************************************Chat-Bot Vidyakul on Khairnar Tech Account *****************************
+            
+            if kwiq_token == "khairnar":
+                url_main1 = "https://3.141.37.94:9090"
+
+                url = url_main1 + "/v1/users/login"
+                payload = "{\n\t\"new_password\": \""+ "Khairnar@411014"  +"\"\n}"
+        
+                headers = {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic YWRtaW46S2hhaXJuYXJANDExMDE0'
+                        }        
+        
+                response = requests.request("POST", url, headers=headers, data = payload,verify=False)
+                rs=response.text
+                json_data=json.loads(rs)                
+                authkey = json_data["users"][0]["token"]
+
+                url2 = url_main1 + "/v1/messages"
+
+                options = {'Yes': '{"to": "' + str(id) + '", "type": "text", "recipient_type": "individual", "text": {"body": "Vidyakul Presents \\n *Class 9-12 Full Year Batches for All Boards, Karo Har Subject Main Top.* \\n\\n🚀 Live Classes & Doubt Session \\n✅ Fixed Time Table for All Subjects\\n📋 Handwritten Notes PDF\\n💡 Personality Development Classes\\n🚩 Tests & Menti Sessions\\n\\n ⬇️Sab Vidyakul Subscription ke Sath 😊 \\nSecret Code Sirf Apke Liye (Use *WA30* for 30% OFF)\\nFor Admission, Contact : 9818434684\\n\\n📲 Download Now \\nhttps://vidyakul.onelink.me/qQal/whatsapp"}}',
+                            'No': '{"to": "' + str(id) + '", "type": "text", "recipient_type": "individual", "text": {"body": "Thank you for your response. Aap App se related kisi bhi sahyeta ke liye *form fill karein* : https://forms.gle/WSJZfVoSs1MjJbiH6\\nHumari Team Aapse Jaldi Contact Karegi. \\nVidyakul Subscription par payien 30% Off : Use Code : WA30 \\n📲 Download Now \\nhttps://vidyakul.onelink.me/qQal/whatsapp\\nVidyakul : Bharat ka Online School"}}',
+                            'Get In Touch': '{"to": "' + str(id) + '", "type": "text", "recipient_type": "individual", "text": {"body": "Kisi Bhi Admission ya Payment Related Issue ke liye *Call Karien : 9818434684* \\n *Class 9-12 Full Year Batches for All Boards, Karo Har Subject Main Top.* \\n\\n🚀 Live Classes & Doubt Session \\n✅ Fixed Time Table for All Subjects\\n📋 Handwritten Notes PDF\\n💡 Personality Development Classes\\n🚩 Tests & Menti Session\\n⬇️ Sab Vidyakul Subscription ke Sath 😊 \\n\\nSecret Code Sirf Apke Liye (Use *WA30* for 30% OFF) \\n\\n\\n📲 Download Now \\nhttps://vidyakul.onelink.me/qQal/whatsapp"}}',
+                            'doc': '{"to": "' + str(id) + '","type": "document","recipient_type": "individual","document": {"caption": "CBSE Class 10th Exam Master\'21","link": "https://khairnar.tech/vidyakul.pdf","filename": "CBSE Class 10th Exam Master\'21"}}'
+                            }
+
+                headers1 = {
+                        'Content-Type': "application/json",
+                        'Authorization': "Bearer " + authkey
+                    }
+
+                payload1 = options[text]
+
+                try:
+                    response = requests.request("POST", url2.rstrip(), data=payload1.encode('UTF-8'), headers=headers1, verify=False)
+                    rs = response.text
+                    print(rs)
+                except Exception as e:
+                    print(e)
+
+
             print("In Button")
             print(id,name,text,type,id,now,m_id,m_url,file1)
 
