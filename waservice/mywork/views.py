@@ -473,11 +473,7 @@ def register(request):
 
         if register_flag:
 
-            user2.username = user1.username
-            user2.code = code
-            user2.save()
-            user1.is_active = False;
-            user1.save()
+            
             
 
             #s_user=User_Details.objects.raw('select * from mywork_user_details ')
@@ -502,6 +498,12 @@ def register(request):
             email_of_off,
             [to_email],
             fail_silently=False)
+
+            user2.username = user1.username
+            user2.code = code
+            user2.save()
+            user1.is_active = False;
+            user1.save()
             #email = EmailMessage(mail_subject, message, to=[to_email])
             #email.send()
             messages.info(request, 'Please confirm your email address to complete the registration')
@@ -2812,11 +2814,8 @@ def error500(request):
     #data = {}
     return render(request, 'error500.html')
 
-@csrf_exempt
-def webhook(request):    
-
-    def download_media(id):
-        data = update_authkey(request.session['id'])
+def download_media(session_id,id):
+        data = update_authkey(session_id)
         url =  data['ip'] + "/v1/media/" + id
 
         headers = {
@@ -2827,6 +2826,11 @@ def webhook(request):
             }
         response = requests.request("GET", url, headers=headers, verify = False)
         return response
+
+@csrf_exempt
+def webhook(request):    
+
+    
 
 
     # def send_msg(frm, body):
@@ -2868,6 +2872,16 @@ def webhook(request):
 
     print("IN WEBHOOK")
     try:
+
+        try:
+            user1 = Business_Profile.objects.get(kwiqreply_token = kwiq_token)
+            sess_id = user1.user_id
+            # print(sess_id)
+            # print("Session id printed abve")
+        
+        except Exception as e:
+            print(e)
+
 
         try:
             ##Status Update Read Receipt
@@ -3008,7 +3022,7 @@ def webhook(request):
             print(id,name,text,type,id,now)
             m_id = str(response["messages"][0]["image"]["id"])
 
-            resp = download_media(m_id)
+            resp = download_media(sess_id, m_id)
             image = resp.content
             encoded_data = base64.b64encode(image)
             ts = int(time.time())   
@@ -3021,7 +3035,7 @@ def webhook(request):
                 print(response["messages"][0]["image"]["caption"])
             
             file1 = 'image_' + str(ts) + "." + ext
-            fh = open(os.path.join(settings.MEDIA_ROOT + "/image", file1), "wb")
+            fh = open(os.path.join(settings.MEDIA_ROOT + "/image/", file1), "wb")
             fh.write(base64.decodebytes(encoded_data))
             fh.close()
             print("In Image")
@@ -3061,7 +3075,7 @@ def webhook(request):
             if "caption" in response["messages"][0]["video"]:
                 caption = str(response["messages"][0]["video"]["caption"])
 
-            resp = download_media(m_id)
+            resp = download_media(sess_id, m_id)
             video = resp.content
             encoded_data = base64.b64encode(video)
             ts = int(time.time())   
@@ -3102,7 +3116,7 @@ def webhook(request):
                 #     caption = str(response["messages"][0]["audio"]["caption"])
                 print(m_id)
                 
-            resp = download_media(m_id)
+            resp = download_media(sess_id, m_id)
             media = resp.content
             encoded_data = base64.b64encode(media)
 
@@ -3133,7 +3147,7 @@ def webhook(request):
             print(id,name,text,type,id,now)
             m_id = str(response["messages"][0]["document"]["id"])
 
-            resp = download_media(m_id)
+            resp = download_media(sess_id, m_id)
             
             if "caption" in response["messages"][0]["document"]:
                 caption = str(response["messages"][0]["document"]["caption"])
