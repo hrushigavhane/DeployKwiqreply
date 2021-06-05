@@ -1346,9 +1346,9 @@ def profile(request):
                 with connection.cursor() as cursor:
                     file_name = uuid.uuid4().hex
                     file_storage = FileSystemStorage()
-                    file_storage.save(file_name, uploaded_file)
+                    fs = file_storage.save(file_name, uploaded_file)
                     #os.rename(uploaded_file.name, "{id}{uuid}".format(id=user_id, uuid=file_name))
-                    cursor.execute('update mywork_user_details set user_img=%s where id=%s', [file_name,user_id])
+                    cursor.execute('update mywork_user_details set user_img=%s where id=%s', [fs,user_id])
 
             else:
                 return render(request, 'profile.html', {'img_content':'Please upload a JPEG/PNG image type.', 'obj':user_obj})
