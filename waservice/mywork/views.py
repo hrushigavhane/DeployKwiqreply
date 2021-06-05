@@ -650,15 +650,39 @@ def forgot_password(request):
 
         new_user = User_Details.objects.filter(username=username)
 
-        if not new_user:
-            messages.info(request, 'User not found')
-            return redirect('forgot_password')
-
         for i in new_user:
             if username not in i.username:
                 messages.info(request, 'User not found')
                 return redirect('forgot_password')
             else:
+                with connection.cursor() as cursor:
+                    sql_query = cursor.execute('select * from mywork_user_details where username=%s', [username])
+                    sql_query_all = cursor.fetchall()
+
+                for sql_query in sql_query_all:
+                    print(sql_query)
+
+                first_name = (sql_query[1])
+                last_name = (sql_query[2])
+                phone = (sql_query[3])
+                password =  (sql_query[4])
+                comp_name = (sql_query[6])
+                is_active = (sql_query[7])
+                user_img = (sql_query[8])
+                #print(tuple_output)
+
+
+                with connection.cursor() as cursor:
+                    #sql_query = cursor.execute('delete from mywork_user_details where username=%s', [username])
+                    sql_query_id = cursor.execute('select id from mywork_user_details where username=%s', [username])
+                    sql_query_all = cursor.fetchall()
+
+                for sql_query_id in sql_query_all:
+                    print(sql_query_id)
+
+                user_id = (sql_query_id[0])
+
+                user1.id = user_id
                 uid = urlsafe_base64_encode(force_bytes(user1.pk))
                 token = account_activation_token.make_token(user1)
                 user1.save()
@@ -667,7 +691,7 @@ def forgot_password(request):
                 message = render_to_string('password_reset_email.html', {
                 'user1': i.username,
                 'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user1.pk)),
+                'uid': uid,
                 'token': token,
                 })
 
@@ -685,6 +709,7 @@ def forgot_password(request):
                 i.save()
                 print(token)
                 return redirect('password_verify')
+
 
     else:
         return render(request, 'forgot_password.html')
