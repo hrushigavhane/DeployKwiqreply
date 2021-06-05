@@ -289,8 +289,8 @@
                   <p>As a WhatsApp Business Solution Provider, Khairnar Technologies will help you apply for a WhatsApp Authorised Business Profile. We will need the following information from your business in order to proceed for the compliance and approval process with WhatsApp.</p>
                   <p>Please speak to one of our Business Development Representatives at Khairnar Technologies before proceeding to fill up this form. You may reach us at this email sales@khairnar.tech if you are yet to get in touch with us.</p>
                     <ul>
-                    <li><a href="https://developers.facebook.com/docs/whatsapp/guides/display-name/" style="text-decoration:none;"> Display Name Guidelines <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
-                    <li><a href="https://www.facebook.com/business/help/2058515294227817?id=180505742745347" style="text-decoration:none;"> Third Party Guidelines <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
+                    <li><a href="https://developers.facebook.com/docs/whatsapp/guides/display-name/" style="text-decoration:none;" target="_blank"> Display Name Guidelines <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
+                    <li><a href="https://www.facebook.com/business/help/2058515294227817?id=180505742745347" style="text-decoration:none;" target="_blank"> Third Party Guidelines <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
                     </ul>
 
                   </div>
@@ -303,24 +303,21 @@
                {% csrf_token %}
 
             <div class="row col-lg-10" style="padding-top:10px;">
-                 <p>Your Company Legal Entity Name <b style="color:red"> * </b><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip"
-                title="Make sure your Company name is right"></i></p>
+                 <p>Your Company Legal Entity Name <b style="color:red"> * </b><br><i style="font-size: 15px; color:slategray;">Make sure your Company name is right</i></p>
                 <div class="input-group mb-3">
                   <input id="Comp_name" name="Comp_name" type="text" class="form-control filter" required/><br>
                 </div>
             </div>
 
             <div class="row col-lg-10 " style="padding-top:10px;">
-                <p>Business Description and Use Case <b style="color:red"> * </b> <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip"
-               title="This will be used for the compliance and approval process with WhatsApp. Please describe your business in 2 to 3 lines and what the WhatsApp Business Solution will be used for: your use case, and whether Templated Messages or Customer Care Messages or both will be used. Business must comply to the WhatsApp Commerce Policy :- https://www.whatsapp.com/policies/commerce-policy/"></i></p>
+                <p>Business Description and Use Case <b style="color:red"> * </b><br><i style="font-size: 15px; color:slategray;">This will be used for the compliance and approval process with WhatsApp. Please describe your business in 2 to 3 lines and what the WhatsApp Business Solution will be used for: your use case, and whether Templated Messages or Customer Care Messages or both will be used. Business must comply to the <a href="https://www.whatsapp.com/policies/commerce-policy/" target="_blank">WhatsApp Commerce Policy</a></i></p>
                 <div class="input-group mb-3">
                      <input id="Business_desc" name="Business_desc" type="text" class="form-control filter" required/>
                 </div>
               </div>
 
           <div class="row col-lg-10 " style="padding-top:10px;">
-              <p>Business Category <b style="color:red"> * </b> <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip"
-             title="This is the industry/service category that your business is in."></i></p>
+              <p>Business Category <b style="color:red"> * </b><br><i style="font-size: 15px; color:slategray;"></i>This is the industry/service category that your business is in.</i></p>
               <div class="input-group mb-3">
                    <!-- <input id="facebook_id" name="facebook_id" type="text" class="form-control filter" required/> -->
                    <select id="Business_Category" name="Business_Category" class="form-control filter" required/>
@@ -347,56 +344,49 @@
           </div>
 
           <div class="row col-lg-10 " style="padding-top:10px;">
-              <p>Facebook Business Manager ID <b style="color:red"> * </b><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip"
-                title="We will require your Business Manager ID to tie your WhatsApp Business Profile to your Facebook Business Page. Your business ID corresponds to your Business Manager. Steps to find your business ID:1. Go to Business Settings.2. Click Business Info.3. Below the Business Manager Info section you'll see your ID number."></i><p>
+              <p>Facebook Business Manager ID <b style="color:red"> * </b><br><i style="font-size: 15px; color:slategray;">We will require your Business Manager ID to tie your WhatsApp Business Profile to your Facebook Business Page. Your business ID corresponds to your Business Manager. Steps to find your business ID:1. Go to Business Settings.2. Click Business Info.3. Below the Business Manager Info section you'll see your ID number.</i><p>
             <div class="input-group mb-3">
                 <input id="facebook_id" name="facebook_id" type="text"  class="form-control filter" required/>
             </div>
           </div>
 
         <div class="row col-lg-10 " style="padding-top:10px;">
-            <p>Business Display Name <b style="color:red"> * </b> <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip"
-              title="This will be the display name of your business on your WhatsApp Business Profile when your customers message your business number."></i><p>
+            <p>Business Display Name <b style="color:red"> * </b><br><i style="font-size: 15px; color:slategray;">This will be the display name of your business on your WhatsApp Business Profile when your customers message your business number.</i><p>
             <div class="input-group mb-3">
               <input id="business_disp_name" name="business_disp_name"  type="text"  class="form-control filter" required/>
             </div>
        </div>
 
       <div class="row col-lg-10 " style="padding-top:10px;">
-          <p>About (Brief Business Description to be Displayed) <b style="color:red"> * </b> <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip"
-            title="This will be displayed as a short description of your business in your WhatsApp Business Profile."></i><p>
+          <p>About (Brief Business Description to be Displayed) <b style="color:red"> * </b><br><i style="font-size: 15px; color:slategray;">This will be displayed as a short description of your business in your WhatsApp Business Profile.</i><p>
         <div class="input-group mb-3">
             <input id="about_business" name="about_business" type="text" class="form-control filter" required/>
         </div>
       </div>
 
       <div class="row col-lg-10 " style="padding-top:10px;">
-          <p>Business Address <b style="color:red"> * </b> <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip"
-            title="This is your business address that will be displayed on your WhatsApp Business Profile."></i><p>
+          <p>Business Address <b style="color:red"> * </b><br><i style="font-size: 15px; color:slategray;">This is your business address that will be displayed on your WhatsApp Business Profile.</i><p>
         <div class="input-group mb-3">
           <input id="business_address" name="business_address" type="text" class="form-control filter" required/>
         </div>
       </div>
 
       <div class="row col-lg-10 " style="padding-top:10px;">
-          <p>Business Email <b style="color:red"> * </b> <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip"
-            title="This is your business email that will be displayed on your WhatsApp Business Profile."></i><p>
+          <p>Business Email <b style="color:red"> * </b><br><i style="font-size: 15px; color:slategray;">This is your business email that will be displayed on your WhatsApp Business Profile.</i><p>
         <div class="input-group mb-3">
           <input id="business_email" name="business_email" type="text" class="form-control filter" required/>
         </div>
       </div>
 
       <div class="row col-lg-10" style="padding-top:10px;">
-        <p>Business Number (also include the COUNTRY CODE)<b style="color:red"> * </b><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip"
-       title="Phone number you want to register for WhatsApp Business Solution. It will be the number that your customers use to contact your business.Do note that once a number has been registered for this solution, this number can NO LONGER be de-registered or re-used for other WhatsApp purposes in the future"></i></p>
+        <p>Business Number (also include the COUNTRY CODE)<b style="color:red"> * </b><br><i style="font-size: 15px; color:slategray;">Phone number you want to register for WhatsApp Business Solution. It will be the number that your customers use to contact your business.Do note that once a number has been registered for this solution, this number can NO LONGER be de-registered or re-used for other WhatsApp purposes in the future</i></p>
        <div class="input-group mb-3">
          <input id="business_number" name="business_number" type="tel" class="form-control filter" min="12" maxlength="14" onkeypress="return /[0-9+]/i.test(event.key)"  required/><br>
        </div>
       </div>
 
-        <div class="row col-lg-10 " style="padding-top:10px;">
-          <p>Is the number you are using for your WhatsApp Business Profile an existing personal or business WhatsApp account?<b style="color:red"> * </b><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip"
-          title="If yes, please inform your Business Development Representative at Khairnar Technologies in advance to prepare for migration of the existing number to the WhatsApp Business Solution."></i></p>
+        <div class="row col-lg-11 " style="padding-top:10px;">
+          <p>Is the number you are using for your WhatsApp Business Profile an existing personal or business WhatsApp account?<b style="color:red"> * </b><br><i style="font-size: 15px; color:slategray;">If yes, please inform your Business Development Representative at Khairnar Technologies in advance to prepare for migration of the existing number to the WhatsApp Business Solution.</i></p>
         <div class="input-group mb-3" style="margin-left:10px;">
           <label for="yes"><input id="yes" name="radio" value="yes" type="radio">  Yes</label>
         </div>
@@ -406,8 +396,7 @@
       </div>
 
       <div class="row col-lg-10" style="padding-top:10px;">
-          <p>Website<b style="color:red"> * </b><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip"
-            title="This is your business website that will be displayed on your WhatsApp Business Profile."></i></p>
+          <p>Website<b style="color:red"> * </b><br><i style="font-size: 15px; color:slategray;">This is your business website that will be displayed on your WhatsApp Business Profile.</i></p>
        <div class="input-group mb-3">
          <input id="webiste" name="website" type="text" class="form-control filter" required/><br>
        </div>

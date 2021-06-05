@@ -661,7 +661,7 @@ def forgot_password(request):
                 token = account_activation_token.make_token(user1)
                 user1.save()
                 current_site = get_current_site(request)
-                mail_subject = 'Activate your account.'
+                mail_subject = 'Reset Your Password'
                 message = render_to_string('password_reset_email.html', {
                 'user1': i.username,
                 'domain': current_site.domain,
