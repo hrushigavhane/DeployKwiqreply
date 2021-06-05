@@ -34,7 +34,7 @@
 <body class="hold-transition login-page">
 
 <div>
-  <img src="{% static 'img/icon/ktpllogo.svg' %}" style="padding-right: 60%; padding-bottom: 20%;height: 160%; width: 160%; display:block;">
+  <img src="{% static 'img/icon/ktpllogo.svg' %}" style=" width: 100%; max-width:200%; display:block;">
 </div>
 
 <div class="login-box">
@@ -98,9 +98,9 @@
         <ul id="login_list">
           <li><a href="forgot_password">I forgot my password</a> </li>
           <li><a href="register" class="text-center">Register a new membership</a> </li>
-          {% comment %} {% if obj %} {% endcomment %}
+          {% if obj %}
             <li><a href="resend_link" class="text-center">Email not verified?</a> </li>
-          {% comment %} {% endif %} {% endcomment %}
+          {% endif %}
         </ul>
       </div>
 
