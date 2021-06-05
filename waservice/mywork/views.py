@@ -479,7 +479,11 @@ def register(request):
         if register_flag:
 
             
-            
+            user2.username = user1.username
+            user2.code = code
+            user2.save()
+            user1.is_active = False;
+            user1.save()
 
             #s_user=User_Details.objects.raw('select * from mywork_user_details ')
 
@@ -504,11 +508,7 @@ def register(request):
             [to_email],
             fail_silently=False)
 
-            user2.username = user1.username
-            user2.code = code
-            user2.save()
-            user1.is_active = False;
-            user1.save()
+            
             #email = EmailMessage(mail_subject, message, to=[to_email])
             #email.send()
             messages.info(request, 'Please confirm your email address to complete the registration')
