@@ -502,12 +502,14 @@ def register(request):
 
             to_email =  request.POST.get('username')
             print(to_email)
+            
+
             send_mail(
-            mail_subject,
-            message,
-            email_of_off,
-            [to_email],
-            fail_silently=False)
+                    mail_subject,
+                    message,
+                    email_of_off,
+                    [to_email],
+                    html_message=message)
 
             
             #email = EmailMessage(mail_subject, message, to=[to_email])
@@ -2820,7 +2822,13 @@ def error500(request):
     #data = {}
     return render(request, 'error500.html')
 
-def download_media(session_id,id):
+
+
+@csrf_exempt
+def webhook(request):    
+
+
+    def download_media(session_id,id):
         data = update_authkey(session_id)
         url =  data['ip'] + "/v1/media/" + id
 
@@ -2832,9 +2840,6 @@ def download_media(session_id,id):
             }
         response = requests.request("GET", url, headers=headers, verify = False)
         return response
-
-@csrf_exempt
-def webhook(request):    
 
     
 
