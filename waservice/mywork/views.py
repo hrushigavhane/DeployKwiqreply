@@ -441,7 +441,12 @@ def register(request):
 
         if len_phone != 10:
             register_flag = False
-            return render(request, 'register.html', {'phone_error':'Enter a Valid Number', 'error':'Mobile Number Error'})
+            return render(request, 'register.html', {'phone_error':'Enter a Valid Number', 'error':'Please Enter 10 Digit Valid Mobile Number'})
+
+        for i in new_user:
+            if user1.phone in i.phone:
+                register_flag = False
+                return render(request, 'register.html', {'email_error':'Type a new number', 'error': 'Mobile Number already exists'})
 
         for i in new_user:
             if user1.username in i.username:
@@ -451,7 +456,7 @@ def register(request):
         if len_pass < 8:
             register_flag = False
             #messages.info(request, 'Password does not meet the requirement')
-            return render(request, 'register.html', {'pass_error':'Password too short', 'error':'Password Error'})
+            return render(request, 'register.html', {'pass_error':'Password too short', 'error':'Password too short'})
 
         elif password != c_password:
             register_flag = False
