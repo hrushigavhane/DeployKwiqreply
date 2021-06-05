@@ -98,9 +98,9 @@
         <ul id="login_list">
           <li><a href="forgot_password">I forgot my password</a> </li>
           <li><a href="register" class="text-center">Register a new membership</a> </li>
-          {% if obj %}
+          {% comment %} {% if obj %} {% endcomment %}
             <li><a href="resend_link" class="text-center">Email not verified?</a> </li>
-          {% endif %}
+          {% comment %} {% endif %} {% endcomment %}
         </ul>
       </div>
 
