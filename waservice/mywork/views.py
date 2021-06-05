@@ -411,6 +411,7 @@ def logout(request):
     auth.logout(request)    
     return redirect('/')
 
+
 def register(request):
     if request.method=='POST':
         print("Request method called")
@@ -482,7 +483,7 @@ def register(request):
             user2.username = user1.username
             user2.code = code
             user2.save()
-            user1.is_active = False;
+            user1.is_active = False
             user1.save()
 
             #s_user=User_Details.objects.raw('select * from mywork_user_details ')
@@ -622,7 +623,7 @@ def resend_link(request):
                     message,
                     email_of_off,
                     [to_email],
-                    fail_silently=False)
+                    html_message=message)
                     #email = EmailMessage(mail_subject, message, to=[to_email])
                     #email.send()
                     messages.info(request, 'Please confirm your email address to complete the registration')

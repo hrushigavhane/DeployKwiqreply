@@ -1,6 +1,17 @@
 {% load static %}
+
 {% autoescape off %}
-Hi {{ user.username }},
-Welcome to Khairnar Technologies
-Please click on the link to confirm your registration,  http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+<html>
+
+<body>
+<div style="font-family: verdana, sans-serif; font-size: 16px;">
+Hi {{ user1.first_name }},<br><br>
+Welcome to KwiqReply<br>
+Please <a href="http://{{ domain }}{% url 'activate' uidb64=uid token=token %}">click here</a> to confirm your registration,</div>
+
+</body>
+
+</html>
+
 {% endautoescape %}
+
