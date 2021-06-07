@@ -3071,7 +3071,7 @@ def webhook(request):
                 print(response["messages"][0]["image"]["caption"])
             
             file1 = 'image_' + str(ts) + "." + ext
-            fh = open(os.path.join(settings.MEDIA_ROOT + "image/", file1), "wb")
+            fh = open(os.path.join(settings.MEDIA_ROOT + "/image/", file1), "wb")
             fh.write(base64.decodebytes(encoded_data))
             fh.close()
             print("In Image")
@@ -3119,7 +3119,7 @@ def webhook(request):
             ext = str(response["messages"][0]["video"]["mime_type"])
             ext = ext.split("/", 1)[1]
             file1 = 'video_' + str(ts) + "." + ext
-            fh = open(os.path.join(settings.MEDIA_ROOT + "video/", file1), "wb")
+            fh = open(os.path.join(settings.MEDIA_ROOT + "/video/", file1), "wb")
             fh.write(base64.decodebytes(encoded_data))
             fh.close()
             print("In Video")
@@ -3162,7 +3162,7 @@ def webhook(request):
             print(ext)
             # ext = ext[0:3]
             file1 = 'video_' + str(ts) + "." + ext
-            fh = open(os.path.join(settings.MEDIA_ROOT + "/voice", file1), "wb")
+            fh = open(os.path.join(settings.MEDIA_ROOT + "/voice/", file1), "wb")
             fh.write(base64.decodebytes(encoded_data))
             fh.close()
             print("In Voice")
@@ -3194,7 +3194,7 @@ def webhook(request):
             ext = str(response["messages"][0]["document"]["mime_type"])
             ext = ext.split("/", 2)[1]
             file1 = 'doc_' + str(ts) + "." + ext
-            fh = open(os.path.join(settings.MEDIA_ROOT + "/documents", file1), "wb")
+            fh = open(os.path.join(settings.MEDIA_ROOT + "/documents/", file1), "wb")
             fh.write(base64.decodebytes(encoded_data))
             fh.close()
             print("In Document")
@@ -3214,7 +3214,7 @@ def webhook(request):
         user1.m_status = 'unread'
         user1.unique_msg_id = unique_msg_id
         user1.user_message_token = kwiq_token
-        user1.unique_msg_status = 'read'
+        user1.unique_msg_status = 'sent'
         user1.save()
         
         print("Record inserted successfully into  table")
