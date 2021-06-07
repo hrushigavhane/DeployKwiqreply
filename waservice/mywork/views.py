@@ -3010,7 +3010,7 @@ def webhook(request):
             print(id,name,text,type,id,now,m_id,m_url,file1)
 
 
-        if msg_type == "text" and len(phn) == 12:
+        if msg_type == "text":
             text = str(response["messages"][0]["text"]["body"])
             id = str(response["contacts"][0]["wa_id"])
             name = str(response["contacts"][0]["profile"]["name"])
@@ -3048,7 +3048,7 @@ def webhook(request):
 
 
         ## Image message
-        if msg_type == "image" and len(phn) == 12:
+        if msg_type == "image":
 
             id = str(response["contacts"][0]["wa_id"])
             name = str(response["contacts"][0]["profile"]["name"])
@@ -3071,7 +3071,7 @@ def webhook(request):
                 print(response["messages"][0]["image"]["caption"])
             
             file1 = 'image_' + str(ts) + "." + ext
-            fh = open(os.path.join(settings.MEDIA_ROOT + "/image/", file1), "wb")
+            fh = open(os.path.join(settings.MEDIA_ROOT + "image/", file1), "wb")
             fh.write(base64.decodebytes(encoded_data))
             fh.close()
             print("In Image")
@@ -3100,7 +3100,7 @@ def webhook(request):
                 ]
             }
         
-        if msg_type == "video" and len(phn) == 12:
+        if msg_type == "video":
             id = str(response["contacts"][0]["wa_id"])
             name = str(response["contacts"][0]["profile"]["name"])
             timestamp1=str(response["messages"][0]["timestamp"])
@@ -3119,7 +3119,7 @@ def webhook(request):
             ext = str(response["messages"][0]["video"]["mime_type"])
             ext = ext.split("/", 1)[1]
             file1 = 'video_' + str(ts) + "." + ext
-            fh = open(os.path.join(settings.MEDIA_ROOT + "/video", file1), "wb")
+            fh = open(os.path.join(settings.MEDIA_ROOT + "video/", file1), "wb")
             fh.write(base64.decodebytes(encoded_data))
             fh.close()
             print("In Video")
@@ -3174,7 +3174,7 @@ def webhook(request):
 
             
 
-        if msg_type == "document" and len(phn) == 12:
+        if msg_type == "document":
             id = str(response["contacts"][0]["wa_id"])
             name = str(response["contacts"][0]["profile"]["name"])
             timestamp1=str(response["messages"][0]["timestamp"])
