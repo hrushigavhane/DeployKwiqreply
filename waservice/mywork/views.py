@@ -2363,7 +2363,8 @@ def get_count(request):
     # print(message_requests.query)
     
 
-    p = Paginator(message_requests , 20)
+    p = Paginator(message_requests , 1)
+    print("GLOBAL NEW PAGE CURRENT VAL :  "+ str(new_page))
 
     try:
         page = p.page(new_page)
@@ -2381,7 +2382,7 @@ def search(request):
     searchTerm = request.GET.get('search', None)
     searchTerm = '%'+searchTerm+'%'
     message_requests = user_message.objects.raw('SELECT id,name,wa_id as number '
-                                                'from mywork_user_message where wa_id LIKE %s GROUP BY wa_id', [searchTerm])
+                                                'from mywork_user_message where wa_id LIKE %s OR name LIKE %s GROUP BY wa_id', [searchTerm,searchTerm])
 
     return render(request, 'get_count.html', {'obj2': message_requests})
 
