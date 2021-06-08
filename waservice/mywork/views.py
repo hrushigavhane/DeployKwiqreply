@@ -2363,7 +2363,7 @@ def get_count(request):
     # print(message_requests.query)
     
 
-    p = Paginator(message_requests , 1)
+    p = Paginator(message_requests , 20)
     print("GLOBAL NEW PAGE CURRENT VAL :  "+ str(new_page))
 
     try:
