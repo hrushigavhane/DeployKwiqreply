@@ -2,6 +2,7 @@
 
 import csv
 import datetime
+from decimal import Context
 import os
 import sys
 import uuid
@@ -35,6 +36,8 @@ from django.utils import timezone
 
 from .models import User_Details, Business_Profile, Submit_Ticket, Sales, Sandbox_Names, Sandbox_Webhook ,user_message,template_master
 from .tokens import account_activation_token
+
+from django.core.paginator import EmptyPage, Paginator
 
 #***********************************By Shubham For Framework.py****************************************
 import threading
@@ -1813,6 +1816,12 @@ def step5(request):
         else:
             return render(request, 'login.html')
 
+new_page = 1
+
+def page_number(page):
+    global new_page
+    new_page = page
+    print(new_page)
 
 def converse(request):
 
@@ -1827,7 +1836,8 @@ def converse(request):
     if request.session.get('admin') == False:
         admin_flag = request.session.get('admin')
         response1 += "Admin : {0}".format(admin_flag)
-        print(response1)
+        print(response1)       
+
 
     else:
         return render(request, 'login.html')
@@ -1840,6 +1850,10 @@ def converse(request):
         # message_requests = user_message.objects.raw('SELECT id ,name,wa_id as number,(SELECT COUNT(*)  FROM mywork_user_message where m_status=%s AND wa_id=number) as no_of_messages  from mywork_user_message GROUP BY wa_id order by timestamp1 asc',['unread'])
 
     if admin_flag == False:
+
+        if request.GET.get('page'):
+            page_number(request.GET.get('page'))
+
         user_disp = User_Details.objects.filter(id=request.session['id'])
         return render(request, 'converse.html', {'obj': user_disp})
     else:
@@ -2308,72 +2322,19 @@ def get_unread(request):
     active_user = Business_Profile.objects.get(user_id = id, status = 1)
     token = active_user.kwiqreply_token
     # print("IN GET UNREAD AND TOKEN = "+ token)
+
     
-    # chat1 = user_message.objects.raw('select * from mywork_user_message where wa_id=%s and m_status=%s ORDER BY '
-    #                                  'timestamp1', [wa_number, 'unread'])
-    # for chat in chat1:
-    #     if chat.m_media != '':
-    #         url = url_main + "/v1/users/login"
-    #         payload = "{\n\t\"new_password\": \""+pass_for_apcleari+"\"\n}"
-    #         headers = {
-    #             'Content-Type': 'application/json',
-    #             'Authorization': 'Basic <base64(username:password)>',
-    #             'Authorization': 'Basic '+base_64 + "'"
-    #         }
-    #         response = requests.request("POST", url, headers=headers, data=payload, verify=False)
-    #         rs = response.text
-    #         json_data = json.loads(rs)
-    #         authkey = json_data["users"][0]["token"]
-    #         url = url_main + "/v1/media/" + chat.m_media
 
-    #         headers = {
-    #             'Content-Type': "application/json",
-    #             'Authorization': "Bearer " + authkey,
-    #             'cache-control': "no-cache",
-    #             'Postman-Token': "c7225772-08c7-43f8-b905-1b18da80d814"
-    #         }
-    #         response1 = requests.request("GET", url, headers=headers, verify=False)
-    #         image = response1.content
-    #         encoded_data = base64.b64encode(image)
-    #         ts = int(time.time())
-    #         file1 = ""
-    #         m_url = ""
-    #         ext = ""
-
-    #         if chat.m_type == 'image':
-    #             m_url = 'media/image/'
-    #             ext = chat.m_url
-    #             ext = ext.split("/", 1)[1]
-    #             file1 = 'image_' + str(ts) + "." + "jpg"
-    #             fh = open(os.path.join(settings.MEDIA_ROOT + "/image/", file1), "wb")
-    #             fh.write(base64.decodebytes(encoded_data))
-    #             fh.close()
-    #         elif chat.m_type == 'video':
-    #             m_url = 'media/video/'
-    #             ext = chat.m_url
-    #             ext = ext.split("/", 1)[1]
-    #             file1 = 'video_' + str(ts) + "." + "mp4"
-    #             fh = open(os.path.join(settings.MEDIA_ROOT + '/video/', file1), "wb")
-    #             fh.write(base64.decodebytes(encoded_data))
-    #             fh.close()
-    #         elif chat.m_type == 'document':
-                
-    #             m_url = 'media/documents/'
-    #             ext = chat.m_url
-    #             ext = ext.split("/", 1)[1]
-    #             file1 = chat.m_fileName
-    #             fh = open(os.path.join(settings.MEDIA_ROOT + '/documents/', file1), "wb")
-    #             fh.write(base64.decodebytes(encoded_data))
-    #             fh.close()
-    #         user_message.objects.filter(id=chat.id).update(m_url=m_url, m_fileName=file1, m_media='')
 
     chat1 = user_message.objects.raw(
                 'select * from mywork_user_message where wa_id=%s and m_status=%s and user_message_token=%s ORDER BY '
                 'timestamp1', [wa_number, 'unread',token])
-    
+
+
+    context = {'obj': chat1}    
     # chat1 = user_message.objects.filter(wa_id = wa_number,m_status = 'unread' )  
     
-    return render(request, 'chat.html', {'obj': chat1})
+    return render(request, 'chat.html', context)
 
 
 def update_status(request):
@@ -2384,7 +2345,6 @@ def update_status(request):
     token = active_user.kwiqreply_token
     ac = user_message.objects.filter(wa_id=wa_number,m_status="unread",user_message_token=token).update(m_status="read")
     return HttpResponse(status=200)
-
 
 def get_count(request):
     id = request.session.get('id')
@@ -2401,7 +2361,20 @@ def get_count(request):
 
     # message_requests = user_message.objects.values('id','name',number = 'wa_id',co=Subquery(user_message.objects.filter(m_status = 'unread').count())).filter(m_status = 'unread').order_by('-timestamp1')
     # print(message_requests.query)
-    return render(request, 'get_count.html', {'obj2': message_requests})
+    
+
+    p = Paginator(message_requests , 20)
+
+    try:
+        page = p.page(new_page)
+    except EmptyPage:
+        page = p.page(1)
+
+
+    context = {'obj2': page, 'p': p}
+
+    # context = {'obj2': message_requests}
+    return render(request, 'get_count.html', context)
 
 
 def search(request):
@@ -3078,27 +3051,27 @@ def webhook(request):
             print(id,name,text,type,id,now,m_id,m_url,file1) 
 
 
-            data = {
-                "contacts": [
-                    {
-                        "wa_id": phn
-                    }
-                ],
-                "messages": [
-                    {
-                        "from": phn,
-                        "id": "ABEGkZEwEhhHAhD92n2mbaU899-mlM-ollR5",
-                        "image": {
-                            "id": "da08fe56-fa6b-4709-8fdf-348b13973b6f",
-                            "mime_type": "image/jpeg",
-                            'body': image,
-                            "sha256": "ae2694009475c44796eff23df09ffd72d1ded8c26e2a4bf38aaf0c745c6f29d7"
-                        },
-                        "timestamp": timestamp,
-                        "type": msg_type
-                    }
-                ]
-            }
+            # data = {
+            #     "contacts": [
+            #         {
+            #             "wa_id": phn
+            #         }
+            #     ],
+            #     "messages": [
+            #         {
+            #             "from": phn,
+            #             "id": "ABEGkZEwEhhHAhD92n2mbaU899-mlM-ollR5",
+            #             "image": {
+            #                 "id": "da08fe56-fa6b-4709-8fdf-348b13973b6f",
+            #                 "mime_type": "image/jpeg",
+            #                 'body': image,
+            #                 "sha256": "ae2694009475c44796eff23df09ffd72d1ded8c26e2a4bf38aaf0c745c6f29d7"
+            #             },
+            #             "timestamp": timestamp,
+            #             "type": msg_type
+            #         }
+            #     ]
+            # }
         
         if msg_type == "video":
             id = str(response["contacts"][0]["wa_id"])
@@ -3126,7 +3099,7 @@ def webhook(request):
             print(id,name,text,type,id,now,m_id,m_url,file1)
 
 
-        if (msg_type == "voice" or msg_type == "audio" and len(phn) == 12):
+        if (msg_type == "voice" or msg_type == "audio"):
             print("in audio voice")
             id = str(response["contacts"][0]["wa_id"])
             name = str(response["contacts"][0]["profile"]["name"])
@@ -3214,7 +3187,7 @@ def webhook(request):
         user1.m_status = 'unread'
         user1.unique_msg_id = unique_msg_id
         user1.user_message_token = kwiq_token
-        user1.unique_msg_status = 'sent'
+        user1.unique_msg_status = 'read'
         user1.save()
         
         print("Record inserted successfully into  table")

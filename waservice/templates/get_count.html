@@ -5,3 +5,20 @@
         <a style="margin-bottom:0px;" id="p_{{k.number}}" onclick="get_chat('{{k.number}}','{{k.name}}');"> <i class="fa fa-whatsapp" aria-hidden="true" style="color:green" ></i>{{k.number}} ({{k.name}})<b style="background-color:green; border-radius:10px; color:white; float:right; width:20px;">{{k.no_of_messages}} </b></a>
     <hr>
      {% endfor %}
+
+    
+    <div>
+        {% if obj2.has_previous %}
+            <a href="{% url 'converse' %}?page=1" style="border-right:1px solid grey; padding-right:10px; padding-left:10px;"> First</a>
+            <a href="{% url 'converse' %}?page={{obj2.previous_page_number}}" style="border-right:1px solid grey; padding-right:10px; padding-left:10px;"> Previous</a>
+        {% endif %}
+        {% if obj2.has_next %}
+            <a href="{% url 'converse' %}?page={{obj2.next_page_number}}" style="border-right:1px solid grey; padding-right:10px; padding-left:10px;"> Next</a>
+            <a href="{% url 'converse' %}?page={{p.num_pages}}" style="border-right:1px solid grey; padding-right:10px; padding-left:10px;"> Last</a>
+            
+        {% endif %}
+
+    </div>
+    <p style="padding-top:10px;">Page : <b>{{obj2.number}}</b>/{{p.num_pages}}</p>
+    <p >Total Number Of Chats : <b>{{p.count}}</b></p>
+    
