@@ -46,6 +46,7 @@ class Business_Profile(models.Model):
     website = models.CharField(max_length=200, blank=False, default="website")
     user = models.ForeignKey('User_Details', on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
+    page_no = models.IntegerField(default=1, blank=False)
 
 
     ip_address = models.CharField(max_length=100, blank=True)

@@ -1816,16 +1816,10 @@ def step5(request):
         else:
             return render(request, 'login.html')
 
-new_page = 1
-
-def page_number(page):
-    global new_page
-    new_page = page
-    print(new_page)
 
 def converse(request):
 
-    response=""
+    response="" 
     response1=""
 
     if request.session.get('id'):
@@ -1852,7 +1846,10 @@ def converse(request):
     if admin_flag == False:
 
         if request.GET.get('page'):
-            page_number(request.GET.get('page'))
+            user = Business_Profile.objects.get(user_id = request.session.get('id'))
+            print(user.Comp_name)
+            user.page_no = request.GET.get('page')
+            user.save()
 
         user_disp = User_Details.objects.filter(id=request.session['id'])
         return render(request, 'converse.html', {'obj': user_disp})
@@ -2364,7 +2361,10 @@ def get_count(request):
     
 
     p = Paginator(message_requests , 20)
-    print("GLOBAL NEW PAGE CURRENT VAL :  "+ str(new_page))
+    
+    new_page = active_user.page_no
+
+    print("NEW PAGE CURRENT VAL :  "+ str(new_page))
 
     try:
         page = p.page(new_page)
@@ -2374,7 +2374,7 @@ def get_count(request):
 
     context = {'obj2': page, 'p': p}
 
-    # context = {'obj2': message_requests}
+    # context = { 'obj2': message_requests }
     return render(request, 'get_count.html', context)
 
 
